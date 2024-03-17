@@ -8,7 +8,9 @@
   }: let
     system = "aarch64-linux";
   in {
-    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+    formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.alejandra;
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+
     nixosConfigurations.nixos-rmaghera-vm = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
