@@ -15,7 +15,7 @@
     nixosConfigurations.nixos-rmaghera-vm = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
-        ({...}: {nixpkgs.overlays = [(import ./caddy)];})
+        ./pkgs
         ./services.nix
         ./cockpit.nix
         ./hardware-configuration.nix
