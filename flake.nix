@@ -17,7 +17,7 @@
       modules = [
         ./pkgs
         ./lab
-        ./cockpit.nix
+        ./services
         ./hardware-configuration.nix
         ./configuration.nix
       ];
