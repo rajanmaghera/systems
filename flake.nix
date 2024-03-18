@@ -16,7 +16,7 @@
       inherit system;
       modules = [
         ./pkgs
-        ./services.nix
+        ./lab
         ./cockpit.nix
         ./hardware-configuration.nix
         ./configuration.nix
