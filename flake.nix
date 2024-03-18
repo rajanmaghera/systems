@@ -12,15 +12,11 @@
     formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
 
-    nixosConfigurations.nixos-rmaghera-vm = nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [
-        ./pkgs
-        ./lab
-        ./services
-        ./hardware-configuration.nix
-        ./configuration.nix
-      ];
-    };
+    nixosConfigurations =
+      (import ./machines {
+        configNixos = nixpkgs.lib.nixosSystem;
+        modules = [./pkgs ./lab ./services];
+      })
+      .nixos;
   };
 }

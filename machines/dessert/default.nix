@@ -5,20 +5,16 @@
   options,
   ...
 }: {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos-rmaghera-vm"; # Define your hostname.
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
-
-  # Set your time zone.
-  time.timeZone = "America/Toronto";
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_CA.UTF-8";
 
   # Enable sound.
   sound.enable = true;
