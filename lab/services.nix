@@ -43,7 +43,10 @@ in {
       };
     };
 
-    lab.system = mkOption {type = types.str;};
+    lab.system = mkOption {
+      type = types.str;
+      default = config.networking.hostName;
+    };
 
     lab.register = mkOption {
       type = types.attrsOf (types.submodule {

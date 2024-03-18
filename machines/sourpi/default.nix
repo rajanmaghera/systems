@@ -54,7 +54,6 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
   lab.enable = true;
-  lab.system = "dessert";
 
   lab.auth.enable = false;
   lab.auth.user = "rajan";

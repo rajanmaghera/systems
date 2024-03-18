@@ -16,8 +16,8 @@
   });
 in {
   nixos = {
-    "dessert" = (
-      makeNixos "dessert" "aarch64-linux" ./dessert
+    "sourpi" = (
+      makeNixos "sourpi" "aarch64-linux" ./sourpi
     );
   };
 }
