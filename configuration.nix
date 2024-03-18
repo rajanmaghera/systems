@@ -59,6 +59,11 @@
 
   lab.enable = true;
   lab.system = "dessert";
-  lab.auth = false;
+
+  lab.auth.enable = false;
+  lab.auth.user = "rajan";
+  lab.auth.password = "$2b$10$wbGfQG89a1O8TriinDwtc.H1.MQ83/lpUALeud35qdYGZzLrna4pi";
+  lab.auth.secretKey = "a-private-secret-key";
+
   lab.cockpit.enable = true;
 }

@@ -6,15 +6,7 @@
   ...
 }:
 with lib; let
-  cfg = config.lab.register;
-  sys = config.lab.system;
-  postfix = "local";
-  domain = "${sys}.${postfix}";
-
-  usr = "rajan";
-  passwd = "$2b$10$wbGfQG89a1O8TriinDwtc.H1.MQ83/lpUALeud35qdYGZzLrna4pi";
-  key = "ASDJCJDAS";
-
+  domain = "${config.lab.system}.${config.lab.tld}";
   rpAuthMixin = ''
     route {
       authorize with users_policy
@@ -27,9 +19,28 @@ in {
       default = false;
     };
 
-    lab.auth = mkOption {
-      type = types.bool;
-      default = true;
+    lab.tld = mkOption {
+      type = types.str;
+      default = "local";
+    };
+
+    lab.auth = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+      };
+
+      user = mkOption {
+        type = types.str;
+      };
+
+      password = mkOption {
+        type = types.str;
+      };
+
+      secretKey = mkOption {
+        type = types.str;
+      };
     };
 
     lab.system = mkOption {type = types.str;};
@@ -69,10 +80,10 @@ in {
   config.lab.details = mkIf config.lab.enable (builtins.mapAttrs
     (name: value: {
       url = "https://${name}.${domain}";
-      wsUrl = mkIf cfg.${name}.ws "wss://${name}.${domain}";
+      wsUrl = mkIf config.lab.register.${name}.ws "wss://${name}.${domain}";
       inp = value;
     })
-    cfg);
+    config.lab.register);
 
   # Dashboard configuration
   # Add an entry to the dashboard for the service
@@ -94,7 +105,7 @@ in {
   # Hosts config
   config.networking.extraHosts = mkIf config.lab.enable ''
     ${strings.concatStringsSep "\n"
-      (attrsets.mapAttrsToList (name: value: "127.0.0.1 ${name}.${domain}") cfg)}
+      (attrsets.mapAttrsToList (name: value: "127.0.0.1 ${name}.${domain}") config.lab.register)}
 
     127.0.0.1 ${domain}
     127.0.0.1 auth.${domain}
@@ -103,9 +114,9 @@ in {
   # Reverse proxy configuration
   config.services.caddy = mkIf config.lab.enable {
     enable = true;
-    package = mkIf config.lab.auth pkgs.caddy-extended;
+    package = mkIf config.lab.auth.enable pkgs.caddy-extended;
 
-    globalConfig = mkIf config.lab.auth ''
+    globalConfig = mkIf config.lab.auth.enable ''
       order authenticate before respond
       order authorize before basicauth
 
@@ -113,17 +124,17 @@ in {
       	local identity store localdb {
       		realm local
       		path /var/lib/auth/users.json
-      	        user ${usr} {
+      	        user ${config.lab.auth.user} {
       	            name Administrator
-      	            email ${usr}@${domain}
-      		    password "bcrypt:10:${passwd}" overwrite
+      	            email ${config.lab.auth.user}@${domain}
+      		    password "bcrypt:10:${config.lab.auth.password}" overwrite
       	            roles authp/admin authp/user
       	        }
       	}
 
       	authentication portal myportal {
       		crypto default token lifetime 3600
-      		crypto key sign-verify ${key}
+      		crypto key sign-verify ${config.lab.auth.secretKey}
       		enable identity store localdb
       		cookie domain ${domain}
       		ui {
@@ -142,7 +153,7 @@ in {
       		# disable auth redirect
       		set auth url https://auth.${domain}/
       		allow roles authp/admin authp/user
-      		crypto key verify ${key}
+      		crypto key verify ${config.lab.auth.secretKey}
       		acl rule {
       			comment allow guests only
       			match role guest authp/guest
@@ -158,7 +169,7 @@ in {
       	authorization policy users_policy {
       		set auth url http://auth.${domain}/
       		allow roles authp/admin authp/user
-      		crypto key verify ${key}
+      		crypto key verify ${config.lab.auth.secretKey}
       		acl rule {
       			comment allow users
       			match role authp/user
@@ -178,10 +189,10 @@ in {
         "${domain}".extraConfig = ''
           reverse_proxy localhost:8082
 
-          ${optionalString config.lab.auth rpAuthMixin}
+          ${optionalString config.lab.auth.enable rpAuthMixin}
         '';
 
-        "auth.${domain}".extraConfig = mkIf config.lab.auth ''
+        "auth.${domain}".extraConfig = mkIf config.lab.auth.enable ''
           route {
           	authenticate with myportal
           }
@@ -192,7 +203,7 @@ in {
           nameValuePair "${name}.${domain}" {
             extraConfig = ''
 
-              ${optionalString config.lab.auth rpAuthMixin}
+              ${optionalString config.lab.auth.enable rpAuthMixin}
 
               reverse_proxy localhost:${toString value.inp.port} {
                 transport http {
