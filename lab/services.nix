@@ -85,19 +85,6 @@ in {
     })
     config.lab.register);
 
-  # Dashboard configuration
-  # Add an entry to the dashboard for the service
-  config.services.homepage-dashboard = mkIf config.lab.enable {
-    enable = true;
-
-    services =
-      attrsets.mapAttrsToList
-      (name: value: {
-        "${value.inp.category}" = [{"${value.inp.fullName}" = {href = "${value.url}";};}];
-      })
-      config.lab.details;
-  };
-
   # Firewall config
   # Only allow 443, never 80 and never service ports (for now)
   config.networking.firewall.allowedTCPPorts = mkIf config.lab.enable [443];
