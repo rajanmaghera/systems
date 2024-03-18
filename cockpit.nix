@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  cfg = config.serve.cockpit;
+  cfg = config.lab.cockpit;
 
   sv = {
     port = 9192;
@@ -16,7 +16,7 @@ with lib; let
     abbr = "PT";
   };
 in {
-  options.serve.cockpit = {
+  options.lab.cockpit = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -24,13 +24,13 @@ in {
   };
 
   config = {
-    serve.register.ckpt = mkIf cfg.enable sv;
+    lab.register.ckpt = mkIf cfg.enable sv;
 
     services.cockpit = mkIf cfg.enable {
       enable = true;
       port = sv.port;
       settings = {
-        WebService.Origins = "${config.serve.details.ckpt.url} ${config.serve.details.ckpt.wsUrl}";
+        WebService.Origins = "${config.lab.details.ckpt.url} ${config.lab.details.ckpt.wsUrl}";
         WebService.ProtocolHeader = "X-Forwarded-Proto";
         WebService.AllowUnencrypted = true;
       };

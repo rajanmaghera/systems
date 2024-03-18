@@ -57,8 +57,8 @@
 
   system.stateVersion = "23.11"; # Did you read the comment?
 
-  serve.enable = true;
-  serve.system = "dessert";
-  serve.auth = false;
-  serve.cockpit.enable = true;
+  lab.enable = true;
+  lab.system = "dessert";
+  lab.auth = false;
+  lab.cockpit.enable = true;
 }

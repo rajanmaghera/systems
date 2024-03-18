@@ -6,8 +6,8 @@
   ...
 }:
 with lib; let
-  cfg = config.serve.register;
-  sys = config.serve.system;
+  cfg = config.lab.register;
+  sys = config.lab.system;
   postfix = "local";
   domain = "${sys}.${postfix}";
 
@@ -22,19 +22,19 @@ with lib; let
   '';
 in {
   options = {
-    serve.enable = mkOption {
+    lab.enable = mkOption {
       type = types.bool;
       default = false;
     };
 
-    serve.auth = mkOption {
+    lab.auth = mkOption {
       type = types.bool;
       default = true;
     };
 
-    serve.system = mkOption {type = types.str;};
+    lab.system = mkOption {type = types.str;};
 
-    serve.register = mkOption {
+    lab.register = mkOption {
       type = types.attrsOf (types.submodule {
         options = {
           port = mkOption {type = types.port;};
@@ -50,7 +50,7 @@ in {
       default = {};
     };
 
-    serve.details = mkOption {
+    lab.details = mkOption {
       type = types.attrsOf (types.submodule {
         options = {
           url = mkOption {type = types.str;};
@@ -66,7 +66,7 @@ in {
   # This should be kept as minimal as possible, only what the services need to
   # function, ie. for reverse proxy forwarding. Other values should be calculated and only
   # used here.
-  config.serve.details = mkIf config.serve.enable (builtins.mapAttrs
+  config.lab.details = mkIf config.lab.enable (builtins.mapAttrs
     (name: value: {
       url = "https://${name}.${domain}";
       wsUrl = mkIf cfg.${name}.ws "wss://${name}.${domain}";
@@ -76,7 +76,7 @@ in {
 
   # Dashboard configuration
   # Add an entry to the dashboard for the service
-  config.services.homepage-dashboard = mkIf config.serve.enable {
+  config.services.homepage-dashboard = mkIf config.lab.enable {
     enable = true;
 
     services =
@@ -84,15 +84,15 @@ in {
       (name: value: {
         "${value.inp.category}" = [{"${value.inp.fullName}" = {href = "${value.url}";};}];
       })
-      config.serve.details;
+      config.lab.details;
   };
 
   # Firewall config
   # Only allow 443, never 80 and never service ports (for now)
-  config.networking.firewall.allowedTCPPorts = mkIf config.serve.enable [443];
+  config.networking.firewall.allowedTCPPorts = mkIf config.lab.enable [443];
 
   # Hosts config
-  config.networking.extraHosts = mkIf config.serve.enable ''
+  config.networking.extraHosts = mkIf config.lab.enable ''
     ${strings.concatStringsSep "\n"
       (attrsets.mapAttrsToList (name: value: "127.0.0.1 ${name}.${domain}") cfg)}
 
@@ -101,11 +101,11 @@ in {
   '';
 
   # Reverse proxy configuration
-  config.services.caddy = mkIf config.serve.enable {
+  config.services.caddy = mkIf config.lab.enable {
     enable = true;
-    package = mkIf config.serve.auth pkgs.caddy-extended;
+    package = mkIf config.lab.auth pkgs.caddy-extended;
 
-    globalConfig = mkIf config.serve.auth ''
+    globalConfig = mkIf config.lab.auth ''
       order authenticate before respond
       order authorize before basicauth
 
@@ -178,10 +178,10 @@ in {
         "${domain}".extraConfig = ''
           reverse_proxy localhost:8082
 
-          ${optionalString config.serve.auth rpAuthMixin}
+          ${optionalString config.lab.auth rpAuthMixin}
         '';
 
-        "auth.${domain}".extraConfig = mkIf config.serve.auth ''
+        "auth.${domain}".extraConfig = mkIf config.lab.auth ''
           route {
           	authenticate with myportal
           }
@@ -192,7 +192,7 @@ in {
           nameValuePair "${name}.${domain}" {
             extraConfig = ''
 
-              ${optionalString config.serve.auth rpAuthMixin}
+              ${optionalString config.lab.auth rpAuthMixin}
 
               reverse_proxy localhost:${toString value.inp.port} {
                 transport http {
@@ -201,6 +201,6 @@ in {
               }
             '';
           })
-        config.serve.details);
+        config.lab.details);
   };
 }
