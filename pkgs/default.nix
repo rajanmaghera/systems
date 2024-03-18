@@ -1,1 +1,6 @@
-{...}: {nixpkgs.overlays = [(import ./caddy)];}
+{...}: {
+  nixpkgs.overlays = [
+    (import ./caddy)
+    (import ./rars)
+  ];
+}
