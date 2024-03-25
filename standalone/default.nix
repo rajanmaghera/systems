@@ -1,0 +1,25 @@
+{
+  nixpkgs,
+  overlays,
+  modules,
+  configHome,
+}: let
+  makeHome = username: homeDirectory: system: (
+    configHome {
+      pkgs = import nixpkgs {
+        inherit system overlays;
+      };
+      modules =
+        [
+          {
+            home.username = username;
+            home.homeDirectory = homeDirectory;
+          }
+        ]
+        ++ modules;
+    }
+  );
+in {
+  "work" =
+    makeHome "rmaghera" "/home/rmaghera" "x86_64-linux";
+}
