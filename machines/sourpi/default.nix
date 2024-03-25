@@ -9,6 +9,9 @@
     ./hardware-configuration.nix
   ];
 
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_CA.UTF-8";
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

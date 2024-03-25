@@ -1,9 +1,17 @@
 # My defaults across all machines
 {
+  hostName,
+  system,
+}: {
   # Set your time zone.
   time.timeZone = "America/Toronto";
+
+  # Enable flakes.
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_CA.UTF-8";
+  # Set hostname.
+  networking.hostName = hostName;
+
+  # Set platform.
+  nixpkgs.hostPlatform = system;
 }

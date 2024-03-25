@@ -1,23 +1,27 @@
-{
-  configNixos,
-  modules,
-}: let
-  makeNixos = hostname: system: mod: (configNixos {
+let
+  makeSystem = modules: hostName: system: {
     inherit system;
     modules =
       modules
       ++ [
-        mod
-        ./me.nix
-        {
-          networking.hostName = hostname;
-        }
+        (./. + "/${hostName}")
+        (import ./me.nix {
+          inherit system hostName;
+        })
       ];
-  });
+  };
 in {
   nixos = {
-    "sourpi" = (
-      makeNixos "sourpi" "aarch64-linux" ./sourpi
-    );
+    modules,
+    configNixos,
+  }: {
+    "sourpi" = configNixos (makeSystem modules "sourpi" "aarch64-linux");
+  };
+
+  darwin = {
+    modules,
+    configDarwin,
+  }: {
+    "fruit" = configDarwin (makeSystem modules "fruit" "aarch64-darwin");
   };
 }
