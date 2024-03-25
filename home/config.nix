@@ -1,2 +1,3 @@
 {
+  my.llm.enable = true;
 }
