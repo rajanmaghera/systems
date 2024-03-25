@@ -12,8 +12,9 @@
       modules =
         [
           {
-            home.username = username;
-            home.homeDirectory = homeDirectory;
+            home = {
+              inherit username homeDirectory;
+            };
           }
         ]
         ++ modules;
