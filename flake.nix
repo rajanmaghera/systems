@@ -2,14 +2,14 @@
   description = "Simple OS flake";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    darwin.url = "github:LnL7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     self,
     nixpkgs,
-    nix-darwin,
+    darwin,
   }: {
     formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.alejandra;
     formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
@@ -21,7 +21,7 @@
     };
 
     darwinConfigurations = (import ./machines).darwin {
-      configDarwin = nix-darwin.lib.darwinSystem;
+      configDarwin = darwin.lib.darwinSystem;
       modules = [./pkgs];
     };
   };
