@@ -22,5 +22,8 @@
   );
 in {
   "work" =
+    makeHome "rajan" "/home/rajan" "x86_64-linux";
+
+  "work-server" =
     makeHome "rmaghera" "/home/rmaghera" "x86_64-linux";
 }
