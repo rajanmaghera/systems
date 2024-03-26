@@ -13,11 +13,32 @@
     nixpkgs,
     darwin,
     home-manager,
-  }: {
-    # Formatter for this nix flake
-    formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.alejandra;
-    formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+  }: let
+    # Function to generate configurations for each system
+    each = f:
+      builtins.listToAttrs (builtins.map (system: {
+        name = system;
+        value = f system;
+      }) ["x86_64-linux" "aarch64-darwin" "aarch64-linux"]);
+  in {
+    ### REPO CONFIGURATIONS ###
+
+    formatter = each (
+      system:
+        (import nixpkgs {
+          inherit system;
+        })
+        .alejandra
+    );
+
+    # Custom shells
+    packages = each (
+      system: (import ./shells (import nixpkgs {
+        inherit system;
+      }))
+    );
+
+    ### SYSTEM CONFIGURATIONS ###
 
     # NixOS configuration
     nixosConfigurations = (import ./machines).nixos {

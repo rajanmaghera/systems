@@ -23,3 +23,8 @@ Switch to a NixOS config.
 ```
 nixos-rebuild switch --flake .#<machine-name>
 ```
+
+Launch a shell.
+```
+nix develop .#<shell-name>
+```
