@@ -6,14 +6,19 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    crane.url = "github:ipetkov/crane";
+    crane.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
+  outputs = inp @ {
     self,
     nixpkgs,
     darwin,
     home-manager,
+    crane,
   }: let
+    my-pkgs = (import ./pkgs) inp;
+
     # Function to generate configurations for each system
     each = f:
       builtins.listToAttrs (builtins.map (system: {
@@ -44,7 +49,7 @@
     nixosConfigurations = (import ./machines).nixos {
       configNixos = nixpkgs.lib.nixosSystem;
       modules = [
-        ./pkgs
+        my-pkgs
         ./lab
         ./services
         home-manager.nixosModules.home-manager
@@ -57,7 +62,7 @@
     darwinConfigurations = (import ./machines).darwin {
       configDarwin = darwin.lib.darwinSystem;
       modules = [
-        ./pkgs
+        my-pkgs
         home-manager.darwinModules.home-manager
         ((import ./modules).system "rajan")
         ((import ./home).system "rajan")
@@ -68,7 +73,7 @@
     homeConfigurations = (import ./standalone) {
       inherit nixpkgs;
       configHome = home-manager.lib.homeManagerConfiguration;
-      overlays = (import ./pkgs).nixpkgs.overlays;
+      overlays = my-pkgs.nixpkgs.overlays;
       modules = [
         (import ./modules).config
         (import ./home).config
