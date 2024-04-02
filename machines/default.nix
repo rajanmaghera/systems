@@ -16,6 +16,7 @@ in {
     configNixos,
   }: {
     "sourpi" = configNixos (makeSystem modules "sourpi" "aarch64-linux");
+    "dessert" = configNixos (makeSystem modules "dessert" "aarch64-linux");
   };
 
   darwin = {
