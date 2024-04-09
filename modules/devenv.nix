@@ -15,8 +15,11 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      pkgs.git-branchless
+    home.packages = with pkgs; [
+      git-branchless
+      git-absorb
+      lazygit
+      nodejs
     ];
   };
 }
