@@ -20,6 +20,8 @@ in {
       git-absorb
       lazygit
       nodejs
+      glab
+      gh
     ];
   };
 }
