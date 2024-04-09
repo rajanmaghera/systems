@@ -1,13 +1,12 @@
 {
   nixpkgs,
-  overlays,
   modules,
   configHome,
 }: let
   makeHome = username: homeDirectory: system: (
     configHome {
       pkgs = import nixpkgs {
-        inherit system overlays;
+        inherit system;
       };
       modules =
         [

@@ -43,6 +43,7 @@
     packages = each (
       system: (import ./shells (import nixpkgs {
         inherit system;
+        overlays = my-pkgs.nixpkgs.overlays;
       }))
     );
 
@@ -76,8 +77,8 @@
     homeConfigurations = (import ./standalone) {
       inherit nixpkgs;
       configHome = home-manager.lib.homeManagerConfiguration;
-      overlays = my-pkgs.nixpkgs.overlays;
       modules = [
+        my-pkgs
         (import ./modules).config
         (import ./home).config
       ];

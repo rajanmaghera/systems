@@ -2,6 +2,7 @@ inp: {
   nixpkgs.overlays = [
     (import ./caddy)
     (import ./rars)
+    (import ./cudatoolkit-pin)
     ((import ./my) inp)
     (
       f: p:
