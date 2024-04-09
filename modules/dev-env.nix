@@ -5,9 +5,9 @@
   ...
 }:
 with lib; let
-  cfg = config.my.devenv;
+  cfg = config.my.dev-env;
 in {
-  options.my.devenv = {
+  options.my.dev-env = {
     enable = mkOption {
       type = types.bool;
       default = false;

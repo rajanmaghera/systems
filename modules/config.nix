@@ -1,7 +1,7 @@
 {
   imports = [
     ./cli.nix
-    ./devenv.nix
+    ./dev-env.nix
     ./llm.nix
     ./fish.nix
   ];
