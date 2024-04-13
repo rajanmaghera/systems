@@ -12,9 +12,23 @@ in {
       type = types.bool;
       default = false;
     };
+
+    defaultIdentity = mkOption {
+      type = types.bool;
+      default = true;
+      description = mkDoc ''
+        Enable your default git identity using your UAlberta email.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
+    programs.git = {
+      enable = true;
+      userName = mkIf cfg.defaultIdentity "Rajan Maghera";
+      userEmail = mkIf cfg.defaultIdentity "rmaghera@ualberta.ca";
+    };
+
     home.packages = with pkgs; [
       git-branchless
       git-absorb
