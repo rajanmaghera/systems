@@ -14,4 +14,7 @@
 
   # Set platform.
   nixpkgs.hostPlatform = system;
+
+  # Auto backup HM files.
+  home-manager.backupFileExtension = "bkup";
 }
