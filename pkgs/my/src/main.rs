@@ -1,4 +1,5 @@
 mod cli;
+extern crate my_macro;
 
 use crate::cli::{Commands, Args};
 use clap::Parser;
@@ -16,6 +17,9 @@ fn main() {
     match &args.command {
         Commands::SwitchHm { name } => {
             let _ = cmd!("nix", &["run", "home-manager/master", "--", "switch", "--flake", &format!(".#{}", &name)]);
+        }
+        Commands::Shell { config } => {
+            let _ = cmd!("nix", config.to_cmd());
         }
     }
 }

@@ -27,10 +27,16 @@
   services.xserver.libinput.enable = true;
 
   services.xserver.enable = true;
-  services.xserver.displayManager.defaultSession = "plasma";
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
+
+  # Use KDE
+  # services.xserver.displayManager.defaultSession = "plasma";
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.displayManager.sddm.wayland.enable = true;
+  # services.desktopManager.plasma6.enable = true;
+
+  # Use GNOME
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   security.polkit.enable = true;
 
   # QEMU guest
@@ -50,6 +56,7 @@
     git
     tmux
     sapling
+    vscodium
   ];
 
   services.openssh.enable = true;

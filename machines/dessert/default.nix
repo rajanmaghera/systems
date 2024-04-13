@@ -28,6 +28,7 @@
     home = "/home/rajan";
     description = "Rajan Maghera";
     extraGroups = ["wheel" "networkmanager"];
+    initialPassword = "rajan";
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8ZCH5zjDnnRouiFA0QrGuygX8mi4EWGj4nsXwQyKQ+ rajanmaghera@RajansMacBookPro"];
   };
 
