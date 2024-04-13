@@ -5,4 +5,7 @@ in {
   system = userName: {
     home-manager.users."${userName}" = config;
   };
+  overlayHome = userName: cfg: {
+    home-manager.users."${userName}" = cfg;
+  };
 }
