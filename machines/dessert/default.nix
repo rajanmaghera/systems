@@ -17,17 +17,19 @@
 
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
+  security.initialRootPassword = "rootrajan";
 
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
-
+  users.mutableUsers = true;
   users.users.rajan = {
     isNormalUser = true;
     packages = with pkgs; [neovim];
     home = "/home/rajan";
     description = "Rajan Maghera";
     extraGroups = ["wheel" "networkmanager"];
+    password = "rajan";
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8ZCH5zjDnnRouiFA0QrGuygX8mi4EWGj4nsXwQyKQ+ rajanmaghera@RajansMacBookPro"];
   };
 
