@@ -121,8 +121,14 @@ in {
               ${optionalString config.lab.auth.enable rpAuthMixin}
 
               reverse_proxy localhost:${toString value.inp.port} {
+
+                request_buffers 128k
+               response_buffers 128k
+
                 transport http {
                   tls_insecure_skip_verify
+                  read_buffer 128k
+                  write_buffer 128k
                 }
               }
             '';

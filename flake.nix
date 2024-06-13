@@ -60,6 +60,7 @@
         home-manager.nixosModules.home-manager
         ((import ./modules).system "rajan")
         ((import ./home).system "rajan")
+        (import ./configs)
       ];
     };
 

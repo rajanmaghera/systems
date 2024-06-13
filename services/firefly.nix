@@ -26,8 +26,7 @@ in {
   config = {
     lab.register.firefly = mkIf cfg.enable sv;
 
-    # Create lib folders for permanent Firefly data
-    system.activationScripts.makeFireflyFolders = mkIf cfg.enable (lib.stringAfter ["var"] ''
+    system.activationScripts.makeFireflyFoldersForPersistentData = mkIf cfg.enable (lib.stringAfter ["var"] ''
       mkdir -p /var/lib/firefly/upload
       mkdir -p /var/lib/firefly/database
     '');
@@ -66,7 +65,7 @@ in {
           entrypoint = "sh";
           cmd = [
             "-c"
-            "echo \"0 3 * * * wget -qO- http://app:8080/api/v1/cron/REPLACEME\" | crontab - && crond -f -L /dev/stdout"
+            "echo \"0 3 * * * wget -qO- http://firefly-app:8080/api/v1/cron/REPLACEME\" | crontab - && crond -f -L /dev/stdout"
           ];
           extraOptions = ["--network=firefly-net"];
         };
