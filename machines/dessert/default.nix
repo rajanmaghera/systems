@@ -7,6 +7,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./hardware.nix
   ];
 
   # Select internationalisation properties.
@@ -17,7 +18,6 @@
 
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
-  security.initialRootPassword = "rootrajan";
 
   # Enable sound.
   sound.enable = true;
@@ -40,6 +40,52 @@
   ];
 
   services.openssh.enable = true;
+
+  # Disable firewall
+  networking.firewall.enable = false;
+
+  # Add AFP
+  services.netatalk = {
+    enable = true;
+    settings = {
+      Global = {
+        "mimic model" = "MacPro";
+        "uam list" = "uams_dhx_passwd.so,uams_dhx2_passwd.so";
+        "hosts allow" = "192.168.0.1/16";
+      };
+
+      "Dessert Cake" = {
+        path = "/drive";
+        "valid users" = "rajan";
+      };
+      "Photos" = {
+        path = "/drive/Photos";
+        "valid users" = "rajan";
+	"file perm" = 0400;
+	"directory perm" = 0400;
+      };
+      "Time Machine" = {
+        path = "/drive/TimeMachine";
+	"time machine" = "yes";
+        "valid users" = "rajan";
+      };
+    };
+  };
+
+  # Add avahi (needed for AFP)
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      userServices = true;
+    };
+  };
+
+  # Enable lab
+  lab.enable = true;
+  lab.cockpit.enable = true;
+  lab.firefly.enable = true;
 
   system.stateVersion = "23.11"; # Did you read the comment?
 }

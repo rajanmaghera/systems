@@ -59,6 +59,16 @@ in {
           ];
         };
 
+        firefly-importer = {
+          image = "fireflyiii/data-importer:latest";
+          hostname = "firefly-importer";
+          autoStart = true;
+          environmentFiles = [./firefly.importer.env];
+          extraOptions = ["--network=firefly-net"];
+          ports = ["7001:8080"];
+          dependsOn = ["firefly-app"];
+        };
+
         firefly-cron = {
           autoStart = true;
           image = "alpine";
