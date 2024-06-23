@@ -9,6 +9,7 @@
     ./wallpaper.nix
     ./wallpaper-option.nix
     ./zsh.nix
+    ./editor.nix
   ];
   home.stateVersion = "24.05";
 }
