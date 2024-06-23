@@ -6,6 +6,7 @@
     ./fish.nix
     ./adw-gtk3.nix
     ./secrets.nix
+    ./editor.nix
   ];
   home.stateVersion = "24.05";
 }

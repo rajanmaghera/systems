@@ -35,7 +35,6 @@
     git
     tmux
     sapling
-    vscodium
   ];
 
   services.openssh.enable = true;
