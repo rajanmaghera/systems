@@ -26,6 +26,7 @@ in {
       mutableExtensionsDir = true;
       userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
       package = pkgs.vscodium;
+      extensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace (import ./editor-extensions.nix).extensions;
     };
   };
 }
