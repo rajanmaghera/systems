@@ -1,4 +1,8 @@
-{crane, nixpkgs, ...}: final: prev: let
+{
+  crane,
+  nixpkgs,
+  ...
+}: final: prev: let
   inherit (prev) system;
   inherit (prev) lib;
 
