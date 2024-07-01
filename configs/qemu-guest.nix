@@ -31,7 +31,7 @@ in {
       '';
     };
 
-    fileSystems."/mnt/virtfsroot" = mkIf cfg.sharedFolder {
+    fileSystems."/mnt/virtfs" = mkIf cfg.sharedFolder {
       device = "share";
       fsType = "9p";
       options = [
