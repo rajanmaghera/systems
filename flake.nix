@@ -10,12 +10,17 @@
     crane.inputs.nixpkgs.follows = "nixpkgs";
     rpi5.url = "gitlab:vriska/nix-rpi5";
     rpi5.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.inputs.darwin.follows = "darwin";
+    agenix.inputs.home-manager.follows = "home-manager";
   };
 
   outputs = inp @ {
     self,
     nixpkgs,
     darwin,
+    agenix,
     home-manager,
     crane,
     rpi5,
@@ -58,6 +63,8 @@
         ./lab
         ./services
         home-manager.nixosModules.home-manager
+        agenix.nixosModules.default
+        (import ./secrets)
         ((import ./modules).system "rajan")
         ((import ./home).system "rajan")
         (import ./configs)
@@ -71,6 +78,8 @@
       modules = [
         my-pkgs
         home-manager.darwinModules.home-manager
+        agenix.darwinModules.default
+        (import ./secrets)
         ((import ./modules).system "rajan")
         ((import ./home).system "rajan")
       ];
@@ -82,6 +91,8 @@
       configHome = home-manager.lib.homeManagerConfiguration;
       modules = [
         my-pkgs
+        agenix.homeManagerModules.default
+        (import ./secrets)
         (import ./modules).config
         (import ./home).config
       ];
