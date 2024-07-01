@@ -1,8 +1,8 @@
-{crane, ...}: final: prev: let
+{crane, nixpkgs, ...}: final: prev: let
   inherit (prev) system;
   inherit (prev) lib;
 
-  craneLib = crane.lib.${system};
+  craneLib = crane.mkLib nixpkgs.legacyPackages.${system};
 
   commonArgs = {
     src = craneLib.cleanCargoSource (craneLib.path ./.);

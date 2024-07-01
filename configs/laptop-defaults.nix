@@ -31,6 +31,6 @@ in {
     sound.enable = mkIf cfg.sound true;
     hardware.pulseaudio.enable = mkIf cfg.sound true;
 
-    services.xserver.libinput.enable = mkIf cfg.touchpad true;
+    services.libinput.enable = mkIf cfg.touchpad true;
   };
 }
