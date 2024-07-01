@@ -30,7 +30,7 @@ in {
 
       	authentication portal myportal {
       		crypto default token lifetime 3600
-      		crypto key sign-verify ${config.lab.auth.secretKey}
+      		crypto key sign-verify from file ${config.lab.auth.secretKey}
       		enable identity store localdb
       		cookie domain ${domain}
       		ui {
@@ -49,7 +49,7 @@ in {
       		# disable auth redirect
       		set auth url https://auth.${domain}/
       		allow roles authp/admin authp/user
-      		crypto key verify ${config.lab.auth.secretKey}
+      		crypto key verify from file ${config.lab.auth.secretKey}
       		acl rule {
       			comment allow guests only
       			match role guest authp/guest
@@ -65,7 +65,7 @@ in {
       	authorization policy users_policy {
       		set auth url http://auth.${domain}/
       		allow roles authp/admin authp/user
-      		crypto key verify ${config.lab.auth.secretKey}
+      		crypto key verify from file ${config.lab.auth.secretKey}
       		acl rule {
       			comment allow users
       			match role authp/user

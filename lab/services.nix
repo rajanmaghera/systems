@@ -39,7 +39,7 @@ in {
       };
 
       secretKey = mkOption {
-        type = types.str;
+        type = types.path;
       };
     };
 

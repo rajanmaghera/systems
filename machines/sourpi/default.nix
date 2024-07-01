@@ -49,7 +49,7 @@
   lab.auth.enable = false;
   lab.auth.user = "rajan";
   lab.auth.password = "$2b$10$wbGfQG89a1O8TriinDwtc.H1.MQ83/lpUALeud35qdYGZzLrna4pi";
-  lab.auth.secretKey = "a-private-secret-key";
+  lab.auth.secretKey = config.age.secrets.lab-key.path;
 
   lab.cockpit.enable = true;
   lab.firefly.enable = true;
