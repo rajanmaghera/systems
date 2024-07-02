@@ -3,7 +3,7 @@ let
   secretsAttrs = builtins.listToAttrs (builtins.map (x: {
       name = x.name;
       value = {
-        file = ./. + "${x.name}.age";
+        file = ./. + "/${x.name}.age";
       };
     })
     manifest);
