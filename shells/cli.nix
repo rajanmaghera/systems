@@ -7,13 +7,18 @@ pkgs.mkShell {
       rust-analyzer
       rustfmt
       clippy
+    ]
+    ++ pkgs.lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
+      libiconv
+      darwin.apple_sdk.frameworks.Security
+      darwin.apple_sdk.frameworks.SystemConfiguration
+      darwin.apple_sdk.frameworks.CoreServices
+      darwin.apple_sdk.frameworks.CoreFoundation
       pkg-config
       openssl
-    ]
-    ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
-      pkgs.libiconv
-      pkgs.darwin.apple_sdk.frameworks.Security
-    ];
+    ]);
+
+  RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
 
   shellHook = ''
     PS1="[rust] $PS1"
