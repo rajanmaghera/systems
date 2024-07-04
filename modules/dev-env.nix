@@ -59,6 +59,7 @@ in {
       nodejs
       glab
       gh
+      with-pkg
     ];
   };
 }
