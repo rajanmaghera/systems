@@ -44,13 +44,20 @@
         .alejandra
     );
 
-    # Custom shells
-    packages = each (
-      system: (import ./shells (import nixpkgs {
-        inherit system;
-        overlays = my-pkgs.nixpkgs.overlays;
-      }))
-    );
+    # Custom shells and all packages in the repo or nixpkgs
+    packages =
+      each (
+        system: (import ./shells (import nixpkgs {
+          inherit system;
+          overlays = my-pkgs.nixpkgs.overlays;
+        }))
+      )
+      // each (
+        system: (import nixpkgs {
+          inherit system;
+          overlays = my-pkgs.nixpkgs.overlays;
+        })
+      );
 
     ### SYSTEM CONFIGURATIONS ###
 
