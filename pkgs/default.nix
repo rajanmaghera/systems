@@ -4,6 +4,7 @@ inp: {
     (import ./rars)
     (import ./cudatoolkit-pin)
     ((import ./my) inp)
+    (import ./desktoppr)
     ((import ./agenix) inp)
     (
       f: p:

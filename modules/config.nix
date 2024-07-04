@@ -6,6 +6,8 @@
     ./fish.nix
     ./adw-gtk3.nix
     ./secrets.nix
+    ./wallpaper.nix
+    ./wallpaper-option.nix
   ];
   home.stateVersion = "24.05";
 }
