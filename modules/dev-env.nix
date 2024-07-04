@@ -48,6 +48,10 @@ in {
       nix-direnv.enable = true;
     };
 
+    programs.tmux = {
+      enable = true;
+    };
+
     home.packages = with pkgs; [
       git-branchless
       git-absorb
