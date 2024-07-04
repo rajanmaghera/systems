@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   # Enable Nix darwin defaults.
   services.nix-daemon.enable = true;
   system.stateVersion = 4;
@@ -17,4 +17,6 @@
 
   # Enable zsh shell
   programs.zsh.enable = true;
+  environment.shells = [pkgs.zsh];
+  users.users.rajan.shell = pkgs.zsh;
 }

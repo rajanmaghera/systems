@@ -19,7 +19,7 @@ in {
     xdg.dataFile."wallpaper".source = cfg.source;
 
     home.activation.setDesktopBackground = mkIf pkgs.stdenv.isDarwin (lib.hm.dag.entryAfter ["writeBoundary"] ''
-      ${pkgs.desktoppr}/bin/desktoppr $XDG_DATA_HOME/wallpaper
+      ${pkgs.desktoppr}/bin/desktoppr ${config.xdg.dataHome}/wallpaper
     '');
   };
 }
