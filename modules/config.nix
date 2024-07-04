@@ -8,6 +8,7 @@
     ./secrets.nix
     ./wallpaper.nix
     ./wallpaper-option.nix
+    ./zsh.nix
   ];
   home.stateVersion = "24.05";
 }

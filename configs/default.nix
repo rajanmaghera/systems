@@ -5,5 +5,6 @@
     ./laptop-defaults.nix
     ./qemu-guest.nix
     ./docker.nix
+    ./zsh.nix
   ];
 }
