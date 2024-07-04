@@ -45,6 +45,7 @@
   my.docker.enable = true;
 
   lab.enable = true;
+  my.autowallpaper.enable = true;
   my.shell.zsh.enable = true;
 
   lab.auth.enable = false;

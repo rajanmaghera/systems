@@ -16,11 +16,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.file.".wallpaper.jpg".source = mkIf pkgs.stdenv.isDarwin cfg.source;
-    home.file.".background-image".source = cfg.source;
+    xdg.dataFile."wallpaper".source = cfg.source;
 
     home.activation.setDesktopBackground = mkIf pkgs.stdenv.isDarwin (lib.hm.dag.entryAfter ["writeBoundary"] ''
-      ${pkgs.desktoppr}/bin/desktoppr $HOME/.wallpaper.jpg
+      ${pkgs.desktoppr}/bin/desktoppr $XDG_DATA_HOME/wallpaper
     '');
   };
 }
