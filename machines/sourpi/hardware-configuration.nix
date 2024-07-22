@@ -8,21 +8,24 @@
   modulesPath,
   ...
 }: {
-  imports = [(modulesPath + "/profiles/qemu-guest.nix")];
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "usbhid" "usb_storage" "sr_mod"];
+  boot.initrd.availableKernelModules = ["xhci_pci" "sr_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/d33ad6a1-44ad-4423-bf94-159ee019e61e";
-    fsType = "btrfs";
+    device = "/dev/disk/by-uuid/7aea4846-1cae-4fa5-ae4a-631bdddedbfe";
+    fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B0D0-B9D5";
+    device = "/dev/disk/by-uuid/FF50-1358";
     fsType = "vfat";
+    options = ["fmask=0077" "dmask=0077"];
   };
 
   swapDevices = [];
