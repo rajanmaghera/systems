@@ -45,7 +45,7 @@ in {
 
     environment.systemPackages = mkIf cfg.sharedFolder [
       (pkgs.writeScriptBin "fix-virtfs-permissions" ''
-        chown -R rajan:users /mnt/virtfs
+        chown -R ${config.my.profile.user}:users /mnt/virtfs
       '')
     ];
   };

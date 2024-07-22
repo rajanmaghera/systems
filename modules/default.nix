@@ -1,11 +1,11 @@
 let
   cfg = import ./config.nix;
 in {
-  system = userName: {config, ...}: {
+  system = {config, ...}: {
     imports = [./wallpaper-option.nix];
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
-    home-manager.users."${userName}" =
+    home-manager.users."${config.my.profile.user}" =
       cfg
       // {
         my.wallpaper.source = config.my.wallpaper.source;

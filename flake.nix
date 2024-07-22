@@ -64,7 +64,7 @@
     # NixOS configuration
     nixosConfigurations = (import ./machines).nixos {
       configNixos = nixpkgs.lib.nixosSystem;
-      overlayHome = (import ./home).overlayHome "rajan";
+      overlayHome = (import ./home).overlayHome;
       modules = [
         my-pkgs
         ./lab
@@ -72,8 +72,8 @@
         home-manager.nixosModules.home-manager
         agenix.nixosModules.default
         (import ./secrets)
-        ((import ./modules).system "rajan")
-        ((import ./home).system "rajan")
+        (import ./modules).system
+        (import ./home).system
         (import ./configs)
       ];
     };
@@ -81,14 +81,14 @@
     # Darwin (macOS) configuration
     darwinConfigurations = (import ./machines).darwin {
       configDarwin = darwin.lib.darwinSystem;
-      overlayHome = (import ./home).overlayHome "rajan";
+      overlayHome = (import ./home).overlayHome;
       modules = [
         my-pkgs
         home-manager.darwinModules.home-manager
         agenix.darwinModules.default
         (import ./secrets)
-        ((import ./modules).system "rajan")
-        ((import ./home).system "rajan")
+        (import ./modules).system
+        (import ./home).system
       ];
     };
 

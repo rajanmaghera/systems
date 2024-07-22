@@ -20,9 +20,9 @@ in {
       	local identity store localdb {
       		realm local
       		path /var/lib/auth/users.json
-      	        user ${config.lab.auth.user} {
+      	        user ${config.my.profile.user} {
       	            name Administrator
-      	            email ${config.lab.auth.user}@${domain}
+      	            email ${config.my.profile.user}@${domain}
       		    password "bcrypt:10:${config.lab.auth.password}" overwrite
       	            roles authp/admin authp/user
       	        }

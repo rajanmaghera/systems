@@ -1,11 +1,11 @@
 let
-  config = import ./config.nix;
+  c = import ./config.nix;
 in {
-  inherit config;
-  system = userName: {
-    home-manager.users."${userName}" = config;
+  config = c;
+  system = {config, ...}: {
+    home-manager.users."${config.my.profile.user}" = c;
   };
-  overlayHome = userName: cfg: {
-    home-manager.users."${userName}" = cfg;
+  overlayHome = cfg: {config, ...}: {
+    home-manager.users."${config.my.profile.user}" = cfg;
   };
 }
