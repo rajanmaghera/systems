@@ -16,6 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
+    my.gui.enable = true;
     services.xserver.enable = true;
     services.displayManager.defaultSession = "plasma";
     services.displayManager.sddm.enable = true;
