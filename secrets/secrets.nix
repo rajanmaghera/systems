@@ -1,10 +1,13 @@
 let
-  key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8ZCH5zjDnnRouiFA0QrGuygX8mi4EWGj4nsXwQyKQ+";
+  keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8ZCH5zjDnnRouiFA0QrGuygX8mi4EWGj4nsXwQyKQ+ rajan@fruit"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINGWI7xEZ1TeqmHkIusuwREMEZdo2kY48sEBsKIHVyoC sourpi"
+  ];
   manifest = import ./manifest.nix;
   secretsAttrs = builtins.listToAttrs (builtins.map (x: {
       name = "${x.name}.age";
       value = {
-        publicKeys = [key];
+        publicKeys = keys;
       };
     })
     manifest);
