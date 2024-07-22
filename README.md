@@ -32,3 +32,9 @@ Launch a shell.
 ```
 nix develop .#<shell-name>
 ```
+
+Update all Nix dependencies.
+
+```
+nix flake update
+```
