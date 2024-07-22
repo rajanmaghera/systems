@@ -1,9 +1,4 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
+{lib, ...}:
 with lib; {
   options.my.autowallpaper = {
     enable = mkOption {
