@@ -30,7 +30,7 @@
 
   services.openssh.enable = true;
 
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05";
 
   my.docker.enable = true;
 
@@ -45,5 +45,9 @@
   lab.auth.secretKey = config.age.secrets.lab-key.path;
 
   lab.cockpit.enable = true;
-  lab.firefly.enable = true;
+  # lab.firefly.enable = true;
+  # lab.deluge.enable = true;
+  lab.prowlarr.enable = true;
+  lab.radarr.enable = true;
+  lab.sonarr.enable = true;
 }
