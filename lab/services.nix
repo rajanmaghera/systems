@@ -30,10 +30,6 @@ in {
         default = false;
       };
 
-      user = mkOption {
-        type = types.str;
-      };
-
       password = mkOption {
         type = types.str;
       };
