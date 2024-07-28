@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  baseConfg = builtins.fromJSON (builtins.readFile ../configuration.json);
+  baseConfg = builtins.fromJSON (builtins.readFile ../../configuration.json);
   source = pkgs.fetchurl {
     url = baseConfg.profile.url;
     sha256 = baseConfg.profile.sha256;

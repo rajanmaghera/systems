@@ -80,7 +80,7 @@
         (import ./modules/home).system
         (import ./home).system
         (import ./configs)
-        (import ./sharedconfigs)
+        (import ./modules/shared)
       ];
     };
 
@@ -95,7 +95,7 @@
         (import ./secrets)
         (import ./modules/home).system
         (import ./home).system
-        (import ./sharedconfigs)
+        (import ./modules/shared)
       ];
     };
 
