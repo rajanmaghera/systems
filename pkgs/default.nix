@@ -5,6 +5,7 @@ inp: {
     (import ./cudatoolkit-pin)
     ((import ./my) inp)
     (import ./desktoppr)
+    (import ./nix-ios)
     (import ./with-pkg)
     ((import ./agenix) inp)
     (
