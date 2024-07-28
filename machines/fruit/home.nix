@@ -1,1 +1,3 @@
-{}
+{
+  my.editor.enable = true;
+}
