@@ -74,11 +74,10 @@
         overlaysModule
         home-manager.nixosModules.home-manager
         agenix.nixosModules.default
-        (import ./lab)
-        (import ./services)
         (import ./secrets)
-        (import ./modules/home).system
         (import ./home).system
+        (import ./modules/home).system
+        (import ./modules/nixos-homelab)
         (import ./modules/nixos)
         (import ./modules/shared)
       ];
@@ -93,8 +92,8 @@
         home-manager.darwinModules.home-manager
         agenix.darwinModules.default
         (import ./secrets)
-        (import ./modules/home).system
         (import ./home).system
+        (import ./modules/home).system
         (import ./modules/shared)
       ];
     };
@@ -107,8 +106,8 @@
         overlaysModule
         agenix.homeManagerModules.default
         (import ./secrets)
-        (import ./modules/home).config
         (import ./home).config
+        (import ./modules/home).config
       ];
     };
 
