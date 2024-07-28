@@ -61,7 +61,7 @@
         system,
         ...
       }:
-        pkgs // home-manager.packages.${system} // darwin.packages.${system}
+        pkgs // home-manager.packages.${system} // (darwin.packages.${system} or {})
     );
 
     ### SYSTEM CONFIGURATIONS ###
