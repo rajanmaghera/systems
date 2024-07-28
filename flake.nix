@@ -77,7 +77,7 @@
         (import ./lab)
         (import ./services)
         (import ./secrets)
-        (import ./modules).system
+        (import ./modules/home).system
         (import ./home).system
         (import ./configs)
         (import ./sharedconfigs)
@@ -93,7 +93,7 @@
         home-manager.darwinModules.home-manager
         agenix.darwinModules.default
         (import ./secrets)
-        (import ./modules).system
+        (import ./modules/home).system
         (import ./home).system
         (import ./sharedconfigs)
       ];
@@ -107,7 +107,7 @@
         overlaysModule
         agenix.homeManagerModules.default
         (import ./secrets)
-        (import ./modules).config
+        (import ./modules/home).config
         (import ./home).config
       ];
     };
