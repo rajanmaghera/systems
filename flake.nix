@@ -18,7 +18,7 @@
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inp @ {
+  outputs = inputs @ {
     self,
     nixpkgs,
     darwin,
@@ -28,7 +28,13 @@
     rpi5,
     nix-vscode-extensions,
   }: let
-    my-pkgs = (import ./pkgs) inp;
+    # Nixpkgs overlays
+    overlays = (import ./pkgs) inputs;
+
+    # System configuration module with overlays
+    overlaysModule = {
+      nixpkgs.overlays = overlays;
+    };
 
     # Function to generate configurations for each system
     each = f:
@@ -42,15 +48,12 @@
       system:
         f {
           pkgs = import nixpkgs {
-            inherit system;
-            overlays = my-pkgs.nixpkgs.overlays;
+            inherit system overlays;
           };
           system = system;
         }
     ));
   in {
-    ### REPO CONFIGURATIONS ###
-
     # Nix file formatter
     formatter = eachPkgs ({pkgs, ...}: pkgs.alejandra);
 
@@ -59,23 +62,20 @@
       {
         pkgs,
         system,
-        ...
       }:
         pkgs // home-manager.packages.${system} // (darwin.packages.${system} or {})
     );
-
-    ### SYSTEM CONFIGURATIONS ###
 
     # NixOS configuration
     nixosConfigurations = (import ./machines).nixos {
       configNixos = nixpkgs.lib.nixosSystem;
       overlayHome = (import ./home).overlayHome;
       modules = [
-        my-pkgs
-        ./lab
-        ./services
+        overlaysModule
         home-manager.nixosModules.home-manager
         agenix.nixosModules.default
+        (import ./lab)
+        (import ./services)
         (import ./secrets)
         (import ./modules).system
         (import ./home).system
@@ -89,7 +89,7 @@
       configDarwin = darwin.lib.darwinSystem;
       overlayHome = (import ./home).overlayHome;
       modules = [
-        my-pkgs
+        overlaysModule
         home-manager.darwinModules.home-manager
         agenix.darwinModules.default
         (import ./secrets)
@@ -104,7 +104,7 @@
       inherit nixpkgs;
       configHome = home-manager.lib.homeManagerConfiguration;
       modules = [
-        my-pkgs
+        overlaysModule
         agenix.homeManagerModules.default
         (import ./secrets)
         (import ./modules).config
@@ -117,6 +117,7 @@
       dessert = self.nixosConfigurations.dessert.config.system.build.sdImage;
     };
 
+    # iOS configuration
     iosConfigurations = (import ./machines).ios;
   };
 }
