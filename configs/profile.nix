@@ -5,9 +5,10 @@
   ...
 }:
 with lib; let
+  baseConfg = builtins.fromJSON (builtins.readFile ../configuration.json);
   source = pkgs.fetchurl {
-    url = "https://avatars.githubusercontent.com/u/16507599?v=4";
-    sha256 = "sha256-WlBioUp+cH5YGS8bPZZZT/boGhZsun5wScK1AkZ6hYM=";
+    url = baseConfg.profile.url;
+    sha256 = baseConfg.profile.sha256;
   };
   authorizedKeys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8ZCH5zjDnnRouiFA0QrGuygX8mi4EWGj4nsXwQyKQ+ rajanmaghera@RajansMacBookPro"

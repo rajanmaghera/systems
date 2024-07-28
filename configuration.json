@@ -2,5 +2,9 @@
     "wallpaper": {
         "url": "https://raw.githubusercontent.com/rajanmaghera/systems/wallpaper/austin-schmid-mZSRmKfhIkM-unsplash.jpg",
         "sha256": "sha256-CycIembvGpjRcv0+F2ThtGHrtze9waz2emmJAtxIVok="
+    },
+    "profile": {
+        "url": "https://avatars.githubusercontent.com/u/16507599?v=4",
+        "sha256": "sha256-WlBioUp+cH5YGS8bPZZZT/boGhZsun5wScK1AkZ6hYM="
     }
 }
