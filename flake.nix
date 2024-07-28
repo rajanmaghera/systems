@@ -78,6 +78,7 @@
         (import ./modules).system
         (import ./home).system
         (import ./configs)
+        (import ./sharedconfigs)
       ];
     };
 
@@ -92,6 +93,7 @@
         (import ./secrets)
         (import ./modules).system
         (import ./home).system
+        (import ./sharedconfigs)
       ];
     };
 
