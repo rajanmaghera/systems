@@ -4,7 +4,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
@@ -60,7 +60,9 @@
           inherit system;
           overlays = my-pkgs.nixpkgs.overlays;
         })
-      );
+      )
+      // darwin.packages
+      // home-manager.packages;
 
     ### SYSTEM CONFIGURATIONS ###
 
