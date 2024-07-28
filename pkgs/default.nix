@@ -8,9 +8,7 @@ inp: {
     (import ./nix-ios)
     (import ./with-pkg)
     ((import ./agenix) inp)
-    (
-      f: p:
-        inp.rpi5.legacyPackages.aarch64-linux
-    )
+    ((import ./vscode-extensions) inp)
+    ((import ./rpi) inp)
   ];
 }
