@@ -109,5 +109,7 @@
     images = {
       dessert = self.nixosConfigurations.dessert.config.system.build.sdImage;
     };
+
+    iosConfigurations = (import ./machines).ios;
   };
 }

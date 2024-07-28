@@ -11,6 +11,7 @@ let
         })
       ];
   };
+  configIos = (import ./ios.nix).configIos;
 in {
   nixos = {
     modules,
@@ -27,5 +28,9 @@ in {
     overlayHome,
   }: {
     "fruit" = configDarwin (makeSystem modules overlayHome "fruit" "aarch64-darwin");
+  };
+
+  ios = {
+    "banana" = configIos "banana";
   };
 }
