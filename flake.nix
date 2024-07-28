@@ -79,7 +79,7 @@
         (import ./secrets)
         (import ./modules/home).system
         (import ./home).system
-        (import ./configs)
+        (import ./modules/nixos)
         (import ./modules/shared)
       ];
     };
