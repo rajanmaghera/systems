@@ -24,6 +24,19 @@ in {
     programs.vscode = {
       enable = true;
       mutableExtensionsDir = true;
+      extensions = with pkgs.vscode-marketplace; [
+        rust-lang.rust-analyzer
+        github.vscode-pull-request-github
+        mkhl.direnv
+        usernamehw.errorlens
+        github.github-vscode-theme
+        vscodevim.vim
+        bbenoist.nix
+        github.copilot
+        franzgollhammer.jb-fleet-dark
+        chadalen.vscode-jetbrains-icon-theme
+        miguelsolorio.symbols
+      ];
       userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
       package = pkgs.vscodium;
     };

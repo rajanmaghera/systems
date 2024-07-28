@@ -14,6 +14,8 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.darwin.follows = "darwin";
     agenix.inputs.home-manager.follows = "home-manager";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inp @ {
@@ -24,6 +26,7 @@
     home-manager,
     crane,
     rpi5,
+    nix-vscode-extensions,
   }: let
     my-pkgs = (import ./pkgs) inp;
 
