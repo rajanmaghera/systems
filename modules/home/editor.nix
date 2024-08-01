@@ -36,6 +36,8 @@ in {
         franzgollhammer.jb-fleet-dark
         chadalen.vscode-jetbrains-icon-theme
         miguelsolorio.symbols
+        meta.sapling-scm
+        interactive-smartlog.interactive-smartlog
       ];
       userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
       package = pkgs.vscodium;
