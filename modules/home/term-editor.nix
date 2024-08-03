@@ -7,7 +7,7 @@
 with lib; let
   cfg = config.my.term-editor;
 in {
-  options.my.term-editor= {
+  options.my.term-editor = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -22,13 +22,18 @@ in {
       python39
       python39Packages.pip
       python39Packages.virtualenv
+      python39Packages.pynvim
       nodejs
       cargo
       ripgrep
+      lunarvim
+      yarn
     ];
 
     programs.neovim = {
       enable = true;
+      withNodeJs = true;
+      withPython3 = true;
     };
   };
 }
