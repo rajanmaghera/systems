@@ -1,5 +1,12 @@
 {
   description = "Simple OS flake";
+
+  nixConfig = {
+    extra-trusted-substituters = "https://rajan.cachix.org";
+    extra-trusted-public-keys = "rajan.cachix.org-1:WdBz6DVZhJafNOoIHXsTfikZTvQHvhUo71+pEi1LqEw=";
+    extra-experimental-features = "nix-command flakes";
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     darwin.url = "github:LnL7/nix-darwin";
