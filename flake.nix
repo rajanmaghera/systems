@@ -32,8 +32,12 @@
     overlays = (import ./pkgs) inputs;
 
     # System configuration module with overlays
-    overlaysModule = {
+    overlaysModule = {lib, ...}: {
       nixpkgs.overlays = overlays;
+      nixpkgs.config.allowUnfreePredicate = pkg:
+        builtins.elem (lib.getName pkg) [
+          "vscode"
+        ];
     };
 
     # Function to generate configurations for each system

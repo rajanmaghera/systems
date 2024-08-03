@@ -40,7 +40,6 @@ in {
         interactive-smartlog.interactive-smartlog
       ];
       userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
-      package = pkgs.vscodium;
     };
   };
 }
