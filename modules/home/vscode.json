@@ -28,6 +28,7 @@
     "editor.smoothScrolling": true,
     "editor.unicodeHighlight.nonBasicASCII": true,
     "explorer.decorations.colors": false,
+    "extensions.autoCheckUpdates": false,
     "files.exclude": {
         "**/.direnv": true
     },
@@ -44,15 +45,32 @@
     "security.workspace.trust.enabled": false,
     "security.workspace.trust.untrustedFiles": "newWindow",
     "symbols.hidesExplorerArrows": false,
-    "terminal.integrated.automationProfile.linux": "zsh",
+    "terminal.integrated.automationProfile.linux": {
+        "path": "zsh"
+    },
+    "terminal.integrated.automationProfile.osx": {
+        "path": "zsh"
+    },
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.cursorStyle": "line",
     "terminal.integrated.cursorStyleInactive": "none",
     "terminal.integrated.defaultProfile.linux": "tmux-shell",
+    "terminal.integrated.defaultProfile.osx": "tmux-shell",
     "terminal.integrated.enableImages": true,
     "terminal.integrated.enablePersistentSessions": false,
     "terminal.integrated.lineHeight": 1.4,
     "terminal.integrated.profiles.linux": {
+        "tmux-shell": {
+            "args": [
+                "new-session",
+                "-A",
+                "-s",
+                "vsc/${workspaceFolderBasename}"
+            ],
+            "path": "tmux"
+        }
+    },
+    "terminal.integrated.profiles.osx": {
         "tmux-shell": {
             "args": [
                 "new-session",
@@ -72,6 +90,7 @@
     "terminal.integrated.tabs.hideCondition": "never",
     "terminal.integrated.tabs.showActions": "never",
     "terminal.integrated.tabs.showActiveTerminal": "never",
+    "update.mode": "none",
     "vim.easymotion": true,
     "vim.handleKeys": {
         "<C-d>": true,
