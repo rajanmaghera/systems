@@ -24,6 +24,8 @@ in {
     programs.vscode = {
       enable = true;
       mutableExtensionsDir = true;
+      enableUpdateCheck = false;
+      enableExtensionUpdateCheck = false;
       extensions = with pkgs.vscode-marketplace; [
         rust-lang.rust-analyzer
         github.vscode-pull-request-github
