@@ -45,4 +45,8 @@
   lab.auth.secretKey = config.age.secrets.lab-key.path;
 
   lab.cockpit.enable = true;
+
+  my.home.config = {
+    my.editor.enable = true;
+  };
 }

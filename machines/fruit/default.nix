@@ -15,8 +15,8 @@
   # Add home configuration
   users.users.rajan.home = "/Users/rajan";
 
-  # Enable zsh shell
-  programs.zsh.enable = true;
-  environment.shells = [pkgs.zsh];
-  users.users.rajan.shell = pkgs.zsh;
+  my.shell.zsh.enable = true;
+  my.home.config = {
+    my.editor.enable = true;
+  };
 }

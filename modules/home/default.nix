@@ -1,7 +1,7 @@
 let
   cfg = import ./config.nix;
 in {
-  system = {config, ...}: {
+  systemModule = {config, ...}: {
     imports = [./wallpaper-option.nix];
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
