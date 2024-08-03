@@ -43,6 +43,7 @@
     "security.workspace.trust.banner": "never",
     "security.workspace.trust.enabled": false,
     "security.workspace.trust.untrustedFiles": "newWindow",
+    "symbols.hidesExplorerArrows": false,
     "terminal.integrated.automationProfile.linux": "zsh",
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.cursorStyle": "line",
