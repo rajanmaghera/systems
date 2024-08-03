@@ -39,6 +39,9 @@ in {
         ".direnv"
         ".envrc"
       ];
+      extraConfig = {
+        core.fsmonitor = true;
+      };
     };
 
     programs.direnv = {
@@ -60,6 +63,7 @@ in {
       glab
       gh
       with-pkg
+      watchman
     ];
   };
 }
