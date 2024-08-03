@@ -7,6 +7,7 @@ inputs: [
   (import ./nix-ios)
   (import ./with-pkg)
   (import ./rust-shell)
+  (import ./custom-nerdfonts)
   (import ./cuda-shell)
   ((import ./agenix) inputs)
   ((import ./vscode-extensions) inputs)

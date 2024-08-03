@@ -18,7 +18,7 @@ in {
     fonts.fontconfig.enable = true;
 
     home.packages = with pkgs; [
-      nerdfonts
+      custom-nerdfonts
     ];
 
     programs.vscode = {
