@@ -113,5 +113,8 @@
     "workbench.preferredDarkColorTheme": "Fleet Dark Modern",
     "workbench.preferredLightColorTheme": "GitHub Light",
     "workbench.startupEditor": "none",
-    "workbench.statusBar.visible": false
+    "workbench.statusBar.visible": false,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
