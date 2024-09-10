@@ -4,7 +4,7 @@
   system,
 }: {
   # Set your time zone.
-  time.timeZone = "America/Toronto";
+  time.timeZone = "America/Edmonton";
 
   # Enable flakes.
   nix.settings.experimental-features = ["nix-command" "flakes"];
