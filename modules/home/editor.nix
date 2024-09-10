@@ -19,6 +19,7 @@ in {
 
     home.packages = with pkgs; [
       custom-nerdfonts
+      custom-google-fonts
     ];
 
     programs.vscode = {

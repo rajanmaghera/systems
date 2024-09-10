@@ -8,6 +8,7 @@ inputs: [
   (import ./with-pkg)
   (import ./rust-shell)
   (import ./custom-nerdfonts)
+  (import ./custom-google-fonts)
   (import ./cuda-shell)
   ((import ./agenix) inputs)
   ((import ./vscode-extensions) inputs)
