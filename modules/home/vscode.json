@@ -5,10 +5,13 @@
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "breadcrumbs.enabled": false,
     "editor.cursorBlinking": "smooth",
     "editor.cursorSmoothCaretAnimation": "on",
-    "editor.fontFamily": "Cousine Nerd Font Mono, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "Fragment Mono, monospace",
     "editor.fontLigatures": true,
     "editor.fontSize": 13,
     "editor.formatOnSave": true,
@@ -40,6 +43,7 @@
     "github.copilot.editor.enableAutoCompletions": true,
     "github.copilot.editor.enableCodeActions": false,
     "redhat.telemetry.enabled": false,
+    "sapling.isl.showInSidebar": true,
     "scm.diffDecorationsGutterVisibility": "hover",
     "security.workspace.trust.banner": "never",
     "security.workspace.trust.enabled": false,
@@ -103,6 +107,7 @@
     "vim.useSystemClipboard": true,
     "window.autoDetectColorScheme": true,
     "window.commandCenter": false,
+    "window.customTitleBarVisibility": "windowed",
     "window.menuBarVisibility": "hidden",
     "window.title": "${rootNameShort}${separator}${activeEditorMedium}",
     "window.titleSeparator": "/",
@@ -110,11 +115,8 @@
     "workbench.editor.editorActionsLocation": "hidden",
     "workbench.editor.showTabs": "none",
     "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-auto",
-    "workbench.preferredDarkColorTheme": "Fleet Dark Modern",
+    "workbench.preferredDarkColorTheme": "GitHub Dark Default",
     "workbench.preferredLightColorTheme": "GitHub Light",
     "workbench.startupEditor": "none",
-    "workbench.statusBar.visible": false,
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    "workbench.statusBar.visible": false
 }
