@@ -19,7 +19,9 @@ in {
     xdg.dataFile."wallpaper".source = cfg.source;
 
     home.activation.setDesktopBackground = mkIf pkgs.stdenv.isDarwin (lib.hm.dag.entryAfter ["writeBoundary"] ''
-      ${pkgs.desktoppr}/bin/desktoppr ${config.xdg.dataHome}/wallpaper
+      new_wallpaper_path="${config.xdg.dataHome}/wallpaper"; \
+      /usr/libexec/PlistBuddy -c "set AllSpacesAndDisplays:Desktop:Content:Choices:0:Files:0:relative file:///$new_wallpaper_path" ~/Library/Application\ Support/com.apple.wallpaper/Store/Index.plist && \
+      ${pkgs.killall}/bin/killall WallpaperAgent
     '');
   };
 }
