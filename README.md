@@ -6,7 +6,6 @@
 - `sourpi`: VM for testing `dessert` config
 - `fruit`: 2023 MacBook Pro 14 inch (base model), personal laptop
 - `banana`: iPhone 14 Pro, purple
-- `work`: Work machines, standalone home-manager only
 
 ## Commands
 
