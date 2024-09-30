@@ -104,6 +104,7 @@
         (import ./secrets)
         (import ./home).system
         (import ./modules/home).system
+        (import ./modules/darwin)
         (import ./modules/shared)
       ];
     };
