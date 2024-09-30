@@ -20,14 +20,6 @@ in {
         Enable your default git identity using your UAlberta email.
       '';
     };
-
-    ignoreDirenv = mkOption {
-      type = types.bool;
-      default = true;
-      description = mkDoc ''
-        Ignore direnv files globally.
-      '';
-    };
   };
 
   config = mkIf cfg.enable {
@@ -35,9 +27,10 @@ in {
       enable = true;
       userName = mkIf cfg.defaultIdentity "Rajan Maghera";
       userEmail = mkIf cfg.defaultIdentity "rmaghera@ualberta.ca";
-      ignores = mkIf cfg.ignoreDirenv [
+      ignores = [
         ".direnv"
         ".envrc"
+        ".DS_Store"
       ];
       extraConfig = {
         core.fsmonitor = true;
