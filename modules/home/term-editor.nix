@@ -24,7 +24,6 @@ in {
       python39Packages.virtualenv
       python39Packages.pynvim
       nodejs
-      cargo
       ripgrep
       lunarvim
       yarn

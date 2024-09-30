@@ -55,15 +55,29 @@ in {
       enable = true;
     };
 
-    home.packages = with pkgs; [
-      git-branchless
-      git-absorb
-      lazygit
-      nodejs
-      glab
-      gh
-      with-pkg
-      watchman
-    ];
+    home.packages = with pkgs;
+      [
+        (git-branchless.overrideAttrs
+          {
+            doCheck = false;
+          })
+        git-absorb
+        lazygit
+        nodejs
+        glab
+        gh
+        with-pkg
+        watchman
+        rustup
+      ]
+      ++ lib.optionals stdenv.isDarwin [
+        libiconv
+        darwin.apple_sdk.frameworks.Security
+        darwin.apple_sdk.frameworks.SystemConfiguration
+        darwin.apple_sdk.frameworks.CoreServices
+        darwin.apple_sdk.frameworks.CoreFoundation
+        pkg-config
+        openssl
+      ];
   };
 }
