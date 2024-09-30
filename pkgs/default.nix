@@ -11,6 +11,7 @@ inputs: [
   (import ./custom-google-fonts)
   (import ./cuda-shell)
   (import ./sbarlua)
+  (import ./sbmenus)
   ((import ./agenix) inputs)
   ((import ./vscode-extensions) inputs)
   ((import ./rpi) inputs)
