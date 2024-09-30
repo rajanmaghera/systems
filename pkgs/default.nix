@@ -10,6 +10,7 @@ inputs: [
   (import ./custom-nerdfonts)
   (import ./custom-google-fonts)
   (import ./cuda-shell)
+  (import ./sbarlua)
   ((import ./agenix) inputs)
   ((import ./vscode-extensions) inputs)
   ((import ./rpi) inputs)
