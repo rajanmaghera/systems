@@ -52,3 +52,9 @@ Update all Nix dependencies.
 ```
 nix flake update
 ```
+
+Deploy all machines configured for auto-deployment.
+
+```
+nix run github:serokell/deploy-rs -- --remote-build -s
+```

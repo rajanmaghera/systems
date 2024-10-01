@@ -22,6 +22,8 @@
     agenix.inputs.home-manager.follows = "home-manager";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
@@ -33,6 +35,7 @@
     crane,
     rpi5,
     nix-vscode-extensions,
+    deploy-rs,
   }: let
     # Nixpkgs overlays
     overlays = (import ./pkgs) inputs;
@@ -129,5 +132,19 @@
 
     # iOS configuration
     iosConfigurations = (import ./machines).ios;
+
+    # Automated deployments
+    deploy = {
+      remoteBuild = true;
+      nodes.pie = {
+        interactiveSudo = true;
+        hostname = "pie.tail122a7f.ts.net";
+        profiles.system = {
+          user = "root";
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.pie;
+        };
+      };
+    };
+
   };
 }
