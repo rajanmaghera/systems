@@ -8,6 +8,7 @@
     ./autowallpaper.nix
     ./profile.nix
     ./gui.nix
+    ./tailscale.nix
     ./zsh.nix
   ];
 }
