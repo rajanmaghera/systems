@@ -20,6 +20,7 @@ in {
   }: {
     "sourpi" = configNixos (makeSystem modules overlayHome "sourpi" "aarch64-linux");
     "dessert" = configNixos (makeSystem modules overlayHome "dessert" "aarch64-linux");
+    "pie" = configNixos (makeSystem modules overlayHome "pie" "aarch64-linux");
   };
 
   darwin = {
