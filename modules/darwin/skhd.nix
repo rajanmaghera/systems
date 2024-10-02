@@ -32,6 +32,7 @@ in {
       fn - 7 : yabai -m window --space 7
       fn - 8 : yabai -m window --space 8
       fn - 9 : yabai -m window --space 9
+      fn - m : ${pkgs.switch-mode}/bin/switch-mode
 
       ctrl + alt - j : yabai -m space --focus next
       ctrl + alt - k : yabai -m space --focus prev
@@ -48,6 +49,7 @@ in {
       ctrl + alt - 7 : yabai -m window --space 7
       ctrl + alt - 8 : yabai -m window --space 8
       ctrl + alt - 9 : yabai -m window --space 9
+      ctrl + alt - m : ${pkgs.switch-mode}/bin/switch-mode
     '';
   };
 }
