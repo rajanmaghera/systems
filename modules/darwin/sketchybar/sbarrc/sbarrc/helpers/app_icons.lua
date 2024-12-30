@@ -67,7 +67,6 @@ return {
     ["Discord"] = ":discord:",
     ["Discord Canary"] = ":discord:",
     ["Discord PTB"] = ":discord:",
-    ["Neovide"] = ":vim:",
     ["MacVim"] = ":vim:",
     ["Vim"] = ":vim:",
     ["VimR"] = ":vim:",
@@ -208,5 +207,5 @@ return {
     ["Thunderbird"] = ":thunderbird:",
     ["Firefox"] = ":firefox:",
     ["WezTerm"] = ":wezterm:",
-    ["default"] = ":default:",
-  }
+    ["default"] = ":default:"
+}
