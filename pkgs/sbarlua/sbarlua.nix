@@ -16,7 +16,7 @@ in
       owner = "FelixKratz";
       repo = "SbarLua";
       rev = "437bd2031da38ccda75827cb7548e7baa4aa9978";
-      hash = "sha256-C2tg1mypz/CdUmRJ4vloPckYfZrwHxc4v8hsEow4RZs=";
+      hash = "sha256-F0UfNxHM389GhiPQ6/GFbeKQq5EvpiqQdvyf7ygzkPg=";
     };
 
     nativeBuildInputs = [
