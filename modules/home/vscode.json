@@ -11,7 +11,7 @@
     "breadcrumbs.enabled": false,
     "editor.cursorBlinking": "smooth",
     "editor.cursorSmoothCaretAnimation": "on",
-    "editor.fontFamily": "Fragment Mono, monospace",
+    "editor.fontFamily": "Cousine Nerd Font, Fragment Mono, monospace",
     "editor.fontLigatures": true,
     "editor.fontSize": 13,
     "editor.formatOnSave": true,
@@ -116,7 +116,7 @@
     "workbench.editor.showTabs": "none",
     "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-auto",
     "workbench.preferredDarkColorTheme": "GitHub Dark Default",
-    "workbench.preferredLightColorTheme": "GitHub Light",
+    "workbench.preferredLightColorTheme": "JetBrains Rider New UI Lighter",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": false
 }
