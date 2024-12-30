@@ -18,7 +18,11 @@ in {
     fonts.fontconfig.enable = true;
 
     home.packages = with pkgs; [
-      custom-nerdfonts
+      nerd-fonts.fira-code
+      nerd-fonts.cousine
+      nerd-fonts.iosevka
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.im-writing
       custom-google-fonts
     ];
 
@@ -39,7 +43,7 @@ in {
         franzgollhammer.jb-fleet-dark
         chadalen.vscode-jetbrains-icon-theme
         miguelsolorio.symbols
-        interactive-smartlog.interactive-smartlog
+        # interactive-smartlog.interactive-smartlog
       ];
       userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
     };

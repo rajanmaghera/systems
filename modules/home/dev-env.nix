@@ -57,6 +57,7 @@ in {
         git-absorb
         lazygit
         nodejs
+        yarn
         glab
         gh
         with-pkg

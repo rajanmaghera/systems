@@ -18,7 +18,11 @@ in {
     fonts.fontconfig.enable = true;
 
     home.packages = with pkgs; [
-      custom-nerdfonts
+      nerd-fonts.fira-code
+      nerd-fonts.cousine
+      nerd-fonts.iosevka
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.im-writing
       python39
       python39Packages.pip
       python39Packages.virtualenv
