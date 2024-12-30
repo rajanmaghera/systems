@@ -1,7 +1,4 @@
-{
-  writeTextFile,
-  ...
-}:
+{writeTextFile, ...}:
 writeTextFile {
   name = "switch-mode";
   text = ''

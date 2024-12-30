@@ -15,4 +15,6 @@ pub enum Commands {
         /// The name of the home manager config
         name: String,
     },
+    /// Update the flake
+    Update,
 }

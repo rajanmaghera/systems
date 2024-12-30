@@ -1,6 +1,6 @@
 mod cli;
 
-use crate::cli::{Commands, Args};
+use crate::cli::{Args, Commands};
 use clap::Parser;
 use exec::Command;
 
@@ -15,7 +15,20 @@ fn main() {
     let args = Args::parse();
     match &args.command {
         Commands::SwitchHm { name } => {
-            let _ = cmd!("nix", &["run", "home-manager/master", "--", "switch", "--flake", &format!(".#{}", &name)]);
+            let _ = cmd!(
+                "nix",
+                &[
+                    "run",
+                    "home-manager/master",
+                    "--",
+                    "switch",
+                    "--flake",
+                    &format!(".#{}", &name)
+                ]
+            );
+        }
+        Commands::Update => {
+            let _ = cmd!("nix", &["flake", "update"]);
         }
     }
 }
