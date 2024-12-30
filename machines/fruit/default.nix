@@ -4,6 +4,10 @@
   system.stateVersion = 4;
   nix.settings.extra-trusted-users = ["rajan"];
 
+  # Enable Linux builder
+  nix.linux-builder.enable = true;
+  nix.linux-builder.maxJobs = 1;
+
   # Use Touch ID for sudo
   security.pam.enableSudoTouchIdAuth = true;
 
