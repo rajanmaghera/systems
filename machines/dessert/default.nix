@@ -20,7 +20,6 @@
   security.initialRootPassword = "rootrajan";
 
   # Enable sound.
-  sound.enable = true;
   hardware.pulseaudio.enable = true;
   users.mutableUsers = true;
   users.users.rajan = {
