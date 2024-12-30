@@ -37,16 +37,20 @@
     nix-vscode-extensions,
     deploy-rs,
   }: let
+    # Unfree packages allowed
+    unfree = [
+      "vscode"
+      "android-sdk-cmdline-tools"
+      "android-sdk-tools"
+    ];
+
     # Nixpkgs overlays
     overlays = (import ./pkgs) inputs;
 
     # System configuration module with overlays
     overlaysModule = {lib, ...}: {
       nixpkgs.overlays = overlays;
-      nixpkgs.config.allowUnfreePredicate = pkg:
-        builtins.elem (lib.getName pkg) [
-          "vscode"
-        ];
+      nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfree;
     };
 
     # Function to generate configurations for each system
@@ -62,6 +66,10 @@
         f {
           pkgs = import nixpkgs {
             inherit system overlays;
+            config = {
+              android_sdk.accept_license = true;
+              allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) unfree;
+            };
           };
           system = system;
         }
@@ -145,6 +153,5 @@
         };
       };
     };
-
   };
 }
