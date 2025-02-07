@@ -4,7 +4,8 @@ local settings = require("sbarrc.settings")
 sbar.bar({
     position = "top",
     height = 40,
-    color = colors.bar.bg
+    color = colors.bar.bg,
+    blur_radius = colors.bar.blur
 })
 
 sbar.default({

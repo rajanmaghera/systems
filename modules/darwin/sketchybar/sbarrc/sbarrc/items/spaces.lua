@@ -26,7 +26,7 @@ for i = 1, 10, 1 do
             padding_right = 14,
             padding_left = 0,
             color = colors.unselected_fg1,
-            highlight_color = colors.selected_fg1,
+            highlight_color = colors.selected_fg2,
             font = "sketchybar-app-font:Regular:14.0",
             y_offset = -1.5,
             background = {
@@ -48,6 +48,17 @@ for i = 1, 10, 1 do
     spaces[i] = space
     space_names[i] = space.name
 
+    space:subscribe("space_windows_change", function(env)
+        sbar.exec("yabai -m query --spaces --space " .. i .. " | jq -r 'if .label == \"\" then " .. i .. " else .label end'", function(space_name)
+            space:set({
+                icon = {
+                    string = space_name
+                }
+            })
+        end)
+    end)
+
+
     space:subscribe("space_change", function(env)
         local selected = env.SELECTED == "true"
         sbar.animate("tanh", 7, function()
@@ -58,12 +69,12 @@ for i = 1, 10, 1 do
                 label = {
                     highlight = selected,
                     background = {
-                        color = selected and colors.selected_bg1 or colors.item_bg1,
+                        color = selected and colors.selected_bg1 or colors.unselected_bg1,
                         border_color = selected and colors.selected_fg1 or colors.transparent
                     }
                 },
                 background = {
-                    color = selected and colors.selected_bg2 or colors.item_bg2
+                    color = selected and colors.selected_bg2 or colors.transparent
                 }
             })
         end)
@@ -101,7 +112,7 @@ end
 
 local everything_bracket = sbar.add("bracket", space_names, {
     background = {
-        color = colors.item_bg2
+        color = colors.unselected_bg2
     }
 })
 
@@ -121,7 +132,7 @@ space_window_observer:subscribe("space_windows_change", function(env)
     end
 
     if (no_app) then
-        icon_line = " +"
+        icon_line = " ·"
     end
     sbar.animate("tanh", 10, function()
         spaces[env.INFO.space]:set({

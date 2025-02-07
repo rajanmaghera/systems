@@ -11,24 +11,23 @@ return {
     transparent = 0x00000000,
 
     bar = {
-        bg = 0xff000000
+        bg = 0x44000000,
+        blur = 10
     },
     popup = {
         bg = 0xc02c2e34,
         border = 0xff7f8490
     },
-    item_bg1 = 0xFF202020,
-    item_bg2 = 0xFF202020,
-    -- item_bg = 0xFF202020,
-    unselected_fg1 = 0xff7f8490,
-    unselected_fg2 = 0xff7f8490,
-    -- selected_bg1 = 0xFF075C94,
-    selected_fg1 = 0xffffffff,
+    unselected_bg1 = 0x00202020,
+    unselected_bg2 = 0x22202020,
+    unselected_fg1 = 0x44ffffff,
+    unselected_fg2 = 0x44ffffff,
+    selected_fg1 = 0x22ffffff,
     selected_fg2 = 0xffffffff,
-    selected_bg1 = 0xff444444,
-    selected_bg2 = 0xFF333333,
-    bg1 = 0xff363944,
-    bg2 = 0xff414550,
+    selected_bg1 = 0x44444444,
+    selected_bg2 = 0x44333333,
+    bg1 = 0x77363944,
+    bg2 = 0x77414550,
 
     with_alpha = function(color, alpha)
         if alpha > 1.0 or alpha < 0.0 then
