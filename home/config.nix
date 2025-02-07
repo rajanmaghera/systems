@@ -5,4 +5,6 @@
   my.dev-env.enable = true;
   my.shell.zsh.enable = true;
   my.tools.secrets.enable = true;
+  my.ifuse.enable = true;
+  my.latex.enable = true;
 }
