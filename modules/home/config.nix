@@ -12,6 +12,7 @@
     ./editor.nix
     ./term-editor.nix
     ./ifuse.nix
+    ./latex.nix
   ];
   home.stateVersion = "24.05";
 }
