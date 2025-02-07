@@ -56,10 +56,9 @@ in {
 
     programs.tmux = {
       enable = true;
-      extraConfig =
-        ''
-          set -g status-left-length 20
-        '';
+      extraConfig = ''
+        set -g status-left-length 20
+      '';
     };
 
     home.packages = with pkgs;

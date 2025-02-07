@@ -7,11 +7,26 @@
 with lib; let
   cfg = config.my.yabai;
   spaceMappings = [
-    { name = "Web"; apps = ["Mail" "Safari" "Chrome" "Firefox"]; }
-    { name = "Edit"; apps = ["Code"]; }
-    { name = "TTY"; apps = ["Ghostty"]; }
-    { name = "Soc"; apps = ["Spotify" "Discord"]; }
-    { name = ""; apps = []; }
+    {
+      name = "Web";
+      apps = ["Mail" "Safari" "Chrome" "Firefox"];
+    }
+    {
+      name = "Edit";
+      apps = ["Code"];
+    }
+    {
+      name = "TTY";
+      apps = ["Ghostty"];
+    }
+    {
+      name = "Soc";
+      apps = ["Spotify" "Discord"];
+    }
+    {
+      name = "";
+      apps = [];
+    }
   ];
 
   unmanagedApps = [
@@ -20,24 +35,30 @@ with lib; let
 
   spaceCount = length spaceMappings;
   appMappingsString = strings.concatImapStrings (i: s:
-    strings.concatMapStrings (x:
-      ''
+    strings.concatMapStrings (
+      x: ''
         yabai -m rule --add label="space-${x}" app="^${x}$" space=^${toString i}
         yabai -m rule --apply space-${x}
       ''
-    ) s.apps) spaceMappings;
+    )
+    s.apps)
+  spaceMappings;
 
-  spaceCreationString = strings.concatImapStrings (i: s:
-    ''
-      setup_space ${toString i} "${s.name}"
-    ''
-  ) spaceMappings;
+  spaceCreationString =
+    strings.concatImapStrings (
+      i: s: ''
+        setup_space ${toString i} "${s.name}"
+      ''
+    )
+    spaceMappings;
 
-  unmanagedAppsString = strings.concatMapStrings (x:
-    ''
-      yabai -m rule --add app="^${x}$" manage=off
-    ''
-  ) unmanagedApps;
+  unmanagedAppsString =
+    strings.concatMapStrings (
+      x: ''
+        yabai -m rule --add app="^${x}$" manage=off
+      ''
+    )
+    unmanagedApps;
 in {
   options.my.yabai = {
     enable = mkOption {
@@ -63,8 +84,8 @@ in {
     };
 
     services.yabai.extraConfig = ''
-      for _ in $(yabai -m query --spaces | jq '.[].index | select(. > ${toString (spaceCount)})'); do
-        yabai -m space --destroy ${toString (spaceCount+1)}
+      for _ in $(yabai -m query --spaces | jq '.[].index | select(. > ${toString spaceCount})'); do
+        yabai -m space --destroy ${toString (spaceCount + 1)}
       done
 
       function setup_space {

@@ -7,7 +7,7 @@
 with lib; let
   cfg = config.my.latex;
 in {
-  options.my.latex= {
+  options.my.latex = {
     enable = mkOption {
       type = types.bool;
       default = false;
