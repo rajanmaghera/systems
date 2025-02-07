@@ -11,6 +11,7 @@
     ./zsh.nix
     ./editor.nix
     ./term-editor.nix
+    ./ifuse.nix
   ];
   home.stateVersion = "24.05";
 }
