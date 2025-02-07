@@ -6,6 +6,38 @@
 }:
 with lib; let
   cfg = config.my.yabai;
+  spaceMappings = [
+    { name = "Web"; apps = ["Mail" "Safari" "Chrome" "Firefox"]; }
+    { name = "Edit"; apps = ["Code"]; }
+    { name = "TTY"; apps = ["Ghostty"]; }
+    { name = "Soc"; apps = ["Spotify" "Discord"]; }
+    { name = ""; apps = []; }
+  ];
+
+  unmanagedApps = [
+    "System Settings"
+  ];
+
+  spaceCount = length spaceMappings;
+  appMappingsString = strings.concatImapStrings (i: s:
+    strings.concatMapStrings (x:
+      ''
+        yabai -m rule --add label="space-${x}" app="^${x}$" space=^${toString i}
+        yabai -m rule --apply space-${x}
+      ''
+    ) s.apps) spaceMappings;
+
+  spaceCreationString = strings.concatImapStrings (i: s:
+    ''
+      setup_space ${toString i} "${s.name}"
+    ''
+  ) spaceMappings;
+
+  unmanagedAppsString = strings.concatMapStrings (x:
+    ''
+      yabai -m rule --add app="^${x}$" manage=off
+    ''
+  ) unmanagedApps;
 in {
   options.my.yabai = {
     enable = mkOption {
@@ -19,15 +51,42 @@ in {
     services.yabai.enableScriptingAddition = true;
 
     services.yabai.config = {
-      top_padding = 14;
-      bottom_padding = 14;
-      left_padding = 14;
-      right_padding = 14;
-      window_gap = 14;
+      top_padding = 10;
+      bottom_padding = 10;
+      left_padding = 10;
+      right_padding = 10;
+      window_gap = 10;
       layout = "bsp";
       window_shadow = "off";
       focus_follows_mouse = "autoraise";
       external_bar = "all:40:0";
     };
+
+    services.yabai.extraConfig = ''
+      for _ in $(yabai -m query --spaces | jq '.[].index | select(. > ${toString (spaceCount)})'); do
+        yabai -m space --destroy ${toString (spaceCount+1)}
+      done
+
+      function setup_space {
+        local idx="$1"
+        local name="$2"
+        local space=
+        echo "setup space $idx : $name"
+
+        space=$(yabai -m query --spaces --space "$idx")
+        if [ -z "$space" ]; then
+          yabai -m space --create
+        fi
+
+        if [ ! -z "$name" ] ; then
+          yabai -m space "$idx" --label "$name"
+        fi
+      }
+
+      ${spaceCreationString}
+      ${unmanagedAppsString}
+      ${appMappingsString}
+
+    '';
   };
 }
