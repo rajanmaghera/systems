@@ -37,6 +37,16 @@ in {
       };
     };
 
+    programs.jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          email = mkIf cfg.defaultIdentity "rmaghera@ualberta.ca";
+          name = mkIf cfg.defaultIdentity "Rajan Maghera";
+        };
+      };
+    };
+
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;
@@ -46,6 +56,10 @@ in {
 
     programs.tmux = {
       enable = true;
+      extraConfig =
+        ''
+          set -g status-left-length 20
+        '';
     };
 
     home.packages = with pkgs;
@@ -63,6 +77,11 @@ in {
         with-pkg
         watchman
         rustup
+        ocaml
+        opam
+        ocamlPackages.ocaml-lsp
+        ocamlPackages.ocamlformat
+        neovim
       ]
       ++ lib.optionals stdenv.isDarwin [
         libiconv
