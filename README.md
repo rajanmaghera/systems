@@ -1,5 +1,7 @@
 # systems
 
+[![Build fruit configuration](https://github.com/rajanmaghera/systems/actions/workflows/build-system-fruit.yml/badge.svg?branch=main)](https://github.com/rajanmaghera/systems/actions/workflows/build-system-fruit.yml)
+
 ## Machines
 
 - `dessert`: RPI5 w/ 8GB of memory, offsite in Toronto setup as a replica of data in Edmonton
