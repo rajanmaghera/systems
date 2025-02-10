@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cd $(git rev-parse --show-toplevel) && \
+git checkout main && \
+(git branch flake-update || (git branch -D flake-update && git checkout -b flake-update)) && \
+nix flake update && \
+git add flake.lock && \
+git commit -m "chore: update flake" && \
+git push -uf --force-with-lease && \
+git checkout main && \
+open https://github.com/rajanmaghera/systems/pull/new/flake-update
