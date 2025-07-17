@@ -60,3 +60,10 @@ Deploy all machines configured for auto-deployment.
 ```
 nix run github:serokell/deploy-rs -- --remote-build -s
 ```
+
+Remove all garbage on a Darwin config.
+
+```
+sudo nix-collect-garbage -d
+```
+
