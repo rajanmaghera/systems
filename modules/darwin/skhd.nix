@@ -10,7 +10,7 @@ with lib; let
   appCommands = [
     {
       key = "t";
-      path = "/Applications/Ghostty.app";
+      path = "/Applications/Utilities/Terminal.app";
     }
     {
       key = "v";
@@ -22,7 +22,7 @@ with lib; let
     }
   ];
 
-  spaceCount = 5;
+  spaceCount = 6;
 
   customCommands = [
     {
@@ -31,14 +31,6 @@ with lib; let
     }
     {
       key = "k";
-      command = "yabai -m space --focus prev";
-    }
-    {
-      key = "n";
-      command = "yabai -m space --focus next";
-    }
-    {
-      key = "p";
       command = "yabai -m space --focus prev";
     }
     {

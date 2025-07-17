@@ -107,6 +107,7 @@ return {
     ["Mail"] = ":mail:",
     ["Mailspring"] = ":mail:",
     ["MailMate"] = ":mail:",
+    ["Microsoft Outlook"] = ":mail:",
     ["邮件"] = ":mail:",
     ["Default"] = ":default:",
     ["App Store"] = ":app_store:",
@@ -187,6 +188,7 @@ return {
     ["Tana"] = ":tana:",
     ["OBS"] = ":obsstudio:",
     ["VMware Fusion"] = ":vmware_fusion:",
+    ["UTM"] = ":vmware_fusion:",
     ["Tweetbot"] = ":twitter:",
     ["Twitter"] = ":twitter:",
     ["Microsoft Teams"] = ":microsoft_teams:",
@@ -209,5 +211,6 @@ return {
     ["Thunderbird"] = ":thunderbird:",
     ["Firefox"] = ":firefox:",
     ["WezTerm"] = ":wezterm:",
+    ["Zen"] = ":safari:",
     ["default"] = ":default:"
 }

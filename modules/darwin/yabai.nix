@@ -8,19 +8,23 @@ with lib; let
   cfg = config.my.yabai;
   spaceMappings = [
     {
-      name = "Web";
-      apps = ["Mail" "Safari" "Chrome" "Firefox"];
+      name = "file";
+      apps = ["Finder" "Logseq" "Preview" "Skim" "Zotero"];
     }
     {
-      name = "Edit";
-      apps = ["Code"];
+      name = "web";
+      apps = ["Safari" "Chrome" "Firefox" "Zen" "Brave"];
     }
     {
-      name = "TTY";
-      apps = ["Ghostty"];
+      name = "mail";
+      apps = ["Mail" "Microsoft Outlook" "Calendar"];
     }
     {
-      name = "Soc";
+      name = "dev";
+      apps = ["Code" "Ghostty" "iTerm2" "Terminal"];
+    }
+    {
+      name = "social";
       apps = ["Spotify" "Discord"];
     }
     {
