@@ -8,7 +8,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
@@ -40,6 +40,7 @@
     # Unfree packages allowed
     unfree = [
       "vscode"
+      "vscode-extension-github-copilot"
       "android-sdk-cmdline-tools"
       "android-sdk-tools"
     ];
@@ -76,7 +77,7 @@
     ));
   in {
     # Nix file formatter
-    formatter = eachPkgs ({pkgs, ...}: pkgs.alejandra);
+    formatter = eachPkgs ({pkgs, ...}: pkgs.nixfmt-rfc-style);
 
     # All nixpkgs + custom packages + flake input packages
     packages = eachPkgs (
