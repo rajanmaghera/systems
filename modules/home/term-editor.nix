@@ -22,6 +22,7 @@ in {
       nerd-fonts.cousine
       nerd-fonts.iosevka
       nerd-fonts.jetbrains-mono
+      nerd-fonts.geist-mono
       nerd-fonts.im-writing
       python39
       python39Packages.pip

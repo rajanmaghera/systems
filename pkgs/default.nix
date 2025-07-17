@@ -7,7 +7,6 @@ inputs: [
   (import ./nix-ios)
   (import ./with-pkg)
   (import ./rust-shell)
-  (import ./custom-google-fonts)
   (import ./cuda-shell)
   (import ./sbarlua)
   (import ./sbmenus)

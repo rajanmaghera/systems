@@ -15,20 +15,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    fonts.fontconfig.enable = true;
-
-    home.packages = with pkgs; [
-      nerd-fonts.fira-code
-      nerd-fonts.cousine
-      nerd-fonts.iosevka
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.im-writing
-      custom-google-fonts
-    ];
+    my.fonts.enable = true;
 
     programs.vscode = {
       enable = true;
       mutableExtensionsDir = true;
+      profiles.default = {
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
       extensions = with pkgs.vscode-marketplace; [
@@ -43,7 +35,9 @@ in {
         chadalen.vscode-jetbrains-icon-theme
         miguelsolorio.symbols
       ];
-      userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
+        userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
+        
+      };
     };
   };
 }
