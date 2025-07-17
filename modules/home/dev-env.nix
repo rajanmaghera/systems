@@ -1,11 +1,6 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
-with lib; let
-  cfg = config.my.dev-env;
+{ lib, config, pkgs, ... }:
+with lib;
+let cfg = config.my.dev-env;
 in {
   options.my.dev-env = {
     enable = mkOption {
@@ -27,14 +22,8 @@ in {
       enable = true;
       userName = mkIf cfg.defaultIdentity "Rajan Maghera";
       userEmail = mkIf cfg.defaultIdentity "rmaghera@ualberta.ca";
-      ignores = [
-        ".direnv"
-        ".envrc"
-        ".DS_Store"
-      ];
-      extraConfig = {
-        core.fsmonitor = true;
-      };
+      ignores = [ ".direnv" ".envrc" ".DS_Store" ];
+      extraConfig = { core.fsmonitor = true; rebase.updateRefs = true; };
     };
 
     programs.jujutsu = {
@@ -61,18 +50,59 @@ in {
       '';
     };
 
+    programs.helix = {
+      enable = true;
+      settings = {
+        theme = "darcula-solid";
+        editor.line-number = "relative";
+        editor.file-picker.hidden = false;
+      };
+      languages.language-server = {
+        rust-analyzer = {
+          command = "rust-analyzer";
+          config = {
+            inlayHints.bindingModeHints.enable = false;
+            inlayHints.closingBraceHints.minLines = 10;
+            inlayHints.closureReturnTypeHints.enable = "with_block";
+            inlayHints.discriminantHints.enable = "fieldless";
+            inlayHints.lifetimeElisionHints.enable = "skip_trivial";
+            inlayHints.typeHints.hideClosureInitialization = false;
+          };
+        };
+      };
+      languages.language = [
+        {
+          name = "rust";
+          auto-format = true;
+          formatter = {
+            command = "rustfmt";
+          };
+          roots = ["Cargo.toml" "Cargo.lock"];
+          auto-pairs = {
+            "(" = ")";
+            "{" = "}";
+            "[" = "]";
+            "\"" = "\"";
+            "`" = "`";
+          };
+        }
+      ];
+    };
+
+    programs.zellij = {
+      enable = true;
+    };
+
     home.packages = with pkgs;
       [
-        (git-branchless.overrideAttrs
-          {
-            doCheck = false;
-          })
+        (git-branchless.overrideAttrs { doCheck = false; })
         git-absorb
         lazygit
         nodejs
         yarn
         glab
         gh
+        ripgrep
         with-pkg
         watchman
         rustup
@@ -81,13 +111,12 @@ in {
         ocamlPackages.ocaml-lsp
         ocamlPackages.ocamlformat
         neovim
-      ]
-      ++ lib.optionals stdenv.isDarwin [
+        nixfmt-rfc-style
+        typescript
+        typescript-language-server
+        yazi
+      ] ++ lib.optionals stdenv.isDarwin [
         libiconv
-        darwin.apple_sdk.frameworks.Security
-        darwin.apple_sdk.frameworks.SystemConfiguration
-        darwin.apple_sdk.frameworks.CoreServices
-        darwin.apple_sdk.frameworks.CoreFoundation
         pkg-config
         openssl
       ];
