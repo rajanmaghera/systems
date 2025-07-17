@@ -1,3 +1,3 @@
 final: prev: {
-  switch-mode = prev.callPackage ./switch-mode.nix {};
+  switch-mode = prev.callPackage ./switch-mode.nix { };
 }

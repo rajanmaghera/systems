@@ -1,3 +1,3 @@
 final: prev: {
-  sbmenus = prev.callPackage ./sbmenus.nix {};
+  sbmenus = prev.callPackage ./sbmenus.nix { };
 }

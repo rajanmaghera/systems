@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.llm;
-in {
+in
+{
   options.my.llm = {
     enable = mkOption {
       type = types.bool;

@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.term-editor;
-in {
+in
+{
   options.my.term-editor = {
     enable = mkOption {
       type = types.bool;

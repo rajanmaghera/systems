@@ -1,3 +1,3 @@
 final: prev: {
-  desktoppr = prev.callPackage ./desktoppr.nix {};
+  desktoppr = prev.callPackage ./desktoppr.nix { };
 }

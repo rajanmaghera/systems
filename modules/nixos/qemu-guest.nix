@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.qemu-guest;
-in {
+in
+{
   options.my.qemu-guest = {
     enable = mkOption {
       type = types.bool;
@@ -23,7 +25,7 @@ in {
   config = mkIf cfg.enable {
     services.qemuGuest.enable = true;
     services.spice-vdagentd.enable = true;
-    services.xserver.videoDrivers = ["qxl"];
+    services.xserver.videoDrivers = [ "qxl" ];
 
     system.activationScripts.makeMountFolderForVirtFs = mkIf cfg.sharedFolder {
       text = ''

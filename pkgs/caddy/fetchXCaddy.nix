@@ -5,8 +5,9 @@
   go,
   stdenv,
   xcaddy,
-}: {
-  plugins ? [],
+}:
+{
+  plugins ? [ ],
   hash ? null,
 }:
 stdenv.mkDerivation {
@@ -16,7 +17,10 @@ stdenv.mkDerivation {
   dontUnpack = true;
   dontFixup = true;
 
-  nativeBuildInputs = [cacert go];
+  nativeBuildInputs = [
+    cacert
+    go
+  ];
 
   configurePhase = ''
     export GOCACHE="$TMPDIR/go-cache"

@@ -1,7 +1,14 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.my.dev-env;
-in {
+let
+  cfg = config.my.dev-env;
+in
+{
   options.my.dev-env = {
     enable = mkOption {
       type = types.bool;
@@ -22,8 +29,15 @@ in {
       enable = true;
       userName = mkIf cfg.defaultIdentity "Rajan Maghera";
       userEmail = mkIf cfg.defaultIdentity "rmaghera@ualberta.ca";
-      ignores = [ ".direnv" ".envrc" ".DS_Store" ];
-      extraConfig = { core.fsmonitor = true; rebase.updateRefs = true; };
+      ignores = [
+        ".direnv"
+        ".envrc"
+        ".DS_Store"
+      ];
+      extraConfig = {
+        core.fsmonitor = true;
+        rebase.updateRefs = true;
+      };
     };
 
     programs.jujutsu = {
@@ -77,7 +91,10 @@ in {
           formatter = {
             command = "rustfmt";
           };
-          roots = ["Cargo.toml" "Cargo.lock"];
+          roots = [
+            "Cargo.toml"
+            "Cargo.lock"
+          ];
           auto-pairs = {
             "(" = ")";
             "{" = "}";
@@ -93,7 +110,8 @@ in {
       enable = true;
     };
 
-    home.packages = with pkgs;
+    home.packages =
+      with pkgs;
       [
         (git-branchless.overrideAttrs { doCheck = false; })
         git-absorb
@@ -115,7 +133,8 @@ in {
         typescript
         typescript-language-server
         yazi
-      ] ++ lib.optionals stdenv.isDarwin [
+      ]
+      ++ lib.optionals stdenv.isDarwin [
         libiconv
         pkg-config
         openssl

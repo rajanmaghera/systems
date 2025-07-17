@@ -4,7 +4,8 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.skhd;
 
   appCommands = [
@@ -56,20 +57,16 @@ with lib; let
     customCommands
     ++ spaceMoveCommands
     ++ (map (x: {
-        key = x.key;
-        command = "open -a \"${x.path}\"";
-      })
-      appCommands);
+      key = x.key;
+      command = "open -a \"${x.path}\"";
+    }) appCommands);
 
-  commandsString =
-    strings.concatMapStrings (
-      x: ''
-        fn - ${x.key} : ${x.command}
-        ctrl + alt - ${x.key} : ${x.command}
-      ''
-    )
-    commands;
-in {
+  commandsString = strings.concatMapStrings (x: ''
+    fn - ${x.key} : ${x.command}
+    ctrl + alt - ${x.key} : ${x.command}
+  '') commands;
+in
+{
   options.my.skhd = {
     enable = mkOption {
       type = types.bool;

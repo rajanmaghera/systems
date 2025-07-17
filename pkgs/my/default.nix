@@ -2,7 +2,9 @@
   crane,
   nixpkgs,
   ...
-}: final: prev: let
+}:
+final: prev:
+let
   inherit (prev) system;
   inherit (prev) lib;
 
@@ -18,16 +20,19 @@
 
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 
-  my-cli-pkg = craneLib.buildPackage (commonArgs
+  my-cli-pkg = craneLib.buildPackage (
+    commonArgs
     // {
       inherit cargoArtifacts;
-      nativeBuildInputs = [prev.installShellFiles];
+      nativeBuildInputs = [ prev.installShellFiles ];
       postInstall = ''
         installShellCompletion --fish target/release/build/my-*/out/my.fish
         installShellCompletion --bash target/release/build/my-*/out/my.bash
         installShellCompletion --zsh target/release/build/my-*/out/_my
       '';
-    });
-in {
+    }
+  );
+in
+{
   my-cli = my-cli-pkg;
 }

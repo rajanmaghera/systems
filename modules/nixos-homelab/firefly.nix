@@ -5,7 +5,8 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.lab.firefly;
 
   sv = {
@@ -15,7 +16,8 @@ with lib; let
     fullName = "Firefly III";
     abbr = "FF";
   };
-in {
+in
+{
   options.lab.firefly = {
     enable = mkOption {
       type = types.bool;
@@ -26,10 +28,12 @@ in {
   config = {
     lab.register.firefly = mkIf cfg.enable sv;
 
-    system.activationScripts.makeFireflyFoldersForPersistentData = mkIf cfg.enable (lib.stringAfter ["var"] ''
-      mkdir -p /var/lib/firefly/upload
-      mkdir -p /var/lib/firefly/database
-    '');
+    system.activationScripts.makeFireflyFoldersForPersistentData = mkIf cfg.enable (
+      lib.stringAfter [ "var" ] ''
+        mkdir -p /var/lib/firefly/upload
+        mkdir -p /var/lib/firefly/database
+      ''
+    );
 
     virtualisation.oci-containers = mkIf cfg.enable {
       backend = "docker";
@@ -41,18 +45,18 @@ in {
             "/var/lib/firefly/upload:/var/www/html/storage/upload"
           ];
           autoStart = true;
-          dependsOn = ["firefly-db"];
-          environmentFiles = [./firefly.env];
-          ports = ["7000:8080"];
-          extraOptions = ["--network=firefly-net"];
+          dependsOn = [ "firefly-db" ];
+          environmentFiles = [ ./firefly.env ];
+          ports = [ "7000:8080" ];
+          extraOptions = [ "--network=firefly-net" ];
         };
 
         firefly-db = {
           image = "mariadb:lts";
           hostname = "firefly-db";
           autoStart = true;
-          environmentFiles = [./firefly.db.env];
-          extraOptions = ["--network=firefly-net"];
+          environmentFiles = [ ./firefly.db.env ];
+          extraOptions = [ "--network=firefly-net" ];
           volumes = [
             "/var/lib/firefly/database:/var/lib/mysql"
           ];
@@ -67,7 +71,7 @@ in {
             "-c"
             "echo \"0 3 * * * wget -qO- http://firefly-app:8080/api/v1/cron/REPLACEME\" | crontab - && crond -f -L /dev/stdout"
           ];
-          extraOptions = ["--network=firefly-net"];
+          extraOptions = [ "--network=firefly-net" ];
         };
       };
     };

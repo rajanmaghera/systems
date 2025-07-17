@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.tailscale;
-in {
+in
+{
   options.my.tailscale = {
     enable = mkOption {
       type = types.bool;
@@ -30,9 +32,15 @@ in {
       description = "Automatic connection to Tailscale";
 
       # make sure tailscale is running before trying to connect to tailscale
-      after = ["network-pre.target" "tailscale.service"];
-      wants = ["network-pre.target" "tailscale.service"];
-      wantedBy = ["multi-user.target"];
+      after = [
+        "network-pre.target"
+        "tailscale.service"
+      ];
+      wants = [
+        "network-pre.target"
+        "tailscale.service"
+      ];
+      wantedBy = [ "multi-user.target" ];
 
       # set this service as a oneshot job
       serviceConfig.Type = "oneshot";

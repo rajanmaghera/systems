@@ -4,14 +4,16 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   baseConfg = builtins.fromJSON (builtins.readFile ../../configuration.json);
   source = pkgs.fetchurl {
     url = baseConfg.profile.url;
     sha256 = baseConfg.profile.sha256;
   };
   cfg = config.my.profile;
-in {
+in
+{
   options.my.profile = {
     enable = mkOption {
       type = types.bool;
@@ -39,7 +41,7 @@ in {
 
     packages = mkOption {
       type = types.listOf types.package;
-      default = [];
+      default = [ ];
       description = "Extra packages to add to user.";
     };
   };

@@ -4,32 +4,57 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.yabai;
   spaceMappings = [
     {
       name = "file";
-      apps = ["Finder" "Logseq" "Preview" "Skim" "Zotero"];
+      apps = [
+        "Finder"
+        "Logseq"
+        "Preview"
+        "Skim"
+        "Zotero"
+      ];
     }
     {
       name = "web";
-      apps = ["Safari" "Chrome" "Firefox" "Zen" "Brave"];
+      apps = [
+        "Safari"
+        "Chrome"
+        "Firefox"
+        "Zen"
+        "Brave"
+      ];
     }
     {
       name = "mail";
-      apps = ["Mail" "Microsoft Outlook" "Calendar"];
+      apps = [
+        "Mail"
+        "Microsoft Outlook"
+        "Calendar"
+      ];
     }
     {
       name = "dev";
-      apps = ["Code" "Ghostty" "iTerm2" "Terminal"];
+      apps = [
+        "Code"
+        "Ghostty"
+        "iTerm2"
+        "Terminal"
+      ];
     }
     {
       name = "social";
-      apps = ["Spotify" "Discord"];
+      apps = [
+        "Spotify"
+        "Discord"
+      ];
     }
     {
       name = "";
-      apps = [];
+      apps = [ ];
     }
   ];
 
@@ -38,32 +63,23 @@ with lib; let
   ];
 
   spaceCount = length spaceMappings;
-  appMappingsString = strings.concatImapStrings (i: s:
-    strings.concatMapStrings (
-      x: ''
-        yabai -m rule --add label="space-${x}" app="^${x}$" space=^${toString i}
-        yabai -m rule --apply space-${x}
-      ''
-    )
-    s.apps)
-  spaceMappings;
+  appMappingsString = strings.concatImapStrings (
+    i: s:
+    strings.concatMapStrings (x: ''
+      yabai -m rule --add label="space-${x}" app="^${x}$" space=^${toString i}
+      yabai -m rule --apply space-${x}
+    '') s.apps
+  ) spaceMappings;
 
-  spaceCreationString =
-    strings.concatImapStrings (
-      i: s: ''
-        setup_space ${toString i} "${s.name}"
-      ''
-    )
-    spaceMappings;
+  spaceCreationString = strings.concatImapStrings (i: s: ''
+    setup_space ${toString i} "${s.name}"
+  '') spaceMappings;
 
-  unmanagedAppsString =
-    strings.concatMapStrings (
-      x: ''
-        yabai -m rule --add app="^${x}$" manage=off
-      ''
-    )
-    unmanagedApps;
-in {
+  unmanagedAppsString = strings.concatMapStrings (x: ''
+    yabai -m rule --add app="^${x}$" manage=off
+  '') unmanagedApps;
+in
+{
   options.my.yabai = {
     enable = mkOption {
       type = types.bool;

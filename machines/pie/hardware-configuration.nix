@@ -7,15 +7,19 @@
   pkgs,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "sr_mod"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "sr_mod"
+  ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ ];
+  boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/1cb07cbc-ceba-46bf-bbec-8d9719bd909b";
@@ -25,11 +29,14 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/ED37-F9A4";
     fsType = "vfat";
-    options = ["fmask=0077" "dmask=0077"];
+    options = [
+      "fmask=0077"
+      "dmask=0077"
+    ];
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/10016c1b-56d2-4fa7-9ecf-f5fbec7d70be";}
+    { device = "/dev/disk/by-uuid/10016c1b-56d2-4fa7-9ecf-f5fbec7d70be"; }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.fonts;
-in {
+in
+{
   options.my.fonts = {
     enable = mkOption {
       type = types.bool;
@@ -24,7 +26,7 @@ in {
       nerd-fonts.jetbrains-mono
       nerd-fonts.geist-mono
       nerd-fonts.im-writing
-      (google-fonts.override {fonts = ["Fragment Mono"];})
+      (google-fonts.override { fonts = [ "Fragment Mono" ]; })
     ];
 
   };

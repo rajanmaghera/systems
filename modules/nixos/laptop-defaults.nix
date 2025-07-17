@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.laptop-defaults;
-in {
+in
+{
   options.my.laptop-defaults = {
     enable = mkOption {
       type = types.bool;

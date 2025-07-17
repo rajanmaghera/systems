@@ -1,3 +1,3 @@
 final: prev: {
-  with-pkg = prev.callPackage ./with-pkg.nix {};
+  with-pkg = prev.callPackage ./with-pkg.nix { };
 }

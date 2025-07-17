@@ -1,6 +1,7 @@
-{writeShellScriptBin, ...}: let
+{ writeShellScriptBin, ... }:
+let
   projectRootString = builtins.toString ../..;
 in
-  writeShellScriptBin "with-pkg" ''
-    nix shell ${projectRootString}#$1
-  ''
+writeShellScriptBin "with-pkg" ''
+  nix shell ${projectRootString}#$1
+''

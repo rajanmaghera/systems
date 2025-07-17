@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.docker;
-in {
+in
+{
   options.my.docker = {
     enable = mkOption {
       type = types.bool;

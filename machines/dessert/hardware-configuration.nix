@@ -4,7 +4,8 @@
   pkgs,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     "${modulesPath}/installer/sd-card/sd-image.nix"
     "${modulesPath}/profiles/base.nix"
@@ -12,8 +13,7 @@
 
   nixpkgs.overlays = [
     (final: super: {
-      makeModulesClosure = x:
-        super.makeModulesClosure (x // {allowMissing = true;});
+      makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
     })
   ];
 
@@ -30,7 +30,11 @@
   # The serial ports listed here are:
   # - ttyS0: for Tegra (Jetson TX1)
   # - ttyAMA0: for QEMU's -machine virt
-  boot.kernelParams = ["console=ttyS1,115200n8" "console=ttyAMA0,115200n8" "console=tty0"];
+  boot.kernelParams = [
+    "console=ttyS1,115200n8"
+    "console=ttyAMA0,115200n8"
+    "console=tty0"
+  ];
 
   sdImage = {
     firmwareSize = 1024;

@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.latex;
-in {
+in
+{
   options.my.latex = {
     enable = mkOption {
       type = types.bool;

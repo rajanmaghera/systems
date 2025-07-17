@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.kde;
-in {
+in
+{
   options.my.kde = {
     enable = mkOption {
       type = types.bool;

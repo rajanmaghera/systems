@@ -5,7 +5,8 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.lab.cockpit;
 
   sv = {
@@ -15,7 +16,8 @@ with lib; let
     fullName = "Cockpit";
     abbr = "PT";
   };
-in {
+in
+{
   options.lab.cockpit = {
     enable = mkOption {
       type = types.bool;

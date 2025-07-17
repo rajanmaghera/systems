@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   domain = "${config.lab.system}.${config.lab.tld}";
-in {
+in
+{
   # Caddy security auth setup
 
   config.services.caddy = mkIf config.lab.auth.enable {
@@ -80,12 +82,10 @@ in {
       	}
       }
     '';
-    virtualHosts."auth.${domain}".extraConfig =
-      mkIf config.lab.auth.enable
-      ''
-        route {
-          authenticate with myportal
-        }
-      '';
+    virtualHosts."auth.${domain}".extraConfig = mkIf config.lab.auth.enable ''
+      route {
+        authenticate with myportal
+      }
+    '';
   };
 }

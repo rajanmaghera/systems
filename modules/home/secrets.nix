@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.tools.secrets;
-in {
+in
+{
   options.my.tools.secrets = {
     enable = mkOption {
       type = types.bool;

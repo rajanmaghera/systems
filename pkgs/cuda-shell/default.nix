@@ -1,3 +1,3 @@
 final: prev: {
-  cuda-shell = prev.callPackage ./cuda-shell.nix {};
+  cuda-shell = prev.callPackage ./cuda-shell.nix { };
 }

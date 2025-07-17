@@ -4,7 +4,8 @@
   pkgs,
   options,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
   ];
@@ -36,7 +37,7 @@
 
   my.autowallpaper.enable = true;
   my.profile.enable = true;
-  my.profile.packages = with pkgs; [firefox];
+  my.profile.packages = with pkgs; [ firefox ];
   my.shell.zsh.enable = true;
 
   lab.enable = true;

@@ -4,14 +4,16 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   # Due to a bug in 5.4.7, we need to use 5.4.4 for sketchybar
   lua5_4_4 = pkgs.lua5_4.override {
     version = "5.4.4";
     hash = "sha256-Fkx4SWU7gK5nvsS3RzuIS/XMjS3KBWU0dewu0nuev2E=";
   };
   cfg = config.my.sketchybar;
-in {
+in
+{
   options.my.sketchybar = {
     enable = mkOption {
       type = types.bool;

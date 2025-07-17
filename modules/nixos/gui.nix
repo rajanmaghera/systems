@@ -1,5 +1,6 @@
-{lib, ...}:
-with lib; {
+{ lib, ... }:
+with lib;
+{
   options.my.gui = {
     enable = mkOption {
       type = types.bool;

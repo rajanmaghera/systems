@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.cli;
-in {
+in
+{
   options.my.cli = {
     enable = mkOption {
       type = types.bool;

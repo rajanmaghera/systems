@@ -2,12 +2,16 @@
 {
   hostName,
   system,
-}: {
+}:
+{
   # Set your time zone.
   time.timeZone = "America/Edmonton";
 
   # Enable flakes.
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Set hostname.
   networking.hostName = hostName;

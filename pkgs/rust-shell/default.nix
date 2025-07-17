@@ -1,3 +1,3 @@
 final: prev: {
-  rust-shell = prev.callPackage ./rust-shell.nix {};
+  rust-shell = prev.callPackage ./rust-shell.nix { };
 }

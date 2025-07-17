@@ -1,1 +1,1 @@
-{nix-vscode-extensions, ...}: nix-vscode-extensions.overlays.default
+{ nix-vscode-extensions, ... }: nix-vscode-extensions.overlays.default

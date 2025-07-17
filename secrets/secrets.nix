@@ -5,12 +5,13 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBR1uxDllS0fbZCkUebMlTrnvQCroyhrvZfWNVD/5ysQ root@pie"
   ];
   manifest = import ./manifest.nix;
-  secretsAttrs = builtins.listToAttrs (builtins.map (x: {
+  secretsAttrs = builtins.listToAttrs (
+    builtins.map (x: {
       name = "${x.name}.age";
       value = {
         publicKeys = keys;
       };
-    })
-    manifest);
+    }) manifest
+  );
 in
-  secretsAttrs
+secretsAttrs

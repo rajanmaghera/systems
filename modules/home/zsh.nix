@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.shell.zsh;
-in {
+in
+{
   options.my.shell.zsh = {
     enable = mkOption {
       type = types.bool;

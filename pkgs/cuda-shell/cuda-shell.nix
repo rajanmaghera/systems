@@ -7,11 +7,11 @@
   ...
 }:
 with lib;
-  mkShell {
-    packages = [
-      bazelisk
-      buildifier
-      nodePackages.cspell
-      cudatoolkit-pin
-    ];
-  }
+mkShell {
+  packages = [
+    bazelisk
+    buildifier
+    nodePackages.cspell
+    cudatoolkit-pin
+  ];
+}

@@ -1,3 +1,3 @@
 final: prev: {
-  rars = prev.callPackage ./rars.nix {};
+  rars = prev.callPackage ./rars.nix { };
 }

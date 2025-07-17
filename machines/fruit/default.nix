@@ -1,7 +1,8 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Enable Nix darwin defaults.
   system.stateVersion = 4;
-  nix.settings.extra-trusted-users = ["rajan"];
+  nix.settings.extra-trusted-users = [ "rajan" ];
 
   # Use Touch ID for sudo
   my.security.pam.enable = true;
@@ -13,7 +14,7 @@
 
   # Enable zsh shell
   programs.zsh.enable = true;
-  environment.shells = [pkgs.zsh];
+  environment.shells = [ pkgs.zsh ];
   users.users.rajan.shell = pkgs.zsh;
 
   # Enable custom window management

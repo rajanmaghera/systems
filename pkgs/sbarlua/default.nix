@@ -1,3 +1,3 @@
 final: prev: {
-  sbarlua = prev.callPackage ./sbarlua.nix {};
+  sbarlua = prev.callPackage ./sbarlua.nix { };
 }
