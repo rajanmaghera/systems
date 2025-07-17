@@ -12,8 +12,6 @@ stdenv.mkDerivation {
   #   phases = ["build" "install"];
 
   buildInputs = [
-    darwin.apple_sdk.frameworks.Carbon
-    darwin.apple_sdk.frameworks.SkyLight
   ];
 
   buildPhase = ''
