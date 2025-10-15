@@ -61,10 +61,10 @@
     "security.workspace.trust.untrustedFiles": "newWindow",
     "symbols.hidesExplorerArrows": false,
     "terminal.integrated.automationProfile.linux": {
-        "path": "zsh"
+        "path": "bash"
     },
     "terminal.integrated.automationProfile.osx": {
-        "path": "zsh"
+        "path": "bash"
     },
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.cursorStyle": "line",
@@ -131,5 +131,6 @@
     "workbench.preferredLightColorTheme": "Light Modern",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": false,
-    "workbench.tree.enableStickyScroll": false
+    "workbench.tree.enableStickyScroll": false,
+    "C_Cpp.intelliSenseEngine": "disabled"
 }
