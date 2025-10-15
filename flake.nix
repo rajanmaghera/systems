@@ -45,6 +45,9 @@
         "vscode-extension-github-copilot"
         "android-sdk-cmdline-tools"
         "android-sdk-tools"
+        "jetbrains"
+        "jetbrains.clion"
+        "clion"
       ];
 
       # Nixpkgs overlays

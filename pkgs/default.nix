@@ -7,6 +7,7 @@ inputs: [
   (import ./nix-ios)
   (import ./with-pkg)
   (import ./rust-shell)
+  (import ./llvm-shell)
   (import ./cuda-shell)
   (import ./sbarlua)
   (import ./sbmenus)
