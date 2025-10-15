@@ -30,6 +30,30 @@ in
           "/usr/bin/osascript -e \"tell application id \\\"tracesOf.Uebersicht\\\" to refresh widget id \\\"simple-bar-index-jsx\\\"\""
         ];
 
+        workspace-to-monitor-force-assignment = {
+          "1" = "main";
+          "2" = "main";
+          "3" = "main";
+          "4" = "main";
+          "5" = "main";
+          "6" = [
+            "secondary"
+            "main"
+          ];
+          "7" = [
+            "secondary"
+            "main"
+          ];
+          "8" = [
+            "secondary"
+            "main"
+          ];
+          "9" = [
+            "secondary"
+            "main"
+          ];
+        };
+
         gaps = {
           inner.horizontal = 8;
           inner.vertical = 8;
@@ -47,10 +71,10 @@ in
           ctrl-alt-slash = "layout tiles horizontal vertical";
           ctrl-alt-comma = "layout accordion horizontal vertical";
 
-          ctrl-alt-shift-h = "move left";
-          ctrl-alt-shift-j = "move down";
-          ctrl-alt-shift-k = "move up";
-          ctrl-alt-shift-l = "move right";
+          ctrl-shift-h = "move left";
+          ctrl-shift-j = "move down";
+          ctrl-shift-k = "move up";
+          ctrl-shift-l = "move right";
 
           ctrl-alt-minus = "resize smart -50";
           ctrl-alt-equal = "resize smart +50";
@@ -65,20 +89,26 @@ in
           ctrl-alt-8 = "workspace 8";
           ctrl-alt-9 = "workspace 9";
 
-          ctrl-alt-shift-1 = "move-node-to-workspace 1";
-          ctrl-alt-shift-2 = "move-node-to-workspace 2";
-          ctrl-alt-shift-3 = "move-node-to-workspace 3";
-          ctrl-alt-shift-4 = "move-node-to-workspace 4";
-          ctrl-alt-shift-5 = "move-node-to-workspace 5";
-          ctrl-alt-shift-6 = "move-node-to-workspace 6";
-          ctrl-alt-shift-7 = "move-node-to-workspace 7";
-          ctrl-alt-shift-8 = "move-node-to-workspace 8";
-          ctrl-alt-shift-9 = "move-node-to-workspace 9";
+          ctrl-alt-c = "workspace code";
+          ctrl-alt-w = "workspace web";
+          ctrl-alt-t = "workspace term";
+          ctrl-alt-s = "workspace social";
+          ctrl-alt-f = "workspace files";
+
+          ctrl-shift-1 = "move-node-to-workspace 1";
+          ctrl-shift-2 = "move-node-to-workspace 2";
+          ctrl-shift-3 = "move-node-to-workspace 3";
+          ctrl-shift-4 = "move-node-to-workspace 4";
+          ctrl-shift-5 = "move-node-to-workspace 5";
+          ctrl-shift-6 = "move-node-to-workspace 6";
+          ctrl-shift-7 = "move-node-to-workspace 7";
+          ctrl-shift-8 = "move-node-to-workspace 8";
+          ctrl-shift-9 = "move-node-to-workspace 9";
 
           ctrl-alt-tab = "workspace-back-and-forth";
 
-          ctrl-alt-shift-tab = "move-workspace-to-monitor --wrap-around next";
-          ctrl-alt-shift-semicolon = "mode service";
+          ctrl-shift-tab = "move-workspace-to-monitor --wrap-around next";
+          ctrl-shift-semicolon = "mode service";
         };
         mode.service.binding = {
           esc = [
@@ -98,19 +128,19 @@ in
             "mode main"
           ];
 
-          ctrl-alt-shift-h = [
+          ctrl-shift-h = [
             "join-with left"
             "mode main"
           ];
-          ctrl-alt-shift-j = [
+          ctrl-shift-j = [
             "join-with down"
             "mode main"
           ];
-          ctrl-alt-shift-k = [
+          ctrl-shift-k = [
             "join-with up"
             "mode main"
           ];
-          ctrl-alt-shift-l = [
+          ctrl-shift-l = [
             "join-with right"
             "mode main"
           ];
