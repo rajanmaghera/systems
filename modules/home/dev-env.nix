@@ -19,7 +19,7 @@ in
       type = types.bool;
       default = true;
       description = mkDoc ''
-        Enable your default git identity using your UAlberta email.
+        Enable your default git identity using your DCS email.
       '';
     };
   };
@@ -28,7 +28,7 @@ in
     programs.git = {
       enable = true;
       userName = mkIf cfg.defaultIdentity "Rajan Maghera";
-      userEmail = mkIf cfg.defaultIdentity "rmaghera@ualberta.ca";
+      userEmail = mkIf cfg.defaultIdentity "maghera@cs.toronto.edu";
       ignores = [
         ".direnv"
         ".envrc"
@@ -37,6 +37,7 @@ in
       extraConfig = {
         core.fsmonitor = true;
         rebase.updateRefs = true;
+        merge.conflictstyle = "diff3";
       };
     };
 
@@ -44,7 +45,7 @@ in
       enable = true;
       settings = {
         user = {
-          email = mkIf cfg.defaultIdentity "rmaghera@ualberta.ca";
+          email = mkIf cfg.defaultIdentity "maghera@cs.toronto.edu";
           name = mkIf cfg.defaultIdentity "Rajan Maghera";
         };
       };
@@ -60,6 +61,7 @@ in
     programs.tmux = {
       enable = true;
       extraConfig = ''
+        set -sg escape-time 0
         set -g status-left-length 20
       '';
     };
@@ -69,9 +71,67 @@ in
       settings = {
         theme = "darcula-solid";
         editor.line-number = "relative";
-        editor.file-picker.hidden = false;
       };
       languages.language-server = {
+        texlab = {
+          command = "${pkgs.texlab}/bin/texlab";
+          config = {
+            auxDirectory = "output";
+            chktex = {
+              onOpenAndSave = true;
+              onEdit = true;
+            };
+            build = {
+              forwardSearchAfter = true;
+              onSave = true;
+              executable = "${pkgs.tectonic}/bin/tectonic";
+              args = [
+                "-X"
+                "compile"
+                "%f"
+                "--synctex"
+                "--keep-logs"
+                "--keep-intermediates"
+                "--outdir=output"
+              ];
+            };
+            forwardSearch = {
+              executable = "${pkgs.zathura}/bin/zathura";
+              args = [
+                "--synctex-forward"
+                "%l:1:%f"
+                "%p"
+              ];
+              onSave = false;
+            };
+          };
+        };
+        pyright = {
+          command = "${pkgs.pyright}/bin/pyright-langserver";
+          args = [ "--stdio" ];
+          config = {
+            python.analysis.venvPath = ".";
+            python.analysis.venv = ".venv";
+            python.analysis.lint = true;
+            python.analysis.inlayHint.enable = true;
+            python.analysis.autoSearchPaths = true;
+            python.analysis.diagnosticMode = "workspace";
+            python.analysis.useLibraryCodeForType = true;
+            python.analysis.logLevel = "Error";
+            python.analysis.typeCheckingMode = "off";
+            python.analysis.autoImoprtCompletion = true;
+            python.analysis.reportOptionalSubscript = false;
+            python.analysis.reportOptionalMemberAccess = false;
+          };
+        };
+        ruff = {
+          command = "${pkgs.ruff}/bin/ruff";
+          args = [
+            "server"
+            "-q"
+            "--preview"
+          ];
+        };
         rust-analyzer = {
           command = "rust-analyzer";
           config = {
@@ -85,6 +145,62 @@ in
         };
       };
       languages.language = [
+        {
+          name = "latex";
+          language-servers = [
+            "texlab"
+            "ltex"
+          ];
+          indent = {
+            tab-width = 4;
+            unit = " ";
+          };
+
+        }
+        {
+          name = "python";
+          scope = "source.python";
+          injection-regex = "python";
+          file-types = [
+            "py"
+            "pyi"
+            "py3"
+            "pyw"
+            "ptl"
+            "rpy"
+            "cpy"
+            "ipy"
+            "pyt"
+            { glob = ".python_history"; }
+            { glob = ".pythonstartup"; }
+            { glob = ".pythonrc"; }
+            { glob = "SConstruct"; }
+            { glob = "SConscript"; }
+          ];
+          shebangs = [ "python" ];
+          roots = [
+            "pyproject.toml"
+            "setup.py"
+            "poetry.lock"
+            "pyrightconfig.json"
+            "requirements.txt"
+            ".venv/"
+          ];
+          comment-token = "#";
+          language-servers = [ "pyright" ];
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+          auto-format = true;
+          formatter = {
+            command = "${pkgs.ruff}/bin/ruff";
+            args = [
+              "format"
+              "-"
+            ];
+          };
+        }
         {
           name = "rust";
           auto-format = true;
