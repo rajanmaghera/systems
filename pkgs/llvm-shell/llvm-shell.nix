@@ -4,6 +4,7 @@
   llvmPackages_latest,
   cmake,
   ninja,
+  zlib,
   python3,
   bashInteractive,
   ccache,
@@ -21,6 +22,7 @@ mkShell {
     python3
     bashInteractive
     ccache
+    zlib
     llvmPackages_latest.clang
     llvmPackages_latest.lld
     llvmPackages_latest.libcxx
