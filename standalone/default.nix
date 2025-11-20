@@ -16,7 +16,10 @@ let
             inherit username homeDirectory;
           };
         }
-      ] ++ modules;
+      ]
+      ++ modules;
     });
 in
-{ }
+{
+  "precision" = makeHome "rajan" "/home/rajan" "x86_64-linux";
+}
