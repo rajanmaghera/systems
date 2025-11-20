@@ -34,6 +34,4 @@
   my.profile.packages = with pkgs; [ firefox ];
   my.shell.zsh.enable = true;
 
-  lab.enable = true;
-  lab.cockpit.enable = true;
 }

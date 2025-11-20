@@ -116,7 +116,6 @@
           home-manager.nixosModules.home-manager
           (import ./home).system
           (import ./modules/home).system
-          (import ./modules/nixos-homelab)
           (import ./modules/nixos)
           (import ./modules/shared)
         ];
