@@ -14,5 +14,4 @@
     ./latex.nix
     ./fonts.nix
   ];
-  home.stateVersion = "24.05";
 }

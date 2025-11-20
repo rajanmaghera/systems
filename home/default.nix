@@ -1,5 +1,6 @@
+stateVersion:
 let
-  c = import ./config.nix;
+  c = import ./config.nix stateVersion;
 in
 {
   config = c;

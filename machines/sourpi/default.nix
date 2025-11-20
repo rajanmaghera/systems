@@ -31,8 +31,6 @@
 
   services.openssh.enable = true;
 
-  system.stateVersion = "24.05";
-
   my.docker.enable = true;
 
   my.autowallpaper.enable = true;

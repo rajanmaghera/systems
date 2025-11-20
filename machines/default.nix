@@ -1,5 +1,5 @@
 let
-  makeSystem = modules: overlayHome: hostName: system: {
+  makeSystem = modules: overlayHome: stateVersion: hostName: system: {
     inherit system;
     modules = modules ++ [
       (./. + "/${hostName}")
@@ -7,6 +7,9 @@ let
       (import ./me.nix {
         inherit system hostName;
       })
+      {
+        system.stateVersion = stateVersion;
+      }
     ];
   };
   configIos = (import ./ios.nix).configIos;
@@ -17,11 +20,12 @@ in
       modules,
       configNixos,
       overlayHome,
+      stateVersion,
     }:
     {
-      "sourpi" = configNixos (makeSystem modules overlayHome "sourpi" "aarch64-linux");
-      "dessert" = configNixos (makeSystem modules overlayHome "dessert" "aarch64-linux");
-      "pie" = configNixos (makeSystem modules overlayHome "pie" "aarch64-linux");
+      "sourpi" = configNixos (makeSystem modules overlayHome stateVersion "sourpi" "aarch64-linux");
+      "dessert" = configNixos (makeSystem modules overlayHome stateVersion "dessert" "aarch64-linux");
+      "pie" = configNixos (makeSystem modules overlayHome stateVersion "pie" "aarch64-linux");
     };
 
   darwin =
@@ -29,9 +33,10 @@ in
       modules,
       configDarwin,
       overlayHome,
+      stateVersion,
     }:
     {
-      "fruit" = configDarwin (makeSystem modules overlayHome "fruit" "aarch64-darwin");
+      "fruit" = configDarwin (makeSystem modules overlayHome stateVersion "fruit" "aarch64-darwin");
     };
 
   ios = {

@@ -26,8 +26,6 @@
 
   services.openssh.enable = true;
 
-  system.stateVersion = "24.05";
-
   my.tailscale.enable = true;
   my.docker.enable = true;
   my.profile.enable = true;

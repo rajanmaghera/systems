@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   # Enable Nix darwin defaults.
-  system.stateVersion = 4;
   nix.settings.extra-trusted-users = [ "rajan" ];
 
   # Use Touch ID for sudo

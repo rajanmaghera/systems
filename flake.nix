@@ -110,11 +110,12 @@
       # NixOS configuration
       nixosConfigurations = (import ./machines).nixos {
         configNixos = nixpkgs.lib.nixosSystem;
-        overlayHome = (import ./home).overlayHome;
+        overlayHome = (import ./home "25.11").overlayHome;
+        stateVersion = "25.11";
         modules = [
           overlaysModule
           home-manager.nixosModules.home-manager
-          (import ./home).system
+          (import ./home "25.11").system
           (import ./modules/home).system
           (import ./modules/nixos)
           (import ./modules/shared)
@@ -124,11 +125,12 @@
       # Darwin (macOS) configuration
       darwinConfigurations = (import ./machines).darwin {
         configDarwin = darwin.lib.darwinSystem;
-        overlayHome = (import ./home).overlayHome;
+        overlayHome = (import ./home "25.11").overlayHome;
+        stateVersion = 6;
         modules = [
           overlaysModule
           home-manager.darwinModules.home-manager
-          (import ./home).system
+          (import ./home "25.11").system
           (import ./modules/home).system
           (import ./modules/darwin)
           (import ./modules/shared)
@@ -141,7 +143,7 @@
         configHome = home-manager.lib.homeManagerConfiguration;
         modules = [
           overlaysModule
-          (import ./home).config
+          (import ./home "25.11").config
           (import ./modules/home).config
         ];
       };
