@@ -16,10 +16,6 @@
     crane.url = "github:ipetkov/crane";
     rpi5.url = "gitlab:vriska/nix-rpi5";
     rpi5.inputs.nixpkgs.follows = "nixpkgs";
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
-    agenix.inputs.darwin.follows = "darwin";
-    agenix.inputs.home-manager.follows = "home-manager";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.url = "github:serokell/deploy-rs";
@@ -31,7 +27,6 @@
       self,
       nixpkgs,
       darwin,
-      agenix,
       home-manager,
       crane,
       rpi5,
@@ -119,8 +114,6 @@
         modules = [
           overlaysModule
           home-manager.nixosModules.home-manager
-          agenix.nixosModules.default
-          (import ./secrets)
           (import ./home).system
           (import ./modules/home).system
           (import ./modules/nixos-homelab)
@@ -136,8 +129,6 @@
         modules = [
           overlaysModule
           home-manager.darwinModules.home-manager
-          agenix.darwinModules.default
-          (import ./secrets)
           (import ./home).system
           (import ./modules/home).system
           (import ./modules/darwin)
@@ -151,8 +142,6 @@
         configHome = home-manager.lib.homeManagerConfiguration;
         modules = [
           overlaysModule
-          agenix.homeManagerModules.default
-          (import ./secrets)
           (import ./home).config
           (import ./modules/home).config
         ];

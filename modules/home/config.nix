@@ -5,7 +5,6 @@
     ./llm.nix
     ./fish.nix
     ./adw-gtk3.nix
-    ./secrets.nix
     ./wallpaper.nix
     ./wallpaper-option.nix
     ./zsh.nix

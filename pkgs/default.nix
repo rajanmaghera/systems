@@ -12,7 +12,6 @@ inputs: [
   (import ./sbarlua)
   (import ./sbmenus)
   (import ./switch-mode)
-  ((import ./agenix) inputs)
   ((import ./vscode-extensions) inputs)
   ((import ./rpi) inputs)
 ]
