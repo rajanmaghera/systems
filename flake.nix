@@ -109,7 +109,6 @@
           modules = [
             ./modules/home/home-module.nix
             ./modules/shared/module.nix
-            ./modules/shared/nested-home-module.nix
             configModule
           ];
 
