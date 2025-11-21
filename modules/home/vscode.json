@@ -1,4 +1,5 @@
 {
+    "C_Cpp.intelliSenseEngine": "disabled",
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
@@ -19,7 +20,7 @@
     "editor.inlayHints.enabled": "offUnlessPressed",
     "editor.lightbulb.enabled": "off",
     "editor.lineHeight": 1.6,
-    "editor.minimap.autohide": true,
+    "editor.minimap.autohide": "mouseover",
     "editor.minimap.maxColumn": 80,
     "editor.minimap.size": "fit",
     "editor.renderLineHighlight": "gutter",
@@ -131,6 +132,5 @@
     "workbench.preferredLightColorTheme": "Light Modern",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": false,
-    "workbench.tree.enableStickyScroll": false,
-    "C_Cpp.intelliSenseEngine": "disabled"
+    "workbench.tree.enableStickyScroll": false
 }

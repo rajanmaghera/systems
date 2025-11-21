@@ -16,19 +16,18 @@
 }:
 with lib;
 mkShell {
-  packages =
-    [
-      rustc
-      cargo
-      rust-analyzer
-      rustfmt
-      clippy
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      libiconv
-      pkg-config
-      openssl
-    ];
+  packages = [
+    rustc
+    cargo
+    rust-analyzer
+    rustfmt
+    clippy
+  ]
+  ++ lib.optionals stdenv.isDarwin [
+    libiconv
+    pkg-config
+    openssl
+  ];
 
   RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";
 }

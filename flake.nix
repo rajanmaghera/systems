@@ -88,6 +88,51 @@
             system = system;
           }
         ));
+
+      # Builder for NixOS config
+      makeNixos =
+        configModule:
+        nixpkgs.lib.nixosSystem {
+          modules = [
+            overlaysModule
+            home-manager.nixosModules.home-manager
+            ./modules/home/system-module.nix
+            ./modules/nixos
+            ./modules/shared/module.nix
+            ./modules/shared/nested-home-module.nix
+            configModule
+          ];
+        };
+
+      # Builder for Darwin config
+      makeDarwin =
+        configModule:
+        darwin.lib.darwinSystem {
+          modules = [
+            overlaysModule
+            home-manager.darwinModules.home-manager
+            ./modules/home/system-module.nix
+            ./modules/darwin
+            ./modules/shared/module.nix
+            ./modules/shared/nested-home-module.nix
+            configModule
+          ];
+        };
+
+      # Builder for standalone HM configurations
+      makeHome =
+        configModule:
+        home-manager.lib.homeManagerConfiguration {
+          modules = [
+            overlaysModule
+            ./modules/home/home-module.nix
+            ./modules/shared/module.nix
+            ./modules/shared/nested-home-module.nix
+            configModule
+          ];
+
+        };
+
     in
     {
       # Nix file formatter
@@ -108,65 +153,20 @@
       );
 
       # NixOS configuration
-      nixosConfigurations = (import ./machines).nixos {
-        configNixos = nixpkgs.lib.nixosSystem;
-        overlayHome = (import ./home "25.11").overlayHome;
-        stateVersion = "25.11";
-        modules = [
-          overlaysModule
-          home-manager.nixosModules.home-manager
-          (import ./home "25.11").system
-          (import ./modules/home).system
-          (import ./modules/nixos)
-          (import ./modules/shared)
-        ];
+      nixosConfigurations = {
+        sourfruit = makeNixos ./machines/sourfruit;
+
       };
 
       # Darwin (macOS) configuration
-      darwinConfigurations = (import ./machines).darwin {
-        configDarwin = darwin.lib.darwinSystem;
-        overlayHome = (import ./home "25.11").overlayHome;
-        stateVersion = 6;
-        modules = [
-          overlaysModule
-          home-manager.darwinModules.home-manager
-          (import ./home "25.11").system
-          (import ./modules/home).system
-          (import ./modules/darwin)
-          (import ./modules/shared)
-        ];
+      darwinConfigurations = {
+        fruit = makeDarwin ./machines/fruit;
       };
 
       # Home Manager configuration
-      homeConfigurations = (import ./standalone) {
-        inherit nixpkgs;
-        configHome = home-manager.lib.homeManagerConfiguration;
-        modules = [
-          overlaysModule
-          (import ./home "25.11").config
-          (import ./modules/home).config
-        ];
-      };
-
-      # SD card images, hardcoded for now
-      images = {
-        dessert = self.nixosConfigurations.dessert.config.system.build.sdImage;
-      };
-
-      # iOS configuration
-      iosConfigurations = (import ./machines).ios;
-
-      # Automated deployments
-      deploy = {
-        remoteBuild = true;
-        nodes.pie = {
-          interactiveSudo = true;
-          hostname = "pie.tail122a7f.ts.net";
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.pie;
-          };
-        };
+      homeConfigurations = {
+        precision = makeHome ./machines/precision;
       };
     };
+
 }

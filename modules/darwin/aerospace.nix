@@ -19,41 +19,6 @@ in
     services.aerospace = {
       enable = true;
       settings = {
-
-        on-focus-changed = [
-          "exec-and-forget osascript -e 'tell application id \"tracesOf.Uebersicht\" to refresh widget id \"simple-bar-index-jsx\"'"
-        ];
-
-        exec-on-workspace-change = [
-          "/bin/zsh"
-          "-c"
-          "/usr/bin/osascript -e \"tell application id \\\"tracesOf.Uebersicht\\\" to refresh widget id \\\"simple-bar-index-jsx\\\"\""
-        ];
-
-        workspace-to-monitor-force-assignment = {
-          "1" = "main";
-          "2" = "main";
-          "3" = "main";
-          "4" = "main";
-          "5" = "main";
-          "6" = [
-            "secondary"
-            "main"
-          ];
-          "7" = [
-            "secondary"
-            "main"
-          ];
-          "8" = [
-            "secondary"
-            "main"
-          ];
-          "9" = [
-            "secondary"
-            "main"
-          ];
-        };
-
         gaps = {
           inner.horizontal = 8;
           inner.vertical = 8;
@@ -63,96 +28,253 @@ in
           outer.right = 8;
         };
         mode.main.binding = {
-          ctrl-alt-h = "focus left";
-          ctrl-alt-j = "focus down";
-          ctrl-alt-k = "focus up";
-          ctrl-alt-l = "focus right";
 
-          ctrl-alt-slash = "layout tiles horizontal vertical";
-          ctrl-alt-comma = "layout accordion horizontal vertical";
+          alt-space = "mode service";
+          alt-m = "mode join";
 
-          ctrl-shift-h = "move left";
-          ctrl-shift-j = "move down";
-          ctrl-shift-k = "move up";
-          ctrl-shift-l = "move right";
+          alt-h = "focus --boundaries all-monitors-outer-frame left";
+          alt-j = "focus --boundaries all-monitors-outer-frame down";
+          alt-k = "focus --boundaries all-monitors-outer-frame up";
+          alt-l = "focus --boundaries all-monitors-outer-frame right";
+          alt-left = "focus --boundaries all-monitors-outer-frame left";
+          alt-down = "focus --boundaries all-monitors-outer-frame down";
+          alt-up = "focus --boundaries all-monitors-outer-frame up";
+          alt-right = "focus --boundaries all-monitors-outer-frame right";
 
-          ctrl-alt-minus = "resize smart -50";
-          ctrl-alt-equal = "resize smart +50";
+          alt-rightSquareBracket = "workspace next";
+          alt-leftSquareBracket = "workspace prev";
 
-          ctrl-alt-1 = "workspace 1";
-          ctrl-alt-2 = "workspace 2";
-          ctrl-alt-3 = "workspace 3";
-          ctrl-alt-4 = "workspace 4";
-          ctrl-alt-5 = "workspace 5";
-          ctrl-alt-6 = "workspace 6";
-          ctrl-alt-7 = "workspace 7";
-          ctrl-alt-8 = "workspace 8";
-          ctrl-alt-9 = "workspace 9";
+          alt-period = "workspace next";
+          alt-comma = "workspace prev";
 
-          ctrl-alt-c = "workspace code";
-          ctrl-alt-w = "workspace web";
-          ctrl-alt-t = "workspace term";
-          ctrl-alt-s = "workspace social";
-          ctrl-alt-f = "workspace files";
+          alt-1 = "workspace 1";
+          alt-2 = "workspace 2";
+          alt-3 = "workspace 3";
+          alt-4 = "workspace 4";
+          alt-5 = "workspace 5";
+          alt-6 = "workspace 6";
+          alt-7 = "workspace 7";
 
-          ctrl-shift-1 = "move-node-to-workspace 1";
-          ctrl-shift-2 = "move-node-to-workspace 2";
-          ctrl-shift-3 = "move-node-to-workspace 3";
-          ctrl-shift-4 = "move-node-to-workspace 4";
-          ctrl-shift-5 = "move-node-to-workspace 5";
-          ctrl-shift-6 = "move-node-to-workspace 6";
-          ctrl-shift-7 = "move-node-to-workspace 7";
-          ctrl-shift-8 = "move-node-to-workspace 8";
-          ctrl-shift-9 = "move-node-to-workspace 9";
+          # Layout Modifications
 
-          ctrl-alt-tab = "workspace-back-and-forth";
+          alt-semicolon = "layout tiles accordion";
+          alt-quote = "layout tiles accordion";
 
-          ctrl-shift-tab = "move-workspace-to-monitor --wrap-around next";
-          ctrl-shift-semicolon = "mode service";
+          alt-slash = "layout horizontal vertical";
+
+          alt-minus = "resize smart -50";
+          alt-equal = "resize smart +50";
+          alt-shift-minus = "resize smart -80";
+          alt-shift-equal = "resize smart +80";
+
+          alt-b = "balance-sizes";
+          alt-r = "flatten-workspace-tree";
+          alt-f = "layout floating tiling";
+
+          # Within workspaces movement modifications
+
+          alt-shift-h = "move --boundaries all-monitors-outer-frame left";
+          alt-shift-j = "move --boundaries all-monitors-outer-frame down";
+          alt-shift-k = "move --boundaries all-monitors-outer-frame up";
+          alt-shift-l = "move --boundaries all-monitors-outer-frame right";
+          alt-shift-left = "move --boundaries all-monitors-outer-frame left";
+          alt-shift-down = "move --boundaries all-monitors-outer-frame down";
+          alt-shift-up = "move --boundaries all-monitors-outer-frame up";
+          alt-shift-right = "move --boundaries all-monitors-outer-frame right";
+
+          # Movement modifications
+
+          alt-shift-1 = "move-node-to-workspace 1";
+          alt-shift-2 = "move-node-to-workspace 2";
+          alt-shift-3 = "move-node-to-workspace 3";
+          alt-shift-4 = "move-node-to-workspace 4";
+          alt-shift-5 = "move-node-to-workspace 5";
+          alt-shift-6 = "move-node-to-workspace 6";
+          alt-shift-7 = "move-node-to-workspace 7";
+
+          alt-shift-period = "move-node-to-workspace --focus-follows-window next";
+          alt-shift-comma = "move-node-to-workspace --focus-follows-window prev";
+
+          alt-shift-rightSquareBracket = "move-workspace-to-monitor --wrap-around next";
+          alt-shift-leftSquareBracket = "move-workspace-to-monitor --wrap-around prev";
+
         };
+
+        mode.join.binding = {
+          esc = "mode main";
+          alt-m = "mode main";
+
+          alt-h = [
+            "join-with left"
+            "mode main"
+          ];
+          alt-j = [
+            "join-with down"
+            "mode main"
+          ];
+          alt-k = [
+            "join-with up"
+            "mode main"
+          ];
+          alt-l = [
+            "join-with right"
+            "mode main"
+          ];
+          alt-left = [
+            "join-with left"
+            "mode main"
+          ];
+          alt-down = [
+            "join-with down"
+            "mode main"
+          ];
+          alt-up = [
+            "join-with up"
+            "mode main"
+          ];
+          alt-right = [
+            "join-with right"
+            "mode main"
+          ];
+        };
+
+        mode.joinservice.binding = {
+          esc = "mode main";
+          m = "mode service";
+
+          h = [
+            "join-with left"
+            "mode service"
+          ];
+          j = [
+            "join-with down"
+            "mode service"
+          ];
+          k = [
+            "join-with up"
+            "mode service"
+          ];
+          l = [
+            "join-with right"
+            "mode service"
+          ];
+          left = [
+            "join-with left"
+            "mode service"
+          ];
+          down = [
+            "join-with down"
+            "mode service"
+          ];
+          up = [
+            "join-with up"
+            "mode service"
+          ];
+          right = [
+            "join-with right"
+            "mode service"
+          ];
+        };
+
         mode.service.binding = {
           esc = [
             "reload-config"
             "mode main"
           ];
-          r = [
-            "flatten-workspace-tree"
-            "mode main"
-          ]; # reset layout
-          f = [
-            "layout floating tiling"
-            "mode main"
-          ]; # Toggle between floating and tiling layout
-          backspace = [
-            "close-all-windows-but-current"
+          enter = [
+            "reload-config"
             "mode main"
           ];
 
-          ctrl-shift-h = [
-            "join-with left"
-            "mode main"
-          ];
-          ctrl-shift-j = [
-            "join-with down"
-            "mode main"
-          ];
-          ctrl-shift-k = [
-            "join-with up"
-            "mode main"
-          ];
-          ctrl-shift-l = [
-            "join-with right"
-            "mode main"
-          ];
+          alt-space = "mode main";
+          m = "mode joinservice";
 
-          down = "volume down";
-          up = "volume up";
-          shift-down = [
-            "volume set 0"
-            "mode main"
-          ];
+          # Movement
+
+          h = "focus --boundaries all-monitors-outer-frame left";
+          j = "focus --boundaries all-monitors-outer-frame down";
+          k = "focus --boundaries all-monitors-outer-frame up";
+          l = "focus --boundaries all-monitors-outer-frame right";
+          left = "focus --boundaries all-monitors-outer-frame left";
+          down = "focus --boundaries all-monitors-outer-frame down";
+          up = "focus --boundaries all-monitors-outer-frame up";
+          right = "focus --boundaries all-monitors-outer-frame right";
+
+          period = "workspace next";
+          comma = "workspace prev";
+
+          "1" = "workspace 1";
+          "2" = "workspace 2";
+          "3" = "workspace 3";
+          "4" = "workspace 4";
+          "5" = "workspace 5";
+          "6" = "workspace 6";
+          "7" = "workspace 7";
+
+          # Layout Modifications
+
+          semicolon = "layout tiles accordion";
+          quote = "layout tiles accordion";
+
+          slash = "layout horizontal vertical";
+
+          minus = "resize smart -50";
+          equal = "resize smart +50";
+          shift-minus = "resize smart -80";
+          shift-equal = "resize smart +80";
+
+          b = "balance-sizes";
+          r = "flatten-workspace-tree";
+          f = "layout floating tiling";
+
+          # Within workspaces movement modifications
+
+          shift-h = "move --boundaries all-monitors-outer-frame left";
+          shift-j = "move --boundaries all-monitors-outer-frame down";
+          shift-k = "move --boundaries all-monitors-outer-frame up";
+          shift-l = "move --boundaries all-monitors-outer-frame right";
+          shift-left = "move --boundaries all-monitors-outer-frame left";
+          shift-down = "move --boundaries all-monitors-outer-frame down";
+          shift-up = "move --boundaries all-monitors-outer-frame up";
+          shift-right = "move --boundaries all-monitors-outer-frame right";
+
+          # alt-shift-h = "join-with left";
+          # alt-shift-j = "join-with down";
+          # alt-shift-k = "join-with up";
+          # alt-shift-l = "join-with right";
+          # alt-shift-left = "join-with left";
+          # alt-shift-down = "join-with down";
+          # alt-shift-up = "join-with up";
+          # alt-shift-right = "join-with right";
+
+          # Movement modifications
+
+          shift-1 = "move-node-to-workspace 1";
+          shift-2 = "move-node-to-workspace 2";
+          shift-3 = "move-node-to-workspace 3";
+          shift-4 = "move-node-to-workspace 4";
+          shift-5 = "move-node-to-workspace 5";
+          shift-6 = "move-node-to-workspace 6";
+          shift-7 = "move-node-to-workspace 7";
+
+          shift-period = "move-node-to-workspace --focus-follows-window next";
+          shift-comma = "move-node-to-workspace --focus-follows-window prev";
+
+          shift-rightSquareBracket = "move-workspace-to-monitor --wrap-around next";
+          shift-leftSquareBracket = "move-workspace-to-monitor --wrap-around prev";
 
         };
+
+        ## AUTOMATIONS
+
+        on-window-detected = [
+          # Force iCloud Passwords prompt to be floating
+          {
+            "if".window-title-regex-substring = "iCloud Passwords";
+            check-further-callbacks = true;
+            run = [ "layout floating" ];
+          }
+        ];
       };
     };
   };

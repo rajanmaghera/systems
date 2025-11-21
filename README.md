@@ -2,13 +2,6 @@
 
 [![Build fruit configuration](https://github.com/rajanmaghera/systems/actions/workflows/build-system-fruit.yml/badge.svg?branch=main)](https://github.com/rajanmaghera/systems/actions/workflows/build-system-fruit.yml)
 
-## Machines
-
-- `dessert`: RPI5 w/ 8GB of memory, offsite in Toronto setup as a replica of data in Edmonton
-- `sourpi`: VM for testing `dessert` config
-- `fruit`: 2023 MacBook Pro 14 inch (base model), personal laptop
-- `banana`: iPhone 14 Pro, purple
-
 ## Commands
 
 This flake exposes all necessary packages as its own packages. This allows us to easily run any command from this repo's version of nixpkgs, as well as any custom packages written in this repo. Switching to a configuration will ensure that the given package is available in the shell, so it's not necessary after the first run.

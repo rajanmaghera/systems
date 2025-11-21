@@ -1,6 +1,6 @@
-{ ... }:
 {
   imports = [
+    ./my-defaults.nix
     ./kde.nix
     ./gnome.nix
     ./laptop-defaults.nix

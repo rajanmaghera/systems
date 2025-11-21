@@ -226,6 +226,10 @@ in
       enable = true;
     };
 
+    programs.nnn = {
+      enable = true;
+    };
+
     home.packages =
       with pkgs;
       [

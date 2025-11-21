@@ -1,22 +1,23 @@
 { pkgs, ... }:
 {
-  # Enable Nix darwin defaults.
-  nix.settings.extra-trusted-users = [ "rajan" ];
-
-  # Use Touch ID for sudo
-  my.security.pam.enable = true;
-
-  # Add home configuration
-  users.users.rajan.home = "/Users/rajan";
-  system.primaryUser = "rajan";
-  ids.gids.nixbld = 350;
-
-  # Enable zsh shell
-  programs.zsh.enable = true;
-  environment.shells = [ pkgs.zsh ];
-  users.users.rajan.shell = pkgs.zsh;
+  my.defaults = {
+    enable = true;
+    username = "rajan";
+    system = "aarch64-darwin";
+    homeDirectory = "/Users/rajan";
+    hostName = "fruit";
+  };
 
   # Enable custom window management
+  my.security.pam.enable = true;
   my.aerospace.enable = true;
 
+  my.home = {
+    my.editor.enable = true;
+    my.term-editor.enable = false;
+    home.packages = with pkgs; [
+      sketchybar-app-font
+      sbmenus
+    ];
+  };
 }

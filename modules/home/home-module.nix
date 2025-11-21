@@ -1,5 +1,6 @@
 {
   imports = [
+    ./my-defaults.nix
     ./cli.nix
     ./dev-env.nix
     ./llm.nix
