@@ -230,9 +230,25 @@ in
       enable = true;
     };
 
+    fonts.fontconfig.enable = true;
+
+    programs.wezterm = {
+      enable = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
+      extraConfig = builtins.readFile ./wezterm.lua;
+    };
+
     home.packages =
       with pkgs;
       [
+        nerd-fonts.fira-code
+        nerd-fonts.cousine
+        nerd-fonts.iosevka
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.geist-mono
+        nerd-fonts.im-writing
+        fragment-mono
         (git-branchless.overrideAttrs { doCheck = false; })
         git-absorb
         lazygit

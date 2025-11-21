@@ -10,7 +10,6 @@
     ./wallpaper-option.nix
     ./zsh.nix
     ./editor.nix
-    ./term-editor.nix
     ./ifuse.nix
     ./latex.nix
     ./fonts.nix
