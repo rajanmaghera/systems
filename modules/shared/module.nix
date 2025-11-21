@@ -58,10 +58,6 @@ in
       type = types.str;
     };
 
-    system = mkOption {
-      type = types.str;
-    };
-
     homeDirectory = mkOption {
       type = types.str;
     };

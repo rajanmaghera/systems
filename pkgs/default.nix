@@ -1,17 +1,15 @@
-inputs: [
-  (import ./caddy)
-  (import ./rars)
-  (import ./cudatoolkit-pin)
-  ((import ./my) inputs)
-  (import ./desktoppr)
-  (import ./nix-ios)
-  (import ./with-pkg)
-  (import ./rust-shell)
-  (import ./llvm-shell)
-  (import ./cuda-shell)
-  (import ./sbarlua)
-  (import ./sbmenus)
-  (import ./switch-mode)
-  ((import ./vscode-extensions) inputs)
-  ((import ./rpi) inputs)
-]
+{
+  crane,
+  home-manager,
+}:
+final: prev: {
+  my-cli = (import ./my) crane prev;
+  rars = prev.callPackage ./rars { };
+  rust-shell = prev.callPackage ./rust-shell { };
+  llvm-shell = prev.callPackage ./llvm-shell { };
+  cuda-shell = prev.callPackage ./cuda-shell { };
+  sbarlua = prev.callPackage ./sbarlua { };
+  sbmenus = prev.callPackage ./sbmenus { };
+  switch-mode = prev.callPackage ./switch-mode { };
+  home-manager = home-manager.packages.${prev.system}.home-manager;
+}

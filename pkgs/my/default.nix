@@ -1,14 +1,9 @@
-{
-  crane,
-  nixpkgs,
-  ...
-}:
-final: prev:
+crane: prev:
 let
   inherit (prev) system;
   inherit (prev) lib;
 
-  craneLib = crane.mkLib nixpkgs.legacyPackages.${system};
+  craneLib = crane.mkLib prev;
 
   commonArgs = {
     src = craneLib.cleanCargoSource (craneLib.path ./.);
@@ -33,6 +28,4 @@ let
     }
   );
 in
-{
-  my-cli = my-cli-pkg;
-}
+my-cli-pkg

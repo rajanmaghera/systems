@@ -23,7 +23,7 @@ in
     system.primaryUser = cfg.username;
     time.timeZone = cfg.timeZone;
     networking.hostName = cfg.hostName;
-    nixpkgs.hostPlatform = cfg.system;
+    nixpkgs.hostPlatform = pkgs.system;
     ids.gids.nixbld = 350;
     system.stateVersion = 6;
     nix.settings.extra-trusted-users = [ cfg.username ];

@@ -23,7 +23,6 @@ in
     networking.networkmanager.enable = true;
     time.timeZone = cfg.timeZone;
     networking.hostName = cfg.hostName;
-    nixpkgs.hostPlatform = cfg.system;
     nix.settings.extra-trusted-users = [ cfg.username ];
     nix.settings.experimental-features = [
       "nix-command"

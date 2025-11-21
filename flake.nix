@@ -1,11 +1,7 @@
 {
-  description = "Simple OS flake";
+  description = "Rajan's systems config";
 
-  nixConfig = {
-    extra-trusted-substituters = "https://rajan.cachix.org";
-    extra-trusted-public-keys = "rajan.cachix.org-1:WdBz6DVZhJafNOoIHXsTfikZTvQHvhUo71+pEi1LqEw=";
-    extra-experimental-features = "nix-command flakes";
-  };
+  nixConfig.extra-experimental-features = "nix-command flakes";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -14,46 +10,42 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     crane.url = "github:ipetkov/crane";
-    rpi5.url = "gitlab:vriska/nix-rpi5";
-    rpi5.inputs.nixpkgs.follows = "nixpkgs";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
-    deploy-rs.url = "github:serokell/deploy-rs";
-    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    inputs@{
+    {
       self,
       nixpkgs,
       darwin,
       home-manager,
       crane,
-      rpi5,
       nix-vscode-extensions,
-      deploy-rs,
     }:
     let
-      # Unfree packages allowed
-      unfree = [
-        "vscode"
-        "vscode-extension-github-copilot"
-        "android-sdk-cmdline-tools"
-        "android-sdk-tools"
-        "jetbrains"
-        "jetbrains.clion"
-        "clion"
-      ];
 
-      # Nixpkgs overlays
-      overlays = (import ./pkgs) inputs;
-
-      # System configuration module with overlays
-      overlaysModule =
-        { lib, ... }:
-        {
-          nixpkgs.overlays = overlays;
-          nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfree;
+      # Top-level packages object used by everything
+      makePkgs =
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [
+            ((import ./pkgs) { inherit crane home-manager; })
+            nix-vscode-extensions.overlays.default
+            darwin.overlays.default
+          ];
+          config = {
+            allowUnfreePredicate =
+              pkg:
+              builtins.elem (pkg.pname or "") [
+                "vscode"
+                "vscode-extension-github-copilot"
+                "jetbrains"
+                "jetbrains.clion"
+                "clion"
+              ];
+          };
         };
 
       # Function to generate configurations for each system
@@ -73,28 +65,16 @@
         );
 
       # Function to generate configurations and nixpkgs for each system
-      eachPkgs =
-        f:
-        (each (
-          system:
-          f {
-            pkgs = import nixpkgs {
-              inherit system overlays;
-              config = {
-                android_sdk.accept_license = true;
-                allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) unfree;
-              };
-            };
-            system = system;
-          }
-        ));
+      eachPkgs = f: (each (system: f (makePkgs system)));
 
       # Builder for NixOS config
       makeNixos =
-        configModule:
+        configModule: system:
         nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            pkgs = makePkgs system;
+          };
           modules = [
-            overlaysModule
             home-manager.nixosModules.home-manager
             ./modules/home/system-module.nix
             ./modules/nixos
@@ -106,10 +86,12 @@
 
       # Builder for Darwin config
       makeDarwin =
-        configModule:
+        configModule: system:
         darwin.lib.darwinSystem {
+          specialArgs = {
+            pkgs = makePkgs system;
+          };
           modules = [
-            overlaysModule
             home-manager.darwinModules.home-manager
             ./modules/home/system-module.nix
             ./modules/darwin
@@ -121,10 +103,10 @@
 
       # Builder for standalone HM configurations
       makeHome =
-        configModule:
+        configModule: system:
         home-manager.lib.homeManagerConfiguration {
+          pkgs = makePkgs system;
           modules = [
-            overlaysModule
             ./modules/home/home-module.nix
             ./modules/shared/module.nix
             ./modules/shared/nested-home-module.nix
@@ -135,37 +117,32 @@
 
     in
     {
+
       # Nix file formatter
       formatter = eachPkgs (
-        { pkgs, ... }:
+        pkgs:
         pkgs.nixfmt-tree.override {
           runtimeInputs = [ pkgs.nixfmt-rfc-style ];
         }
       );
 
-      # All nixpkgs + custom packages + flake input packages
-      packages = eachPkgs (
-        {
-          pkgs,
-          system,
-        }:
-        pkgs // home-manager.packages.${system} // (darwin.packages.${system} or { })
-      );
+      # Re-expose nixpkgs + custom packages + flake input packages
+      packages = eachPkgs (pkgs: pkgs);
 
       # NixOS configuration
       nixosConfigurations = {
-        sourfruit = makeNixos ./machines/sourfruit;
+        sourfruit = makeNixos ./machines/sourfruit "aarch64-linux";
 
       };
 
       # Darwin (macOS) configuration
       darwinConfigurations = {
-        fruit = makeDarwin ./machines/fruit;
+        fruit = makeDarwin ./machines/fruit "aarch64-darwin";
       };
 
       # Home Manager configuration
       homeConfigurations = {
-        precision = makeHome ./machines/precision;
+        precision = makeHome ./machines/precision "x86_64-linux";
       };
     };
 

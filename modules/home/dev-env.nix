@@ -257,7 +257,6 @@ in
         glab
         gh
         ripgrep
-        with-pkg
         watchman
         rustup
         ocaml

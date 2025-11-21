@@ -1,12 +1,10 @@
 { pkgs, ... }:
 {
-  my.defaults = {
-    enable = true;
-    username = "rajan";
-    system = "aarch64-linux";
-    homeDirectory = "/home/rajan";
-    hostName = "sourfruit";
-  };
+  my.defaults.enable = true;
+  my.defaults.username = "rajan";
+  my.defaults.homeDirectory = "/home/rajan";
+  my.defaults.hostName = "sourfruit";
+
   my.kde.enable = true;
 
   my.laptop-defaults.enable = true;
