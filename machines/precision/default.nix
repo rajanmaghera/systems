@@ -1,6 +1,6 @@
 {
-  my.default.enable = true;
-  my.default.username = "rajan";
-  my.default.hostName = "rajan-precision";
-  my.default.homeDirectory = "/home/rajan";
+  my.defaults.enable = true;
+  my.defaults.username = "rajan";
+  my.defaults.hostName = "rajan-precision";
+  my.defaults.homeDirectory = "/home/rajan";
 }
