@@ -31,5 +31,9 @@ config.font = wezterm.font 'Fragment Mono'
 config.color_scheme = scheme_for_appearance(get_appearance())
 config.enable_tab_bar = false
 
+config.keys = {
+  { key = 'Enter', mods = 'ALT', action = wezterm.action.DisableDefaultAssignment },
+}
+
 -- Finally, return the configuration to wezterm:
 return config
