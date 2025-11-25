@@ -1,0 +1,32 @@
+name: "Update Flake"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *' # Daily at 4am
+
+jobs:
+  update-flake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write # Needed to create PR and set auto-merge
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: Update Flake Lock
+        run: nix flake update --accept-flake-config
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          title: 'chore: update flake'
+          branch: ci/staging
+          body: 'Automated update. Waiting for CI to pass'
+          commit-message: 'chore(flake): update dependencies'
+          draft: always-true
