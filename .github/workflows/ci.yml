@@ -36,9 +36,6 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Connect to Tailscale
         uses: tailscale/github-action@v4
         with:
