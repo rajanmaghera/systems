@@ -1,0 +1,59 @@
+name: "Update Flake"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *' # Daily at 4am
+
+jobs:
+  update-flake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write # Needed to create PR and set auto-merge
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+          ref: main
+
+      - name: Configure Git
+        run: |
+          git config user.name "actions[bot]"
+          git config user.email "<>"
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: Reset Staging Branch
+        run: |
+          # Reset staging to match main exactly
+          git checkout -B staging origin/main
+
+      - name: Update Flake Lock
+        run: nix flake update
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -z $(git status --porcelain) ]]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and Push
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git commit -am "chore(flake): update dependencies"
+          git push origin staging --force
+
+      - name: Create PR
+        if: steps.check_changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          title: 'chore: update flake'
+          branch: staging
+          base: main
+          body: 'Automated update. Waiting for CI to pass'
+          draft: always-true

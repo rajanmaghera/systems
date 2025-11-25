@@ -1,0 +1,58 @@
+name: "Nix CI"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [ready_for_review]
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - staging # Runs automatically when the updater pushes here
+
+jobs:
+  build-matrix:
+    name: Build ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # - os: ubuntu-latest
+          #   output: nixosConfigurations.my-machine.config.system.build.toplevel
+          - os: macos-latest
+            output: darwinConfigurations.fruit.system
+    
+    runs-on: ${{ matrix.os }}
+    permissions:
+      # id-token: write # For Tailscale
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      # - name: Connect to Tailscale
+      #   uses: tailscale/github-action@v2
+      #   with:
+      #     oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      #     oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+      #     tags: tag:ci
+
+      # - name: Setup Attic Cache (Push)
+      #   uses: ryanccn/attic-action@v0
+      #   with:
+      #     endpoint: ${{ secrets.ATTIC_SERVER_URL }}
+      #     cache: ci-builds
+      #     token: ${{ secrets.ATTIC_TOKEN }}
+
+      - name: Build System
+        run: nix build .#${{ matrix.output }} --accept-flake-config
