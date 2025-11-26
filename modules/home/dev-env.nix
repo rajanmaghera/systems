@@ -27,14 +27,14 @@ in
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
-      userName = mkIf cfg.defaultIdentity "Rajan Maghera";
-      userEmail = mkIf cfg.defaultIdentity "maghera@cs.toronto.edu";
       ignores = [
         ".direnv"
         ".envrc"
         ".DS_Store"
       ];
-      extraConfig = {
+      settings = {
+        user.name = mkIf cfg.defaultIdentity "Rajan Maghera";
+        user.email = mkIf cfg.defaultIdentity "maghera@cs.toronto.edu";
         core.fsmonitor = true;
         rebase.updateRefs = true;
         merge.conflictstyle = "diff3";
