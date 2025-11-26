@@ -11,5 +11,5 @@ final: prev: {
   sbarlua = prev.callPackage ./sbarlua { };
   sbmenus = prev.callPackage ./sbmenus { };
   switch-mode = prev.callPackage ./switch-mode { };
-  home-manager = home-manager.packages.${prev.system}.home-manager;
+  home-manager = home-manager.packages.${prev.stdenv.hostPlatform.system}.home-manager;
 }
