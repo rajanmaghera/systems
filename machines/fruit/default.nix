@@ -8,6 +8,7 @@
   # Enable custom window management
   my.security.pam.enable = true;
   my.aerospace.enable = true;
+  my.linux-builder.enable = true;
 
   my.home = {
     my.editor.enable = true;

@@ -6,5 +6,6 @@
     ./sketchybar
     ./pam.nix
     ./aerospace.nix
+    ./linux-builder.nix
   ];
 }
