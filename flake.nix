@@ -71,10 +71,11 @@
       makeNixos =
         configModule: system:
         nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            pkgs = makePkgs system;
-          };
           modules = [
+            {
+              nixpkgs.pkgs = makePkgs system;
+            }
+            nixpkgs.nixosModules.readOnlyPkgs
             home-manager.nixosModules.home-manager
             ./modules/home/system-module.nix
             ./modules/nixos
