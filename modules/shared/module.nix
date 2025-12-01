@@ -1,14 +1,15 @@
 {
   lib,
   pkgs,
-  config,
   ...
 }:
 with lib;
-let
-  cfg = config.my.defaults;
-in
 {
+
+  imports = [
+    ./colors.nix
+  ];
+
   options.my.defaults = {
     enable = mkOption {
       type = types.bool;

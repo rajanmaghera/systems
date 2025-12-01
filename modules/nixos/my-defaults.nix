@@ -52,5 +52,9 @@ in
       ''
     );
 
+    # Theming config
+    stylix.enable = mkIf cfg.theme.enable true;
+    stylix.base16Scheme = cfg.theme.base16Scheme;
+
   };
 }

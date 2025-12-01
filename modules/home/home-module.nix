@@ -1,17 +1,12 @@
+{ config, lib, ... }:
 {
+
   imports = [
-    ./my-defaults.nix
-    ./cli.nix
-    ./dev-env.nix
-    ./llm.nix
-    ./fish.nix
-    ./adw-gtk3.nix
-    ./wallpaper.nix
-    ./wallpaper-option.nix
-    ./zsh.nix
-    ./editor.nix
-    ./ifuse.nix
-    ./latex.nix
-    ./fonts.nix
+    ./base-module.nix
   ];
+
+  # Theming config
+  stylix.enable = lib.mkIf config.my.defaults.theme.enable true;
+  stylix.base16Scheme = config.my.defaults.theme.base16Scheme;
+
 }
