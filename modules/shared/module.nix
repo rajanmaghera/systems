@@ -7,6 +7,7 @@ with lib;
 {
 
   imports = [
+    ./keybinds.nix
     ./colors.nix
   ];
 
