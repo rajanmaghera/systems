@@ -128,8 +128,6 @@
     "workbench.activityBar.location": "bottom",
     "workbench.editor.editorActionsLocation": "hidden",
     "workbench.editor.showTabs": "multiple",
-    "workbench.preferredDarkColorTheme": "Dark Modern",
-    "workbench.preferredLightColorTheme": "Light Modern",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": false,
     "workbench.tree.enableStickyScroll": false

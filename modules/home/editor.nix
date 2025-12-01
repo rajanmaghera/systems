@@ -29,11 +29,9 @@ in
           rust-lang.rust-analyzer
           github.vscode-pull-request-github
           usernamehw.errorlens
-          github.github-vscode-theme
           vscodevim.vim
           bbenoist.nix
           github.copilot
-          chadalen.vscode-jetbrains-icon-theme
         ];
         userSettings = builtins.fromJSON (builtins.readFile ./vscode.json);
 

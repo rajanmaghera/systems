@@ -69,7 +69,6 @@ in
     programs.helix = {
       enable = true;
       settings = {
-        theme = "darcula-solid";
         editor.line-number = "relative";
       };
       languages.language-server = {
