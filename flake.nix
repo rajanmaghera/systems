@@ -12,16 +12,19 @@
     crane.url = "github:ipetkov/crane";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.url = "github:nix-community/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
     {
-      self,
       nixpkgs,
       darwin,
       home-manager,
       crane,
       nix-vscode-extensions,
+      stylix,
+      ...
     }:
     let
 
@@ -77,6 +80,7 @@
             }
             nixpkgs.nixosModules.readOnlyPkgs
             home-manager.nixosModules.home-manager
+            stylix.nixosModules.stylix
             ./modules/home/system-module.nix
             ./modules/nixos
             ./modules/shared/module.nix
@@ -94,6 +98,7 @@
           };
           modules = [
             home-manager.darwinModules.home-manager
+            stylix.darwinModules.stylix
             ./modules/home/system-module.nix
             ./modules/darwin
             ./modules/shared/module.nix
@@ -108,6 +113,7 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = makePkgs system;
           modules = [
+            stylix.homeModules.stylix
             ./modules/home/home-module.nix
             ./modules/shared/module.nix
             configModule
