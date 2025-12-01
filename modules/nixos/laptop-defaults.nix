@@ -16,23 +16,9 @@ in
       description = "Enable default configuration options for devices with laptop-like features";
     };
 
-    sound = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable sound support";
-    };
-
-    touchpad = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Force enable touchpad support";
-    };
   };
 
   config = mkIf cfg.enable {
-    sound.enable = mkIf cfg.sound true;
-    hardware.pulseaudio.enable = mkIf cfg.sound true;
-
-    services.libinput.enable = mkIf cfg.touchpad true;
+    services.libinput.enable = true;
   };
 }

@@ -6,15 +6,13 @@
   my.defaults.hostName = "sourfruit";
 
   my.kde.enable = true;
+  my.qemu-guest.enable = true;
 
   my.laptop-defaults.enable = true;
-  my.qemu-guest.enable = true;
+
   services.openssh.enable = true;
 
-  my.docker.enable = true;
-
   my.shell.zsh.enable = true;
-  my.autowallpaper.enable = true;
 
   my.home = {
     my.editor.enable = true;
