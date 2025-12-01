@@ -254,6 +254,7 @@ in
         nodejs
         yarn
         glab
+        nixd
         gh
         ripgrep
         watchman
