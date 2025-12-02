@@ -243,9 +243,9 @@ in
         config.font_size = 12
         config.font = wezterm.font 'Fragment Mono'
         config.enable_tab_bar = false
-        config.default_prog = { '${pkgs.zsh}/bin/zsh', '-l' }
         config.set_environment_variables = {
-          ZELLIJ_AUTO_ATTACH= "true",
+          ZELLIJ_AUTO_ATTACH = "true",
+          SHELL = "${pkgs.zsh}/bin/zsh",
         }
 
         config.keys = {
