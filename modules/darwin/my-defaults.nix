@@ -38,10 +38,8 @@ in
       my.defaults = cfg;
     };
 
-    # Use Nix's shell instead of default
-    # TODO move to own file
-    programs.zsh.enable = true;
-    environment.shells = [ pkgs.zsh ];
+    # The shell config is mostly managed with HM to cause
+    # the least amount of breakage with the default shell.
 
     # Theming config
     stylix.enable = mkIf cfg.theme.enable true;
