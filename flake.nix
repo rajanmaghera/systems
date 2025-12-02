@@ -133,7 +133,7 @@
       );
 
       # Re-expose nixpkgs + custom packages + flake input packages
-      packages = eachPkgs (pkgs: pkgs);
+      legacyPackages = eachPkgs (pkgs: pkgs);
 
       # NixOS configuration
       nixosConfigurations = {
