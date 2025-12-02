@@ -14,6 +14,9 @@ config.initial_rows = 28
 config.font_size = 12
 config.font = wezterm.font 'Fragment Mono'
 config.enable_tab_bar = false
+config.set_environment_variables = {
+  ZELLIJ_AUTO_ATTACH= "true",
+}
 
 config.keys = {
   { key = 'Enter', mods = 'ALT', action = wezterm.action.DisableDefaultAssignment },

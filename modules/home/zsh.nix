@@ -22,6 +22,17 @@ in
       enableCompletion = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
+      oh-my-zsh = {
+        enable = true;
+        theme = "gentoo";
+      };
+      initContent = ''
+if [[ -z "$ZELLIJ" ]]; then
+    if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+        exec zellij attach -c
+    fi
+fi
+      '';
     };
   };
 }
