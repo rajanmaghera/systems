@@ -28,7 +28,7 @@ in
       };
       initContent = ''
         if [[ -n "$ZELLIJ_AUTO_ATTACH" && -z "$ZELLIJ" ]]; then
-            zellij attach -c; exit
+            exec zellij attach -c
         fi
       '';
     };

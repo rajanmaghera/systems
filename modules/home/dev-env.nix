@@ -41,31 +41,6 @@ in
       };
     };
 
-    programs.jujutsu = {
-      enable = true;
-      settings = {
-        user = {
-          email = mkIf cfg.defaultIdentity "maghera@cs.toronto.edu";
-          name = mkIf cfg.defaultIdentity "Rajan Maghera";
-        };
-      };
-    };
-
-    programs.direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
-
-    programs.tmux = {
-      enable = true;
-      extraConfig = ''
-        set -sg escape-time 0
-        set -g status-left-length 20
-      '';
-    };
-
     programs.helix = {
       enable = true;
       settings = {
@@ -223,10 +198,11 @@ in
 
     programs.zellij = {
       enable = true;
-    };
-
-    programs.nnn = {
-      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        default_shell = "${pkgs.zsh}/bin/zsh";
+        show_startup_tips = false;
+      };
     };
 
     fonts.fontconfig.enable = true;
@@ -236,16 +212,15 @@ in
       enableZshIntegration = true;
       enableBashIntegration = true;
       extraConfig = ''
-
         local wezterm = require 'wezterm'
         local config = wezterm.config_builder()
 
         config.font_size = 12
         config.font = wezterm.font 'Fragment Mono'
         config.enable_tab_bar = false
+        config.default_prog = { '${pkgs.zsh}/bin/zsh', '-l' }
         config.set_environment_variables = {
           ZELLIJ_AUTO_ATTACH = "true",
-          SHELL = "${pkgs.zsh}/bin/zsh",
         }
 
         config.keys = {
