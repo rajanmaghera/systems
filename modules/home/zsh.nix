@@ -27,10 +27,8 @@ in
         theme = "gentoo";
       };
       initContent = ''
-        if [[ -z "$ZELLIJ" ]]; then
-            if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
-                exec zellij attach -c
-            fi
+        if [[ -n "$ZELLIJ_AUTO_ATTACH" && -z "$ZELLIJ" ]]; then
+            zellij attach -c; exit
         fi
       '';
     };
