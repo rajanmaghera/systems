@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 with lib;
@@ -29,7 +28,7 @@ in
       initContent = ''
         if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
           if [[ -z "$ZELLIJ" ]]; then
-              exec zellij attach -c
+              exec zellij attach -c main
           fi
         fi
       '';
