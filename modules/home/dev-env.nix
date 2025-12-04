@@ -198,7 +198,6 @@ in
 
     programs.zellij = {
       enable = true;
-      enableZshIntegration = true;
       settings = {
         default_shell = "${pkgs.zsh}/bin/zsh";
         show_startup_tips = false;
