@@ -31,6 +31,7 @@ in
         ".direnv"
         ".envrc"
         ".DS_Store"
+        "justfile"
       ];
       settings = {
         user.name = mkIf cfg.defaultIdentity "Rajan Maghera";
@@ -39,6 +40,12 @@ in
         rebase.updateRefs = true;
         merge.conflictstyle = "diff3";
       };
+    };
+
+    programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
     };
 
     programs.helix = {
@@ -261,6 +268,8 @@ in
         typescript
         typescript-language-server
         yazi
+        nix-search-cli
+        just
       ]
       ++ lib.optionals stdenv.isDarwin [
         libiconv
