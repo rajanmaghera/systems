@@ -4,6 +4,7 @@
     ./cli.nix
     ./dev-env.nix
     ./llm.nix
+    ./passwords.nix
     ./fish.nix
     ./adw-gtk3.nix
     ./wallpaper.nix
