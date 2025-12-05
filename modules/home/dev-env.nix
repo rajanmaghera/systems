@@ -48,6 +48,11 @@ in
       nix-direnv.enable = true;
     };
 
+
+    home.sessionVariables = {
+      EDITOR = "hx";
+    };
+
     programs.helix = {
       enable = true;
       settings = {
