@@ -2,6 +2,10 @@
   description = "Rajan's systems config";
 
   nixConfig.extra-experimental-features = "nix-command flakes";
+  nixConfig.extra-substitutors = [ "https://k-framework.cachix.org" ];
+  nixConfig.extra-trusted-public-keys = [
+    "k-framework.cachix.org-1:jeyMXB2h28gpNRjuVkehg+zLj62ma1RnyyopA/20yFE="
+  ];
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -14,16 +18,26 @@
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+    deploy-rs.url = "github:serokell/deploy-rs";
+    nixarr.url = "github:rasmus-kirk/nixarr/dev";
+    k.url = "github:runtimeverification/k";
   };
 
   outputs =
     {
+      self,
       nixpkgs,
       darwin,
       home-manager,
       crane,
       nix-vscode-extensions,
       stylix,
+      disko,
+      deploy-rs,
+      nixarr,
+      k,
       ...
     }:
     let
@@ -37,6 +51,7 @@
             ((import ./pkgs) { inherit crane home-manager; })
             nix-vscode-extensions.overlays.default
             darwin.overlays.default
+            k.overlays.default
           ];
           config = {
             allowUnfreePredicate =
@@ -78,9 +93,10 @@
             {
               nixpkgs.pkgs = makePkgs system;
             }
-            nixpkgs.nixosModules.readOnlyPkgs
             home-manager.nixosModules.home-manager
             stylix.nixosModules.stylix
+            disko.nixosModules.disko
+            nixarr.nixosModules.default
             ./modules/home/system-module.nix
             ./modules/nixos
             ./modules/shared/module.nix
