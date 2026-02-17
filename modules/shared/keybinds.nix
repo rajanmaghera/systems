@@ -1,10 +1,28 @@
 {
   lib,
+  config,
   ...
 }:
 with lib;
 
 let
+  workspaceKeyMap = builtins.listToAttrs (
+    lib.concatLists (
+      lib.imap1 (i: v: [
+        {
+          # Switching to workspace
+          name = builtins.toString i;
+          value = "workspace ${v}";
+        }
+        {
+          # Movement modifications
+          name = "shift-${builtins.toString i}";
+          value = "move-node-to-workspace ${v}";
+        }
+      ]) config.my.defaults.allWorkspacesList
+    )
+  );
+
   aerospaceKeys = {
     main = {
       # Movement
@@ -13,21 +31,9 @@ let
       j = "focus --boundaries all-monitors-outer-frame down";
       k = "focus --boundaries all-monitors-outer-frame up";
       l = "focus --boundaries all-monitors-outer-frame right";
-      left = "focus --boundaries all-monitors-outer-frame left";
-      down = "focus --boundaries all-monitors-outer-frame down";
-      up = "focus --boundaries all-monitors-outer-frame up";
-      right = "focus --boundaries all-monitors-outer-frame right";
 
       period = "workspace next";
       comma = "workspace prev";
-
-      "1" = "workspace 1";
-      "2" = "workspace 2";
-      "3" = "workspace 3";
-      "4" = "workspace 4";
-      "5" = "workspace 5";
-      "6" = "workspace 6";
-      "7" = "workspace 7";
 
       # Layout Modifications
 
@@ -41,9 +47,9 @@ let
       shift-minus = "resize smart -80";
       shift-equal = "resize smart +80";
 
-      b = "balance-sizes";
-      r = "flatten-workspace-tree";
-      f = "layout floating tiling";
+      shift-b = "balance-sizes";
+      shift-r = "flatten-workspace-tree";
+      shift-f = "layout floating tiling";
 
       # Within workspaces movement modifications
 
@@ -51,20 +57,6 @@ let
       shift-j = "move --boundaries all-monitors-outer-frame down";
       shift-k = "move --boundaries all-monitors-outer-frame up";
       shift-l = "move --boundaries all-monitors-outer-frame right";
-      shift-left = "move --boundaries all-monitors-outer-frame left";
-      shift-down = "move --boundaries all-monitors-outer-frame down";
-      shift-up = "move --boundaries all-monitors-outer-frame up";
-      shift-right = "move --boundaries all-monitors-outer-frame right";
-
-      # Movement modifications
-
-      shift-1 = "move-node-to-workspace 1";
-      shift-2 = "move-node-to-workspace 2";
-      shift-3 = "move-node-to-workspace 3";
-      shift-4 = "move-node-to-workspace 4";
-      shift-5 = "move-node-to-workspace 5";
-      shift-6 = "move-node-to-workspace 6";
-      shift-7 = "move-node-to-workspace 7";
 
       shift-period = "move-node-to-workspace --focus-follows-window next";
       shift-comma = "move-node-to-workspace --focus-follows-window prev";
@@ -72,43 +64,15 @@ let
       shift-rightSquareBracket = "move-workspace-to-monitor --wrap-around next";
       shift-leftSquareBracket = "move-workspace-to-monitor --wrap-around prev";
 
-    };
+      # join
+      ctrl-h = "join-with left";
+      ctrl-j = "join-with down";
+      ctrl-k = "join-with up";
+      ctrl-l = "join-with right";
 
-    join = {
+    }
+    // workspaceKeyMap;
 
-      h = [
-        "join-with left"
-        "mode service"
-      ];
-      j = [
-        "join-with down"
-        "mode service"
-      ];
-      k = [
-        "join-with up"
-        "mode service"
-      ];
-      l = [
-        "join-with right"
-        "mode service"
-      ];
-      left = [
-        "join-with left"
-        "mode service"
-      ];
-      down = [
-        "join-with down"
-        "mode service"
-      ];
-      up = [
-        "join-with up"
-        "mode service"
-      ];
-      right = [
-        "join-with right"
-        "mode service"
-      ];
-    };
   };
 
   prependWith =
@@ -121,9 +85,47 @@ let
     );
 
   prependWithAlt = prependWith "alt-";
+
+  padList =
+    length: inputList:
+    let
+      inputLen = builtins.length inputList;
+      padLen = length - inputLen;
+      padding = builtins.genList (i: toString (i + inputLen + 1)) (if padLen > 0 then padLen else 0);
+    in
+    lib.take length ((lib.imap1 (i: v: "${toString i}-${v}") inputList) ++ padding);
 in
 
 {
+  # Setup workspaces
+  options.my.defaults.definedWorkspaces = mkOption {
+    type = types.anything;
+    default = [
+      "web"
+      "comm"
+      "term"
+      "editor"
+      "scratch"
+    ];
+  };
+
+  options.my.defaults.definedWorkspacesMap = mkOption {
+    type = types.anything;
+    default = builtins.listToAttrs (
+      lib.imap1 (i: v: {
+        name = v;
+        value = "${toString i}-${v}";
+      }) config.my.defaults.definedWorkspaces
+    );
+    readOnly = true;
+  };
+
+  options.my.defaults.allWorkspacesList = mkOption {
+    type = types.anything;
+    default = padList 8 (config.my.defaults.definedWorkspaces);
+    readOnly = true;
+  };
+
   # Set of my shortcut maps
   options.my.defaults.shortcutMap = mkOption {
     type = types.anything;
@@ -131,7 +133,6 @@ in
       aerospace = {
         main.binding = {
           alt-space = "mode service";
-          alt-m = "mode join";
           alt-shift-d = "mode disabled";
         }
         // (prependWithAlt aerospaceKeys.main);
@@ -146,21 +147,8 @@ in
             "mode main"
           ];
           alt-space = "mode main";
-          m = "mode joinservice";
         }
         // aerospaceKeys.main;
-
-        join.binding = {
-          esc = "mode main";
-          alt-m = "mode main";
-        }
-        // (prependWithAlt aerospaceKeys.join);
-
-        joinservice.binding = {
-          esc = "mode main";
-          m = "mode service";
-        }
-        // aerospaceKeys.join;
 
         disabled.binding = {
           alt-shift-d = "mode main";
