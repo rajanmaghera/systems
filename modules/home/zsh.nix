@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 with lib;
@@ -16,6 +17,11 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    home.shellAliases = {
+      "sw" = mkIf pkgs.stdenv.isDarwin "sudo darwin-rebuild switch --flake ~/systems#fruit --show-trace";
+    };
+
     programs.zsh = {
       enable = true;
       enableCompletion = true;
