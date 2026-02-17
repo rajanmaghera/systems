@@ -15,11 +15,6 @@ in
       default = false;
       description = "Enable configuration for a QEMU guest with video drivers.";
     };
-    sharedFolder = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable shared folder via VirtFS. The permissions of the shared folder might not be correct. To fix this, run `sudo fix-virtfs-permissions`.";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -44,31 +39,29 @@ in
     # QEMU guest services
     services.qemuGuest.enable = true;
     services.spice-vdagentd.enable = true;
-    services.xserver.videoDrivers = [ "qxl" ];
-
-    # VirtFs
-    system.activationScripts.makeMountFolderForVirtFs = mkIf cfg.sharedFolder {
-      text = ''
-        mkdir -p /mnt/virtfs
-      '';
-    };
-
-    fileSystems."/mnt/virtfs" = mkIf cfg.sharedFolder {
-      device = "share";
-      fsType = "9p";
-      options = [
-        "trans=virtio"
-        "version=9p2000.L"
-        "rw"
-        "_netdev"
-        "nofail"
-      ];
-    };
-
-    environment.systemPackages = mkIf cfg.sharedFolder [
-      (pkgs.writeScriptBin "fix-virtfs-permissions" ''
-        chown -R ${config.my.defaults.username}:users /mnt/virtfs
-      '')
+    environment.systemPackages = with pkgs; [
+      spice-vdagent
     ];
+    services.xserver.videoDrivers = [
+      "qxl"
+      "virtio"
+    ];
+
+    # Fix for service not starting in userspace
+    systemd.user.services.spice-vdagent = {
+      description = "spice-vdagent user daemon";
+      after = [
+        "spice-vdagentd.service"
+        "graphical-session.target"
+      ];
+      requires = [ "graphical-session.target" ];
+      wantedBy = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.spice-vdagent}/bin/spice-vdagent -x";
+      };
+      unitConfig = {
+        ConditionPathExists = "/run/spice-vdagentd/spice-vdagent-sock";
+      };
+    };
   };
 }
