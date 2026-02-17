@@ -301,6 +301,9 @@ in
     home.packages =
       with pkgs;
       [
+        emacsPackages.mu4e
+        my-emacs
+        ispell
         nerd-fonts.fira-code
         nerd-fonts.cousine
         nerd-fonts.iosevka
