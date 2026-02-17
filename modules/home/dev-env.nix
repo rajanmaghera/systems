@@ -301,6 +301,7 @@ in
     home.packages =
       with pkgs;
       [
+        deploy-rs
         emacsPackages.mu4e
         my-emacs
         ispell
