@@ -51,10 +51,5 @@ in
         echo -e "[User]\nIcon=/var/lib/AccountsService/icons/${cfg.username}\n" > /var/lib/AccountsService/users/${cfg.username}
       ''
     );
-
-    # Theming config
-    stylix.enable = mkIf cfg.theme.enable true;
-    stylix.base16Scheme = cfg.theme.base16Scheme;
-
   };
 }

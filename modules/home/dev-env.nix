@@ -48,7 +48,6 @@ in
       nix-direnv.enable = true;
     };
 
-
     home.sessionVariables = {
       EDITOR = "hx";
     };
@@ -57,6 +56,7 @@ in
       enable = true;
       settings = {
         editor.line-number = "relative";
+        theme = mkIf config.my.defaults.theme.enable "base16_terminal";
       };
       languages.language-server = {
         texlab = {
@@ -213,6 +213,8 @@ in
       settings = {
         default_shell = "${pkgs.zsh}/bin/zsh";
         show_startup_tips = false;
+        session_serialization = false;
+        theme = mkIf config.my.defaults.theme.enable "ansi";
       };
     };
 
@@ -226,14 +228,14 @@ in
         local wezterm = require 'wezterm'
         local config = wezterm.config_builder()
 
-        config.font_size = 12
-        config.font = wezterm.font 'Fragment Mono'
+        config.font_size = 14
+        config.font = wezterm.font '${config.my.defaults.theme.fontFamily}'
         config.enable_tab_bar = false
         config.default_prog = { '${pkgs.zsh}/bin/zsh', '-l' }
         config.set_environment_variables = {
           ZELLIJ_AUTO_ATTACH = "true",
         }
-
+        config.window_close_confirmation = "NeverPrompt"
         config.keys = {
           { key = 'Enter', mods = 'ALT', action = wezterm.action.DisableDefaultAssignment },
         }
@@ -242,6 +244,59 @@ in
       '';
 
     };
+
+    programs.ghostty =
+
+      let
+        makeTheme = colors: {
+
+          background = colors.base00;
+          foreground = colors.base05;
+          cursor-color = colors.base05;
+          selection-background = colors.base02;
+          selection-foreground = colors.base05;
+
+          palette = with colors.withHashtag; [
+            "0=${base00}"
+            "1=${base08}"
+            "2=${base0B}"
+            "3=${base0A}"
+            "4=${base0D}"
+            "5=${base0E}"
+            "6=${base0C}"
+            "7=${base05}"
+            "8=${base03}"
+            "9=${base08}"
+            "10=${base0B}"
+            "11=${base0A}"
+            "12=${base0D}"
+            "13=${base0E}"
+            "14=${base0C}"
+            "15=${base07}"
+          ];
+        };
+      in
+
+      {
+        enable = true;
+        package = pkgs.ghostty-bin;
+
+        themes.my-light = mkIf config.my.defaults.theme.enable (
+          makeTheme config.my.defaults.theme.base16LightColors
+        );
+        themes.my-dark = mkIf config.my.defaults.theme.enable (
+          makeTheme config.my.defaults.theme.base16DarkColors
+        );
+
+        settings = {
+          command = "/usr/bin/env ZELLIJ_AUTO_ATTACH=\"true\" ${pkgs.zsh}/bin/zsh -l";
+          confirm-close-surface = false;
+          quit-after-last-window-closed = true;
+          macos-option-as-alt = true;
+          font-family = config.my.defaults.theme.fontFamily;
+          theme = mkIf config.my.defaults.theme.enable "light:my-light,dark:my-dark";
+        };
+      };
 
     home.packages =
       with pkgs;
