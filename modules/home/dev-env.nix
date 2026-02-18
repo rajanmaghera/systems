@@ -328,7 +328,7 @@ in
         ocamlPackages.ocaml-lsp
         ocamlPackages.ocamlformat
         neovim
-        nixfmt-rfc-style
+        nixfmt
         typescript
         typescript-language-server
         yazi

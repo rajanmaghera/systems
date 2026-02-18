@@ -25,13 +25,11 @@ with lib;
 
     base16LightColors = mkOption {
       type = types.anything;
-      readOnly = true;
       default = config.stylix.base16.mkSchemeAttrs config.my.defaults.theme.base16LightScheme;
     };
 
     base16DarkColors = mkOption {
       type = types.anything;
-      readOnly = true;
       default = config.stylix.base16.mkSchemeAttrs config.my.defaults.theme.base16DarkScheme;
     };
 

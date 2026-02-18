@@ -144,7 +144,7 @@
       formatter = eachPkgs (
         pkgs:
         pkgs.nixfmt-tree.override {
-          runtimeInputs = [ pkgs.nixfmt-rfc-style ];
+          runtimeInputs = [ pkgs.nixfmt ];
         }
       );
 
