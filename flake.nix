@@ -166,6 +166,14 @@
       homeConfigurations = {
         precision = makeHome ./machines/precision "x86_64-linux";
       };
+
+      # Hydra jobs
+      hydraJobs = {
+        packages = eachPkgs (pkgs: {
+          inherit (pkgs) my-emacs;
+        });
+      };
+
     };
 
 }
