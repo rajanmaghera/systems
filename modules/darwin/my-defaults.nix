@@ -34,13 +34,12 @@ in
     home-manager.backupFileExtension = "bkup";
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
-    home-manager.users."${cfg.username}" = config.my.home // {
+    home-manager.users."${cfg.username}" = recursiveUpdate config.my.home {
       my.defaults = cfg;
     };
 
     # The shell config is mostly managed with HM to cause
     # the least amount of breakage with the default shell.
-
 
   };
 }

@@ -8,5 +8,10 @@
   my.security.pam.enable = true;
   my.aerospace.enable = true;
 
-  my.home = { };
+  my.home = {
+    my.cli.enable = true;
+    my.dev-env.enable = true;
+    my.shell.zsh.enable = true;
+    my.passwords.enable = true;
+  };
 }

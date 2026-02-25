@@ -31,7 +31,7 @@ in
     home-manager.backupFileExtension = "bkup";
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
-    home-manager.users."${cfg.username}" = config.my.home // {
+    home-manager.users."${cfg.username}" = recursiveUpdate config.my.home {
       my.defaults = cfg;
     };
 
