@@ -27,6 +27,6 @@ let
         deploy-rs = flake deploy-rs;
         k = flake k;
       };
-    }).result;
+    });
 in
 (flake ./.).outputs.hydraJobs
