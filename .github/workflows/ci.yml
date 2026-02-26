@@ -17,14 +17,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - os: ubuntu-latest
-          #   output: nixosConfigurations.my-machine.config.system.build.toplevel
+          - os: ubuntu-latest
+            output: homeConfigurations.precision.activationPackage
           - os: macos-latest
             output: darwinConfigurations.fruit.system
     
     runs-on: ${{ matrix.os }}
     permissions:
-      id-token: write # For Tailscale
       contents: read
 
     steps:
@@ -35,20 +34,6 @@ jobs:
         uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v4
-        with:
-          authkey: ${{ secrets.TS_AUTHKEY }}
-
-      - name: Setup Attic Cache (Push)
-        uses: ryanccn/attic-action@v0
-        continue-on-error: true # Allow CI to still build if it can't connect to cache
-        with:
-          endpoint: ${{ secrets.ATTIC_SERVER_URL }}
-          cache: ci-builds
-          token: ${{ secrets.ATTIC_TOKEN }}
-          inputs-from: .
 
       - name: Build System
         run: nix build .#${{ matrix.output }} --accept-flake-config
