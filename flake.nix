@@ -169,9 +169,21 @@
 
       # Hydra jobs
       hydraJobs = {
-        packages = eachPkgs (pkgs: {
-          inherit (pkgs) my-emacs;
-        });
+        packages.x86_64-linux =
+          let
+            pkgs = makePkgs "x86_64-linux";
+          in
+          {
+            inherit (pkgs)
+              my-emacs
+              my-cli
+              rars
+              home-manager
+              ;
+          };
+        homeManagerConfigurations = {
+          inherit (self.homeConfigurations) precision;
+        };
       };
 
     };
