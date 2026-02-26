@@ -168,21 +168,18 @@
       };
 
       # Hydra jobs
-      hydraJobs = {
-        packages.x86_64-linux =
-          let
-            pkgs = makePkgs "x86_64-linux";
-          in
-          {
-            inherit (pkgs)
+      hydraJobs =
+        let
+          x86_64-linux-pkgs = makePkgs "x86_64-linux";
+        in
+        {
+          packages.x86_64-linux = {
+            inherit (x86_64-linux-pkgs)
               my-emacs
               my-cli
               rars
-              home-manager
               ;
           };
-        homeManagerConfigurations = {
-          inherit (self.homeConfigurations) precision;
         };
       };
 
