@@ -23,6 +23,7 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     nixarr.url = "github:rasmus-kirk/nixarr/dev";
     k.url = "github:runtimeverification/k";
+    flake-compat.url = "github:rajanmaghera/flake-compat";
   };
 
   outputs =
