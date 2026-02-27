@@ -13,4 +13,5 @@ final: prev: {
   switch-mode = prev.callPackage ./switch-mode { };
   home-manager = home-manager.packages.${prev.stdenv.hostPlatform.system}.home-manager;
   my-emacs = prev.callPackage ./my-emacs { };
+  my-tex = prev.callPackage ./my-tex { };
 }

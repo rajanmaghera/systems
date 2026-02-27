@@ -182,6 +182,7 @@
               my-emacs
               my-cli
               rars
+              my-tex
               ;
           };
         };
