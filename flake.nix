@@ -174,6 +174,9 @@
           x86_64-linux-pkgs = makePkgs "x86_64-linux";
         in
         {
+          homeConfigurations = {
+            precision = self.homeConfigurations.precision.activationPackage;
+          };
           packages.x86_64-linux = {
             inherit (x86_64-linux-pkgs)
               my-emacs
