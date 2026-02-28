@@ -181,7 +181,8 @@
             inherit (x86_64-linux-pkgs)
               my-emacs
               my-cli
-              rars
+              rars_1_5
+              rars_1_6
               my-tex
               ;
           };

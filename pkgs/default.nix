@@ -4,7 +4,8 @@
 }:
 final: prev: {
   my-cli = (import ./my) crane prev;
-  rars = prev.callPackage ./rars { };
+  rars_1_5 = prev.callPackage ./rars { version = "1.5"; };
+  rars_1_6 = prev.callPackage ./rars { version = "1.6"; };
   rust-shell = prev.callPackage ./rust-shell { };
   llvm-shell = prev.callPackage ./llvm-shell { };
   cuda-shell = prev.callPackage ./cuda-shell { };

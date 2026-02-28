@@ -1,29 +1,36 @@
 {
   stdenv,
   lib,
-  writeText,
   fetchurl,
   jre_minimal,
-  makeDesktopItem,
+  version ? "1.5",
   ...
 }:
 let
-  versionMajor = "1";
-  versionMinor = "5";
   jre = jre_minimal.override {
     modules = [
       "java.prefs"
       "java.desktop"
     ];
   };
-in
-stdenv.mkDerivation {
-  pname = "rars";
-  version = "${versionMajor}.${versionMinor}";
 
+  links = {
+    "1.5" = {
+      url = "https://github.com/TheThirdOne/rars/releases/download/v1.5/rars1_5.jar";
+      sha256 = "sha256-w75gfARfR46Up6qng1GYL0u8ENfpD3xHhl/yp9lEcUE=";
+    };
+    "1.6" = {
+      url = "https://github.com/TheThirdOne/rars/releases/download/v1.6/rars1_6.jar";
+      sha256 = "sha256-eA9zDrRXsbpgnpaKzMLIt32PksPZ2/MMx/2zz7FOjCQ=";
+    };
+  };
+in
+stdenv.mkDerivation rec {
+  inherit version;
+  pname = "rars";
   src = fetchurl {
-    url = "https://github.com/TheThirdOne/rars/releases/download/v${versionMajor}.${versionMinor}/rars${versionMajor}_${versionMinor}.jar";
-    sha256 = "sha256-w75gfARfR46Up6qng1GYL0u8ENfpD3xHhl/yp9lEcUE=";
+    url = links.${version}.url;
+    sha256 = links.${version}.sha256;
   };
 
   buildInputs = [ jre ];
