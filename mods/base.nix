@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, withSystem, ... }:
 {
 
   systems = [
@@ -9,56 +9,13 @@
 
   flake =
     let
-      # Top-level packages object used by everything
-      makePkgs =
-        system:
-        import inputs.nixpkgs {
-          inherit system;
-          overlays = [
-            ((import ../pkgs) { inherit (inputs) crane home-manager; })
-            inputs.nix-vscode-extensions.overlays.default
-            inputs.darwin.overlays.default
-            inputs.k.overlays.default
-          ];
-          config = {
-            allowUnfreePredicate =
-              pkg:
-              builtins.elem (pkg.pname or "") [
-                "vscode"
-                "vscode-extension-github-copilot"
-                "jetbrains"
-                "jetbrains.clion"
-                "clion"
-              ];
-          };
-        };
-
-      # Function to generate configurations for each system
-      each =
-        f:
-        builtins.listToAttrs (
-          map
-            (system: {
-              name = system;
-              value = f system;
-            })
-            [
-              "x86_64-linux"
-              "aarch64-darwin"
-              "aarch64-linux"
-            ]
-        );
-
-      # Function to generate configurations and nixpkgs for each system
-      eachPkgs = f: (each (system: f (makePkgs system)));
-
       # Builder for NixOS config
       makeNixos =
         configModule: system:
         inputs.nixpkgs.lib.nixosSystem {
           modules = [
             {
-              nixpkgs.pkgs = makePkgs system;
+              nixpkgs.pkgs = withSystem system ({ pkgs, ... }: pkgs);
             }
             inputs.home-manager.nixosModules.home-manager
             inputs.stylix.nixosModules.stylix
@@ -77,7 +34,7 @@
         configModule: system:
         inputs.darwin.lib.darwinSystem {
           specialArgs = {
-            pkgs = makePkgs system;
+            pkgs = withSystem system ({ pkgs, ... }: pkgs);
           };
           modules = [
             inputs.home-manager.darwinModules.home-manager
@@ -94,7 +51,7 @@
       makeHome =
         configModule: system:
         inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = makePkgs system;
+          pkgs = withSystem system ({ pkgs, ... }: pkgs);
           modules = [
             inputs.stylix.homeModules.stylix
             ../modules/home/home-module.nix
@@ -106,17 +63,6 @@
 
     in
     {
-
-      # Nix file formatter
-      formatter = eachPkgs (
-        pkgs:
-        pkgs.nixfmt-tree.override {
-          runtimeInputs = [ pkgs.nixfmt ];
-        }
-      );
-
-      # Re-expose nixpkgs + custom packages + flake input packages
-      legacyPackages = eachPkgs (pkgs: pkgs);
 
       # NixOS configuration
       nixosConfigurations = {
@@ -135,25 +81,36 @@
       };
 
       # Hydra jobs
-      hydraJobs =
-        let
-          x86_64-linux-pkgs = makePkgs "x86_64-linux";
-        in
-        {
-          homeConfigurations = {
-            precision = inputs.self.homeConfigurations.precision.activationPackage;
-          };
-          packages.x86_64-linux = {
-            inherit (x86_64-linux-pkgs)
+      hydraJobs = {
+        homeConfigurations = {
+          precision = inputs.self.homeConfigurations.precision.activationPackage;
+        };
+        packages.x86_64-linux = withSystem "x86_64-linux" (
+          { pkgs, ... }:
+          {
+            inherit (pkgs)
               my-emacs
               my-cli
               rars_1_5
               rars_1_6
               my-tex
               ;
-          };
-        };
+          }
+        );
+      };
+    };
 
+  perSystem =
+    { pkgs, ... }:
+    {
+
+      # Nix file formatter
+      formatter = pkgs.nixfmt-tree.override {
+        runtimeInputs = [ pkgs.nixfmt ];
+      };
+
+      # Re-expose nixpkgs + custom packages + flake input packages
+      legacyPackages = pkgs;
     };
 
 }
