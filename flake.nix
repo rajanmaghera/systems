@@ -29,6 +29,13 @@
     import-tree.url = "github:vic/import-tree";
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./mods);
-
+  outputs =
+    inputs:
+    let
+      mods = inputs.import-tree ./mods;
+    in
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ mods ];
+      flake.flakeModules.default = mods;
+    };
 }
