@@ -7,43 +7,63 @@
 }:
 {
 
-  options.conf.modules = {
-    darwin = lib.mkOption {
-      type = lib.types.listOf lib.types.deferredModule;
-    };
-    home = lib.mkOption {
-      type = lib.types.listOf lib.types.deferredModule;
-    };
-    nixos = lib.mkOption {
-      type = lib.types.listOf lib.types.deferredModule;
-    };
-  };
+  options =
+    let
+      inherit (lib) mkOptionType concatMap;
 
-  options.sys = lib.mkOption {
-    type = lib.types.lazyAttrsOf (
-      lib.types.submodule {
-        options.class = lib.mkOption {
-          type = lib.types.enum [
-            "darwin"
-            "home"
-            "nixos"
-          ];
-        };
-        options.system = lib.mkOption {
-          type = lib.types.str;
-        };
-        options.module = lib.mkOption {
-          type = lib.types.deferredModule;
-        };
-        options.extraModules = lib.mkOption {
-          type = lib.types.listOf lib.types.deferredModule;
-          default = [ ];
-        };
-      }
-    );
-  };
+      # Define a custom type that gracefully accepts and merges single modules and lists
+      type = mkOptionType {
+        name = "singleOrListModule";
+        description = "a single deferred module or a list of deferred modules";
 
-  config.conf.modules = {
+        # Check validates the inputs without evaluating the modules themselves
+        check =
+          val:
+          if builtins.isList val then
+            lib.all lib.types.deferredModule.check val
+          else
+            lib.types.deferredModule.check val;
+
+        # The magic happens here: flatten everything into a single list
+        merge =
+          loc: defs: concatMap (def: if builtins.isList def.value then def.value else [ def.value ]) defs;
+      };
+    in
+    {
+      conf.mod = {
+        darwin = lib.mkOption {
+          inherit type;
+        };
+        home = lib.mkOption {
+          inherit type;
+        };
+        nixos = lib.mkOption {
+          inherit type;
+        };
+      };
+
+      sys = lib.mkOption {
+        type = lib.types.lazyAttrsOf (
+          lib.types.submodule {
+            options.class = lib.mkOption {
+              type = lib.types.enum [
+                "darwin"
+                "home"
+                "nixos"
+              ];
+            };
+            options.system = lib.mkOption {
+              type = lib.types.str;
+            };
+            options.mod = lib.mkOption {
+              inherit type;
+            };
+          }
+        );
+      };
+    };
+
+  config.conf.mod = {
     nixos = [
       inputs.home-manager.nixosModules.home-manager
       inputs.stylix.nixosModules.stylix
@@ -76,8 +96,7 @@
         name:
         {
           system,
-          module,
-          extraModules,
+          mod,
           ...
         }:
         {
@@ -87,33 +106,23 @@
                 nixpkgs.pkgs = withSystem system ({ pkgs, ... }: pkgs);
               }
             ]
-            ++ config.conf.modules.nixos
-            ++ extraModules
-            ++ [
-              module
-            ];
+            ++ config.conf.mod.nixos
+            ++ mod;
           };
         };
       makeDarwin =
         name:
         {
           system,
-          module,
-          extraModules,
+          mod,
           ...
         }:
         {
-
           darwinConfigurations.${name} = inputs.darwin.lib.darwinSystem {
             specialArgs = {
               pkgs = withSystem system ({ pkgs, ... }: pkgs);
             };
-            modules =
-              config.conf.modules.darwin
-              ++ extraModules
-              ++ [
-                module
-              ];
+            modules = config.conf.mod.darwin ++ mod;
           };
         };
 
@@ -121,19 +130,13 @@
         name:
         {
           system,
-          module,
-          extraModules,
+          mod,
           ...
         }:
         {
           homeConfigurations.${name} = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = withSystem system ({ pkgs, ... }: pkgs);
-            modules =
-              config.conf.modules.home
-              ++ extraModules
-              ++ [
-                module
-              ];
+            modules = config.conf.mod.home ++ mod;
           };
         };
     in

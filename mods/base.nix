@@ -7,18 +7,6 @@
     "aarch64-darwin"
   ];
 
-  sys.fruit = {
-    system = "aarch64-darwin";
-    module = ../machines/fruit;
-    class = "darwin";
-  };
-
-  sys.precision = {
-    system = "x86_64-linux";
-    module = ../machines/precision;
-    class = "home";
-  };
-
   # Hydra jobs
   flake.hydraJobs = {
     homeConfigurations = {
