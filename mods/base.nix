@@ -7,12 +7,6 @@
     "aarch64-darwin"
   ];
 
-  sys.sourfruit = {
-    system = "x86_64-linux";
-    class = "nixos";
-    module = ../machines/sourfruit;
-  };
-
   sys.fruit = {
     system = "aarch64-darwin";
     module = ../machines/fruit;
