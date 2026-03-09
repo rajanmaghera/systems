@@ -43,7 +43,6 @@ in
       spice-vdagent
     ];
     services.xserver.videoDrivers = [
-      "qxl"
       "virtio"
     ];
 
