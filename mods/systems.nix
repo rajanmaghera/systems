@@ -9,8 +9,7 @@
 
   options =
     let
-      inherit (lib) mkOptionType concatMap;
-      type = mkOptionType {
+      listModType = lib.mkOptionType {
         name = "singleOrListModule";
         description = "a single deferred module or a list of deferred modules";
         check =
@@ -20,25 +19,25 @@
           else
             lib.types.deferredModule.check val;
         merge =
-          loc: defs: concatMap (def: if builtins.isList def.value then def.value else [ def.value ]) defs;
+          loc: defs: lib.concatMap (def: if builtins.isList def.value then def.value else [ def.value ]) defs;
       };
     in
     {
       conf.mod = {
         darwin = lib.mkOption {
-          inherit type;
+          type = listModType;
           default = [ ];
         };
         home = lib.mkOption {
-          inherit type;
+          type = listModType;
           default = [ ];
         };
         only-home = lib.mkOption {
-          inherit type;
+          type = listModType;
           default = [ ];
         };
         nixos = lib.mkOption {
-          inherit type;
+          type = listModType;
           default = [ ];
         };
       };
@@ -57,7 +56,7 @@
               type = lib.types.str;
             };
             options.mod = lib.mkOption {
-              inherit type;
+              type = listModType;
             };
           }
         );
