@@ -1,4 +1,5 @@
-{ config, lib, ...}: {
+{ config, lib, ... }:
+{
   pkgs.call.rars =
     {
       stdenv,

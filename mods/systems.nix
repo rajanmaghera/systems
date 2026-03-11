@@ -10,21 +10,15 @@
   options =
     let
       inherit (lib) mkOptionType concatMap;
-
-      # Define a custom type that gracefully accepts and merges single modules and lists
       type = mkOptionType {
         name = "singleOrListModule";
         description = "a single deferred module or a list of deferred modules";
-
-        # Check validates the inputs without evaluating the modules themselves
         check =
           val:
           if builtins.isList val then
             lib.all lib.types.deferredModule.check val
           else
             lib.types.deferredModule.check val;
-
-        # The magic happens here: flatten everything into a single list
         merge =
           loc: defs: concatMap (def: if builtins.isList def.value then def.value else [ def.value ]) defs;
       };
@@ -33,12 +27,19 @@
       conf.mod = {
         darwin = lib.mkOption {
           inherit type;
+          default = [ ];
         };
         home = lib.mkOption {
           inherit type;
+          default = [ ];
+        };
+        only-home = lib.mkOption {
+          inherit type;
+          default = [ ];
         };
         nixos = lib.mkOption {
           inherit type;
+          default = [ ];
         };
       };
 
@@ -63,33 +64,6 @@
       };
     };
 
-  config.conf.mod = {
-    nixos = [
-      inputs.home-manager.nixosModules.home-manager
-      inputs.stylix.nixosModules.stylix
-      inputs.disko.nixosModules.disko
-      inputs.nixarr.nixosModules.default
-      ../modules/home/system-module.nix
-      ../modules/nixos
-      ../modules/shared/module.nix
-      ../modules/shared/nested-home-module.nix
-    ];
-    darwin = [
-      inputs.home-manager.darwinModules.home-manager
-      inputs.stylix.darwinModules.stylix
-      ../modules/home/system-module.nix
-      ../modules/darwin
-      ../modules/shared/module.nix
-      ../modules/shared/nested-home-module.nix
-    ];
-    home = [
-      inputs.stylix.homeModules.stylix
-      ../modules/home/home-module.nix
-      ../modules/shared/module.nix
-    ];
-
-  };
-
   config.flake =
     let
       makeNixos =
@@ -104,6 +78,7 @@
             modules = [
               {
                 nixpkgs.pkgs = withSystem system ({ pkgs, ... }: pkgs);
+                home-manager.sharedModules = config.conf.mod.home;
               }
             ]
             ++ config.conf.mod.nixos
@@ -122,7 +97,13 @@
             specialArgs = {
               pkgs = withSystem system ({ pkgs, ... }: pkgs);
             };
-            modules = config.conf.mod.darwin ++ mod;
+            modules = [
+              {
+                home-manager.sharedModules = config.conf.mod.home;
+              }
+            ]
+            ++ config.conf.mod.darwin
+            ++ mod;
           };
         };
 
@@ -136,7 +117,7 @@
         {
           homeConfigurations.${name} = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = withSystem system ({ pkgs, ... }: pkgs);
-            modules = config.conf.mod.home ++ mod;
+            modules = config.conf.mod.only-home ++ config.conf.mod.home ++ mod;
           };
         };
     in
