@@ -286,6 +286,13 @@
           };
         };
 
+      programs.jujutsu.enable = true;
+      programs.jujutsu.settings = {
+        user.name = lib.mkIf cfg.defaultIdentity "Rajan Maghera";
+        user.email = lib.mkIf cfg.defaultIdentity "maghera@cs.toronto.edu";
+        spr.branchPrefix = "rajanmaghera/";
+      };
+
       home.packages =
         with pkgs;
         [
@@ -303,6 +310,7 @@
           (git-branchless.overrideAttrs { doCheck = false; })
           git-absorb
           lazygit
+          lazyjj
           nodejs
           yarn
           glab
