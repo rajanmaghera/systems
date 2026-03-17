@@ -208,31 +208,6 @@
 
       fonts.fontconfig.enable = true;
 
-      programs.wezterm = {
-        enable = true;
-        enableZshIntegration = true;
-        enableBashIntegration = true;
-        extraConfig = ''
-          local wezterm = require 'wezterm'
-          local config = wezterm.config_builder()
-
-          config.font_size = 14
-          config.font = wezterm.font '${config.my.defaults.theme.fontFamily}'
-          config.enable_tab_bar = false
-          config.default_prog = { '${pkgs.zsh}/bin/zsh', '-l' }
-          config.set_environment_variables = {
-            ZELLIJ_AUTO_ATTACH = "true",
-          }
-          config.window_close_confirmation = "NeverPrompt"
-          config.keys = {
-            { key = 'Enter', mods = 'ALT', action = wezterm.action.DisableDefaultAssignment },
-          }
-
-          return config
-        '';
-
-      };
-
       programs.ghostty =
 
         let
