@@ -58,12 +58,20 @@ in
 
   options = {
     mods = lib.mkOption {
-      type = lib.types.lazyAttrsOf lib.types.unspecified;
+      type = lib.mkOptionType {
+        name = "recursiveAttrs";
+        check = builtins.isAttrs;
+        merge = loc: defs: lib.foldl lib.recursiveUpdate { } (map (x: x.value) defs);
+      };
       default = { };
     };
 
     ops = lib.mkOption {
-      type = lib.types.lazyAttrsOf lib.types.unspecified;
+      type = lib.mkOptionType {
+        name = "recursiveAttrs";
+        check = builtins.isAttrs;
+        merge = loc: defs: lib.foldl lib.recursiveUpdate { } (map (x: x.value) defs);
+      };
       default = { };
     };
 
@@ -78,34 +86,32 @@ in
       map (
         leaf:
         let
-          innerArgs = lib.functionArgs leaf.value;
-          wrapperArgs = innerArgs // {
-            config = false;
-            lib = false;
-          };
           wrapper =
-            args:
+            {
+              pkgs, # required to pass down
+              lib,
+              config,
+              ...
+            }@args:
             let
-              targetConfig = args.config;
-              targetLib = args.lib or lib;
 
-              cfg = targetLib.attrByPath leaf.path { } targetConfig;
-              thisOps = targetLib.attrByPath leaf.path { } targetOps;
+              cfg = lib.attrByPath leaf.path { } config;
+              thisOps = lib.attrByPath leaf.path { } targetOps;
 
               baseEnable = {
-                enable = targetLib.mkOption {
-                  type = targetLib.types.bool;
+                enable = lib.mkOption {
+                  type = lib.types.bool;
                   default = false;
-                  description = "Enable ${targetLib.concatStringsSep "." leaf.path}";
+                  description = "Enable ${lib.concatStringsSep "." leaf.path}";
                 };
               };
             in
             {
-              options = targetLib.setAttrByPath leaf.path (baseEnable // thisOps);
-              config = targetLib.mkIf (cfg.enable or false) (leaf.value (args // { inherit cfg; }));
+              options = lib.setAttrByPath leaf.path (baseEnable // thisOps);
+              config = lib.mkIf cfg.enable (leaf.value (args // { inherit cfg; }));
             };
         in
-        lib.setFunctionArgs wrapper wrapperArgs
+        wrapper
       ) leaves
     ) config.mods;
   };
