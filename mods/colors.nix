@@ -17,7 +17,7 @@ let
 
         base16LightScheme = mkOption {
           type = types.str;
-          default = "${pkgs.base16-schemes}/share/themes/tomorrow.yaml";
+          default = "${pkgs.base16-schemes}/share/themes/cupertino.yaml";
         };
 
         base16DarkScheme = mkOption {
