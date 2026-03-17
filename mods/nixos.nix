@@ -46,6 +46,8 @@
           openssh.authorizedKeys.keys = cfg.authorizedKeys;
         };
 
+        services.openssh.settings.AllowUsers = [ cfg.username ];
+
         system.activationScripts.setProfileImage = mkIf config.my.gui.enable (
           lib.stringAfter [ "var" ] ''
             mkdir -p /var/lib/AccountsService/{icons,users}
