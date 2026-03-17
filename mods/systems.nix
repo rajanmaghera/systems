@@ -58,6 +58,10 @@
             options.mod = lib.mkOption {
               type = listModType;
             };
+            options.deploy = lib.mkOption {
+              type = lib.types.nullOr lib.types.attrs;
+              default = null;
+            };
           }
         );
       };
@@ -72,17 +76,15 @@
           mod,
           ...
         }:
-        {
-          nixosConfigurations.${name} = inputs.nixpkgs.lib.nixosSystem {
-            modules = [
-              {
-                nixpkgs.pkgs = withSystem system ({ pkgs, ... }: pkgs);
-                home-manager.sharedModules = config.conf.mod.home;
-              }
-            ]
-            ++ config.conf.mod.nixos
-            ++ mod;
-          };
+        inputs.nixpkgs.lib.nixosSystem {
+          modules = [
+            {
+              nixpkgs.pkgs = withSystem system ({ pkgs, ... }: pkgs);
+              home-manager.sharedModules = config.conf.mod.home;
+            }
+          ]
+          ++ config.conf.mod.nixos
+          ++ mod;
         };
       makeDarwin =
         name:
@@ -91,19 +93,17 @@
           mod,
           ...
         }:
-        {
-          darwinConfigurations.${name} = inputs.darwin.lib.darwinSystem {
-            specialArgs = {
-              pkgs = withSystem system ({ pkgs, ... }: pkgs);
-            };
-            modules = [
-              {
-                home-manager.sharedModules = config.conf.mod.home;
-              }
-            ]
-            ++ config.conf.mod.darwin
-            ++ mod;
+        inputs.darwin.lib.darwinSystem {
+          specialArgs = {
+            pkgs = withSystem system ({ pkgs, ... }: pkgs);
           };
+          modules = [
+            {
+              home-manager.sharedModules = config.conf.mod.home;
+            }
+          ]
+          ++ config.conf.mod.darwin
+          ++ mod;
         };
 
       makeHome =
@@ -113,26 +113,21 @@
           mod,
           ...
         }:
-        {
-          homeConfigurations.${name} = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = withSystem system ({ pkgs, ... }: pkgs);
-            modules = config.conf.mod.only-home ++ config.conf.mod.home ++ mod;
-          };
+        inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = withSystem system ({ pkgs, ... }: pkgs);
+          modules = config.conf.mod.only-home ++ config.conf.mod.home ++ mod;
         };
+
+      nixosAttrs = lib.attrsets.filterAttrs (n: v: v.class == "nixos") config.sys;
+      darwinAttrs = lib.attrsets.filterAttrs (n: v: v.class == "darwin") config.sys;
+      homeAttrs = lib.attrsets.filterAttrs (n: v: v.class == "home") config.sys;
+      deployAttrs = lib.attrsets.filterAttrs (n: v: v.deploy != null) config.sys;
+
     in
-    lib.mkMerge (
-      lib.attrsets.mapAttrsToList (
-        name: cfg:
-        (
-          {
-            "nixos" = makeNixos;
-            "darwin" = makeDarwin;
-            "home" = makeHome;
-          }
-          .${cfg.class}
-        )
-          name
-          cfg
-      ) config.sys
-    );
+    {
+      nixosConfigurations = lib.attrsets.mapAttrs makeNixos nixosAttrs;
+      darwinConfigurations = lib.attrsets.mapAttrs makeDarwin darwinAttrs;
+      homeConfigurations = lib.attrsets.mapAttrs makeHome homeAttrs;
+      deploy.nodes = lib.attrsets.mapAttrs (n: v: v.deploy) deployAttrs;
+    };
 }
