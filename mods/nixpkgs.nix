@@ -11,6 +11,10 @@
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
+    allUnfree = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
     overlays = lib.mkOption {
       type = lib.types.listOf lib.types.raw;
       default = [ ];
@@ -51,7 +55,11 @@
           (final: prev: builtins.mapAttrs (name: fn: fn final) config.pkgs.def)
         ];
         config = {
-          allowUnfreePredicate = pkg: builtins.elem (pkg.pname or "") config.pkgs.unfree;
+          allowUnfreePredicate =
+            if config.pkgs.allUnfree then
+              (pkg: true)
+            else
+              (pkg: builtins.elem (pkg.pname or "") config.pkgs.unfree);
         };
       };
     };
