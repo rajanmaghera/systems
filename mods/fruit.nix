@@ -10,8 +10,10 @@
     # Enable custom window management
     my.security.pam.enable = true;
     my.aerospace.enable = true;
+    my.gc.enable = true;
 
     my.home = {
+      my.gc.enable = true;
       my.cli.enable = true;
       my.dev-env.enable = true;
       my.shell.zsh.enable = true;
