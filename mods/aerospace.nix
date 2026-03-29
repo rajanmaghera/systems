@@ -9,9 +9,11 @@
     let
       w = config.my.defaults.definedWorkspacesMap;
 
-      # To find these, run aerospace list-apps
+      # To find these, run `aerospace list-apps`
       appMappings = {
         "org.mozilla.firefox" = w.web;
+        "com.google.Chrome.canary" = w.web;
+        "com.google.Chrome" = w.web;
         "com.tinyspeck.slackmacgap" = w.comm;
         "com.microsoft.Outlook" = w.comm;
         "com.hnc.Discord" = w.comm;
@@ -28,6 +30,7 @@
       floatingAppIds = [
         "com.bitwarden.desktop"
         "com.apple.SecurityAgent" # Touch ID prompt
+        "com.apple.LocalAuthentication.UIAgent" # Touch ID prompt
       ];
 
       appMappingsList = lib.attrsets.mapAttrsToList (appId: workspaceId: {
