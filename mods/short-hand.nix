@@ -1,6 +1,111 @@
 { lib, config, ... }:
 
 let
+
+  mkRecursiveModTreeType =
+    submoduleOptions:
+    let
+      submodKeys = [
+        "mod"
+        "_path"
+      ]
+      ++ builtins.attrNames submoduleOptions;
+      nodeSubmodule = lib.types.submodule {
+        options = submoduleOptions // {
+          mod = lib.mkOption {
+            type = lib.types.unspecified; # Change to types.functionTo, etc., depending on your needs
+            description = "The module closure/payload";
+          };
+          _path = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            readOnly = true;
+            description = "The internal path of this module in the tree";
+          };
+        };
+      };
+
+    in
+    lib.mkOptionType {
+      name = "recursiveModTree";
+      description = "A recursive tree that flattens into a list of submodules when mod is found";
+
+      # Recursively verify the tree structure consists of attrsets
+      check =
+        let
+          checkNode = x: lib.isAttrs x && lib.all checkNode (lib.attrValues (removeAttrs x submodKeys));
+        in
+        checkNode;
+
+      # `loc` is the path to this option (e.g., ["myTree"])
+      # `defs` is a list of { file, value } for all declarations of this option
+      merge =
+        loc: defs:
+        let
+          walk =
+            path: defsAtNode:
+            let
+              vals = map (d: d.value) defsAtNode;
+              allKeys = lib.unique (lib.concatMap builtins.attrNames vals);
+              isModNode = builtins.elem "mod" allKeys;
+              evaluatedMod =
+                if isModNode then
+                  let
+
+                    # Remove other child defs
+                    filteredDefs = map (def: {
+                      inherit (def) file;
+                      value = lib.getAttrs (lib.intersectLists submodKeys (builtins.attrNames def.value)) def.value;
+                    }) defsAtNode;
+
+                    # inject the read-only `_path` field
+                    pathDef = {
+                      file = "internal-tree-walker";
+                      value = {
+                        _path = path;
+                      };
+                    };
+                  in
+                  # Call the submodule's merge function directly
+                  nodeSubmodule.merge (loc ++ path) (filteredDefs ++ [ pathDef ])
+                else
+                  null;
+
+              currentResult = if isModNode then [ evaluatedMod ] else [ ];
+
+              # Recurse into children
+              childKeys = builtins.filter (k: !(builtins.elem k submodKeys)) allKeys;
+              childrenResults = map (
+                childKey:
+                let
+                  # Gather all definitions that contain this specific child key
+                  childDefs = builtins.concatMap (
+                    def:
+                    if def.value ? ${childKey} then
+                      [
+                        {
+                          inherit (def) file;
+                          value = def.value.${childKey};
+                        }
+                      ]
+                    else
+                      [ ]
+                  ) defsAtNode;
+                in
+                walk (path ++ [ childKey ]) childDefs
+              ) childKeys;
+
+            in
+            currentResult ++ lib.concatLists childrenResults;
+
+        in
+        walk [ ] defs;
+
+      # Ensure an empty definition defaults to an empty list
+      emptyValue = {
+        value = [ ];
+      };
+    };
+
   # Helper function to recursively find all shorthand functions inside `mods`
   collectLeaves =
     prefix: attrs:
@@ -57,6 +162,13 @@ in
   };
 
   options = {
+
+    def = lib.mkOption {
+      type = mkRecursiveModTreeType {
+      };
+      default = [ ];
+    };
+
     mods = lib.mkOption {
       type = lib.mkOptionType {
         name = "recursiveAttrs";
