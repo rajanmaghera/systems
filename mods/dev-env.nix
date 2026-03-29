@@ -216,6 +216,7 @@
           show_startup_tips = false;
           session_serialization = false;
           theme = lib.mkIf config.my.defaults.theme.enable "ansi";
+          support_kitty_keyboard_protocol = true;
         };
       };
 
@@ -265,12 +266,19 @@
           );
 
           settings = {
-            command = "/usr/bin/env ZELLIJ_AUTO_ATTACH=\"true\" ${pkgs.zsh}/bin/zsh -l";
+            command = "${pkgs.zsh}/bin/zsh -l -c \"${pkgs.zellij}/bin/zellij attach -c main\"";
             confirm-close-surface = false;
             quit-after-last-window-closed = true;
             macos-option-as-alt = true;
             font-family = config.my.defaults.theme.fontFamily;
             theme = lib.mkIf config.my.defaults.theme.enable "light:my-light,dark:my-dark";
+
+            keybind = [
+              "alt+[=unbind"
+              "alt+]=unbind"
+              "alt+left=unbind"
+              "alt+right=unbind"
+            ];
           };
         };
 

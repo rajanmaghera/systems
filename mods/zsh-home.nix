@@ -35,12 +35,10 @@
             enable = true;
             theme = "gentoo";
           };
-          initContent = ''
-            if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
-              if [[ -z "$ZELLIJ" ]]; then
-                  exec zellij attach -c main
-              fi
-            fi
+          initContent = mkIf pkgs.stdenv.isDarwin ''
+            # Bind standard terminal Alt-Left/Right to word jumping
+            bindkey "^[[1;3D" backward-word
+            bindkey "^[[1;3C" forward-word
           '';
         };
       };
