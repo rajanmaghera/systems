@@ -63,8 +63,8 @@ let
           shift-period = "move-node-to-workspace --focus-follows-window next";
           shift-comma = "move-node-to-workspace --focus-follows-window prev";
 
-          shift-rightSquareBracket = "move-workspace-to-monitor --wrap-around next";
-          shift-leftSquareBracket = "move-workspace-to-monitor --wrap-around prev";
+          ctrl-period = "move-workspace-to-monitor --wrap-around next";
+          ctrl-comma = "move-workspace-to-monitor --wrap-around prev";
 
           # join
           ctrl-h = "join-with left";
