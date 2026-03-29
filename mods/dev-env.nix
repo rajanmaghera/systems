@@ -45,6 +45,19 @@
         settings = {
           editor.line-number = "relative";
           theme = lib.mkIf config.my.defaults.theme.enable "base16_terminal";
+
+          keys.normal = {
+            # use yazi to pick files
+            space.o = [
+              ":sh rm -f /tmp/unique-file"
+              ":insert-output yazi \"%{buffer_name}\" --chooser-file=/tmp/unique-file"
+              ":sh printf \"\\x1b[?1049h\\x1b[?2004h\" > /dev/tty"
+              ":open %sh{cat /tmp/unique-file}"
+              ":redraw"
+              ":set mouse false"
+              ":set mouse true"
+            ];
+          };
         };
         languages.language-server = {
           texlab = {
