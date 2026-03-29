@@ -22,7 +22,7 @@ let
 
         base16DarkScheme = mkOption {
           type = types.str;
-          default = "${pkgs.base16-schemes}/share/themes/tomorrow-night.yaml";
+          default = "${pkgs.base16-schemes}/share/themes/atelier-dune.yaml";
         };
 
         base16LightColors = mkOption {
