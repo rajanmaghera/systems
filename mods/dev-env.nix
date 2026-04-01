@@ -303,8 +303,6 @@
           nerd-fonts.geist-mono
           nerd-fonts.im-writing
           fragment-mono
-          (git-branchless.overrideAttrs { doCheck = false; })
-          git-absorb
           lazygit
           lazyjj
           nodejs
@@ -315,10 +313,6 @@
           ripgrep
           watchman
           rustup
-          ocaml
-          opam
-          ocamlPackages.ocaml-lsp
-          ocamlPackages.ocamlformat
           neovim
           nixfmt
           typescript
