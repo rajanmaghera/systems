@@ -293,8 +293,6 @@
         with pkgs;
         [
           deploy-rs
-          emacsPackages.mu4e
-          my-emacs
           ispell
           nerd-fonts.fira-code
           nerd-fonts.cousine
