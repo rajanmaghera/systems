@@ -47,8 +47,11 @@
 
   config.perSystem =
     { system, ... }:
+    let
+      input-nixpkgs = if system == [ "aarch64-darwin" ] then inputs.nixpkgs-darwin else inputs.nixpkgs;
+    in
     {
-      _module.args.pkgs = import inputs.nixpkgs {
+      _module.args.pkgs = import input-nixpkgs {
         inherit system;
         overlays = config.pkgs.overlays ++ [
           (final: prev: builtins.mapAttrs (name: fn: final.callPackage fn { }) config.pkgs.call)
