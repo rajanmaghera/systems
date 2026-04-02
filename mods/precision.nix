@@ -8,6 +8,7 @@
     my.defaults.hostName = "rajan-precision";
     my.defaults.homeDirectory = "/home/rajan";
 
+    my.emacs = true;
     my.cli.enable = true;
     my.dev-env.enable = true;
     my.shell.zsh.enable = true;
