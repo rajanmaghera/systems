@@ -13,7 +13,7 @@
     my.gc.enable = true;
 
     my.home = {
-      my.emacs = true;
+      my.emacs.enable = true;
       my.gc.enable = true;
       my.cli.enable = true;
       my.dev-env.enable = true;
