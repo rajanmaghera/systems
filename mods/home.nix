@@ -1,3 +1,4 @@
+{ inputs, ... }:
 {
   conf.mod.home =
     {
@@ -18,6 +19,10 @@
 
         xdg.enable = true;
 
+        # Add this flake to the local registry as 's'
+        # (so it's never lost)
+        nix.registry.s.flake = inputs.self;
+        # To run any package (default or customized), use `nix run s#...`
       };
     };
 }
