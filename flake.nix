@@ -2,9 +2,15 @@
   description = "Rajan's systems config";
 
   nixConfig.extra-experimental-features = "nix-command flakes";
-  nixConfig.extra-substitutors = [ "https://k-framework.cachix.org" ];
+  nixConfig.extra-substitutors = [
+    "https://k-framework.cachix.org/"
+    "https://rajan.cachix.org/"
+    "https://nix-community.cachix.org/"
+  ];
   nixConfig.extra-trusted-public-keys = [
     "k-framework.cachix.org-1:jeyMXB2h28gpNRjuVkehg+zLj62ma1RnyyopA/20yFE="
+    "rajan.cachix.org-1:WdBz6DVZhJafNOoIHXsTfikZTvQHvhUo71+pEi1LqEw="
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
   # A seperate nixpkgs input is required for darwin as we want our repo to be configured for both
