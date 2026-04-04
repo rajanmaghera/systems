@@ -1,45 +1,61 @@
 name: "Nix CI"
 
 on:
-  workflow_dispatch:
-  pull_request:
-    types: [ready_for_review]
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      output:
+        required: true
+        type: string
 
 jobs:
-  build-matrix:
-    name: Build ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            output: homeConfigurations.precision.activationPackage
-          - os: macos-latest
-            output: darwinConfigurations.fruit.system
-    
-    runs-on: ${{ matrix.os }}
+  build-packages:
+    name: Build packages ${{ inputs.output }}
+    runs-on: ${{ inputs.os }}
     permissions:
       contents: read
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Install Nix
+      - name: Install nix
         uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Cachix Cache
+      - name: Setup cache
         uses: cachix/cachix-action@v17
         with:
           name: rajan
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Build System
-        run: nix build .#${{ matrix.output }} --accept-flake-config
+      - name: Build packages
+        run: nix build .#ciJobs.packages.${{ inputs.output }} --accept-flake-config
+
+  build-systems:
+    name: Build systems ${{ inputs.output }}
+    needs: build-packages
+    runs-on: ${{ inputs.os }}
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup cache
+        uses: cachix/cachix-action@v17
+        with:
+          name: rajan
+          skipPush: true
+
+      - name: Build packages
+        run: nix build .#ciJobs.systems.${{ inputs.output }} --accept-flake-config
