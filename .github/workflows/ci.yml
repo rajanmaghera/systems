@@ -1,19 +1,16 @@
 name: "Nix CI"
 
 on:
-  workflow_call:
-    inputs:
-      os:
-        required: true
-        type: string
-      output:
-        required: true
-        type: string
-
+  push:
+    branches:
+      - main
+      
 jobs:
-  build-packages:
-    name: Build packages ${{ inputs.output }}
-    runs-on: ${{ inputs.os }}
+
+  # aarch64-darwin
+  build-packages-aarch64-darwin:
+    name: Build packages aarch64-darwin
+    runs-on: macos-latest
     permissions:
       contents: read
 
@@ -33,12 +30,12 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Build packages
-        run: nix build .#ciJobs.packages.${{ inputs.output }} --accept-flake-config
+        run: nix build .#ciJobs.packages.aarch64-darwin --accept-flake-config
 
-  build-systems:
-    name: Build systems ${{ inputs.output }}
-    needs: build-packages
-    runs-on: ${{ inputs.os }}
+  build-systems-aarch64-darwin:
+    name: Build systems aarch64-darwin
+    needs: build-packages-aarch64-darwin
+    runs-on: macos-latest
     permissions:
       contents: read
 
@@ -58,4 +55,104 @@ jobs:
           skipPush: true
 
       - name: Build packages
-        run: nix build .#ciJobs.systems.${{ inputs.output }} --accept-flake-config
+        run: nix build .#ciJobs.systems.aarch64-darwin --accept-flake-config
+
+  # aarch64-linux
+  build-packages-aarch64-linux:
+    name: Build packages aarch64-linux
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup cache
+        uses: cachix/cachix-action@v17
+        with:
+          name: rajan
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Build packages
+        run: nix build .#ciJobs.packages.aarch64-linux --accept-flake-config
+
+  build-systems-aarch64-linux:
+    name: Build systems aarch64-linux
+    needs: build-packages-aarch64-linux
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup cache
+        uses: cachix/cachix-action@v17
+        with:
+          name: rajan
+          skipPush: true
+
+      - name: Build packages
+        run: nix build .#ciJobs.systems.aarch64-linux --accept-flake-config
+
+  # x86_64-linux
+  build-packages-x86_64-linux:
+    name: Build packages x86_64-linux
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup cache
+        uses: cachix/cachix-action@v17
+        with:
+          name: rajan
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Build packages
+        run: nix build .#ciJobs.packages.x86_64-linux --accept-flake-config
+
+  build-systems-x86_64-linux:
+    name: Build systems x86_64-linux
+    needs: build-packages-x86_64-linux
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup cache
+        uses: cachix/cachix-action@v17
+        with:
+          name: rajan
+          skipPush: true
+
+      - name: Build packages
+        run: nix build .#ciJobs.systems.x86_64-linux --accept-flake-config
