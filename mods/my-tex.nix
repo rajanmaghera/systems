@@ -1,8 +1,8 @@
 {
   pkgs.call.my-tex =
     {
-      texlive,
+      texliveFull,
       ...
     }:
-    texlive.combined.scheme-full;
+    texliveFull;
 }
