@@ -26,8 +26,7 @@
     crane.url = "github:ipetkov/crane";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs-darwin";
-    stylix.url = "github:nix-community/stylix";
-    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    base16.url = "github:SenchoPens/base16.nix";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.url = "github:serokell/deploy-rs";

@@ -27,12 +27,12 @@ let
 
         base16LightColors = mkOption {
           type = types.anything;
-          default = config.stylix.base16.mkSchemeAttrs config.my.defaults.theme.base16LightScheme;
+          default = config.lib.base16.mkSchemeAttrs config.my.defaults.theme.base16LightScheme;
         };
 
         base16DarkColors = mkOption {
           type = types.anything;
-          default = config.stylix.base16.mkSchemeAttrs config.my.defaults.theme.base16DarkScheme;
+          default = config.lib.base16.mkSchemeAttrs config.my.defaults.theme.base16DarkScheme;
         };
 
         fontFamily = mkOption {
