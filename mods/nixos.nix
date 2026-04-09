@@ -3,19 +3,17 @@
     {
       lib,
       config,
-      pkgs,
       ...
     }:
-    with lib;
     let
       cfg = config.my.defaults;
     in
     {
-      options.my.home = mkOption {
-        type = types.anything;
+      options.my.home = lib.mkOption {
+        type = lib.types.anything;
       };
 
-      config = mkIf cfg.enable {
+      config = lib.mkIf cfg.enable {
 
         i18n.defaultLocale = "en_CA.UTF-8";
         system.stateVersion = "25.11";
@@ -33,7 +31,7 @@
         home-manager.backupFileExtension = "bkup";
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.users."${cfg.username}" = recursiveUpdate config.my.home {
+        home-manager.users."${cfg.username}" = lib.recursiveUpdate config.my.home {
           my.defaults = cfg;
         };
 
@@ -48,13 +46,6 @@
 
         services.openssh.settings.AllowUsers = [ cfg.username ];
 
-        system.activationScripts.setProfileImage = mkIf config.my.gui.enable (
-          lib.stringAfter [ "var" ] ''
-            mkdir -p /var/lib/AccountsService/{icons,users}
-            cp ${cfg.avatar} /var/lib/AccountsService/icons/${cfg.username}
-            echo -e "[User]\nIcon=/var/lib/AccountsService/icons/${cfg.username}\n" > /var/lib/AccountsService/users/${cfg.username}
-          ''
-        );
       };
     };
 }

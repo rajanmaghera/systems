@@ -51,11 +51,11 @@
 
       '';
 
-      meta = with lib; {
+      meta = {
         homepage = "https://github.com/TheThirdOne/rars";
         description = "RARS is the RISC-V Assembler and Runtime Simulator";
-        license = licenses.mit;
-        platforms = platforms.all;
+        license = lib.licenses.mit;
+        platforms = lib.platforms.all;
       };
     };
 

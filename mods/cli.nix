@@ -1,27 +1,12 @@
 {
-  conf.mod.home =
+  mods.home.my.cli =
     {
-      lib,
-      config,
       pkgs,
       ...
     }:
-    with lib;
-    let
-      cfg = config.my.cli;
-    in
     {
-      options.my.cli = {
-        enable = mkOption {
-          type = types.bool;
-          default = false;
-        };
-      };
-
-      config = mkIf cfg.enable {
-        home.packages = [
-          pkgs.my-cli
-        ];
-      };
+      home.packages = [
+        pkgs.my-cli
+      ];
     };
 }

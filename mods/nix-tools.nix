@@ -5,9 +5,12 @@
       ...
     }:
     {
-      home.packages = with pkgs; [
-        nix-tree
-        vulnix
+      home.packages = [
+        pkgs.nix-tree
+        pkgs.vulnix
+        pkgs.deploy-rs
+        pkgs.nix-search-cli
+        pkgs.hydra-check
       ];
 
       programs.nh.enable = true;

@@ -11,8 +11,8 @@
       ...
     }:
     {
-      environment.systemPackages = with pkgs; [
-        tailscale
+      environment.systemPackages = [
+        pkgs.tailscale
       ];
       services.tailscale.enable = true;
 
@@ -34,18 +34,18 @@
         serviceConfig.Type = "oneshot";
 
         # have the job run this shell script
-        script = with pkgs; ''
+        script = ''
           # wait for tailscaled to settle
           sleep 2
 
           # check if we are already authenticated to tailscale
-          status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
+          status="$(${pkgs.tailscale}/bin/tailscale status -json | ${pkgs.jq}/bin/jq -r .BackendState)"
           if [ $status = "Running" ]; then # if so, then do nothing
             exit 0
           fi
 
           # otherwise authenticate with tailscale
-          ${tailscale}/bin/tailscale up -authkey ${cfg.authenticationKey}
+          ${pkgs.tailscale}/bin/tailscale up -authkey ${cfg.authenticationKey}
         '';
       };
     };

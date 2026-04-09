@@ -7,7 +7,6 @@
   mods.home.my.dev-env =
     {
       cfg,
-      config,
       pkgs,
       lib,
       ...
@@ -44,10 +43,9 @@
         enable = true;
         settings = {
           editor.line-number = "relative";
-          theme = lib.mkIf config.my.defaults.theme.enable "base16_terminal";
-
           keys.normal = {
             # use yazi to pick files
+            # TODO: fix yazi output messing up the main buffer
             space.o = [
               ":sh rm -f /tmp/unique-file"
               ":insert-output yazi \"%{buffer_name}\" --chooser-file=/tmp/unique-file"
@@ -59,154 +57,6 @@
             ];
           };
         };
-        languages.language-server = {
-          texlab = {
-            command = "${pkgs.texlab}/bin/texlab";
-            config = {
-              auxDirectory = "output";
-              chktex = {
-                onOpenAndSave = true;
-                onEdit = true;
-              };
-              build = {
-                forwardSearchAfter = true;
-                onSave = true;
-                executable = "${pkgs.tectonic}/bin/tectonic";
-                args = [
-                  "-X"
-                  "compile"
-                  "%f"
-                  "--synctex"
-                  "--keep-logs"
-                  "--keep-intermediates"
-                  "--outdir=output"
-                ];
-              };
-              forwardSearch = {
-                executable = "${pkgs.zathura}/bin/zathura";
-                args = [
-                  "--synctex-forward"
-                  "%l:1:%f"
-                  "%p"
-                ];
-                onSave = false;
-              };
-            };
-          };
-          pyright = {
-            command = "${pkgs.pyright}/bin/pyright-langserver";
-            args = [ "--stdio" ];
-            config = {
-              python.analysis.venvPath = ".";
-              python.analysis.venv = ".venv";
-              python.analysis.lint = true;
-              python.analysis.inlayHint.enable = true;
-              python.analysis.autoSearchPaths = true;
-              python.analysis.diagnosticMode = "workspace";
-              python.analysis.useLibraryCodeForType = true;
-              python.analysis.logLevel = "Error";
-              python.analysis.typeCheckingMode = "off";
-              python.analysis.autoImoprtCompletion = true;
-              python.analysis.reportOptionalSubscript = false;
-              python.analysis.reportOptionalMemberAccess = false;
-            };
-          };
-          ruff = {
-            command = "${pkgs.ruff}/bin/ruff";
-            args = [
-              "server"
-              "-q"
-              "--preview"
-            ];
-          };
-          rust-analyzer = {
-            command = "rust-analyzer";
-            config = {
-              inlayHints.bindingModeHints.enable = false;
-              inlayHints.closingBraceHints.minLines = 10;
-              inlayHints.closureReturnTypeHints.enable = "with_block";
-              inlayHints.discriminantHints.enable = "fieldless";
-              inlayHints.lifetimeElisionHints.enable = "skip_trivial";
-              inlayHints.typeHints.hideClosureInitialization = false;
-            };
-          };
-        };
-        languages.language = [
-          {
-            name = "latex";
-            language-servers = [
-              "texlab"
-              "ltex"
-            ];
-            indent = {
-              tab-width = 4;
-              unit = " ";
-            };
-
-          }
-          {
-            name = "python";
-            scope = "source.python";
-            injection-regex = "python";
-            file-types = [
-              "py"
-              "pyi"
-              "py3"
-              "pyw"
-              "ptl"
-              "rpy"
-              "cpy"
-              "ipy"
-              "pyt"
-              { glob = ".python_history"; }
-              { glob = ".pythonstartup"; }
-              { glob = ".pythonrc"; }
-              { glob = "SConstruct"; }
-              { glob = "SConscript"; }
-            ];
-            shebangs = [ "python" ];
-            roots = [
-              "pyproject.toml"
-              "setup.py"
-              "poetry.lock"
-              "pyrightconfig.json"
-              "requirements.txt"
-              ".venv/"
-            ];
-            comment-token = "#";
-            language-servers = [ "pyright" ];
-            indent = {
-              tab-width = 4;
-              unit = "    ";
-            };
-            auto-format = true;
-            formatter = {
-              command = "${pkgs.ruff}/bin/ruff";
-              args = [
-                "format"
-                "-"
-              ];
-            };
-          }
-          {
-            name = "rust";
-            auto-format = true;
-            formatter = {
-              command = "rustfmt";
-            };
-            roots = [
-              "Cargo.toml"
-              "Cargo.lock"
-            ];
-            auto-pairs = {
-              "(" = ")";
-              "{" = "}";
-              "[" = "]";
-              "\"" = "\"";
-              "`" = "`";
-            };
-          }
-        ];
       };
 
       programs.zellij = {
@@ -215,72 +65,28 @@
           default_shell = "${pkgs.zsh}/bin/zsh";
           show_startup_tips = false;
           session_serialization = false;
-          theme = lib.mkIf config.my.defaults.theme.enable "ansi";
           support_kitty_keyboard_protocol = true;
         };
       };
 
-      fonts.fontconfig.enable = true;
+      programs.ghostty = {
+        enable = true;
+        package = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
 
-      programs.ghostty =
+        settings = {
+          command = "${pkgs.zsh}/bin/zsh -l -c \"${pkgs.zellij}/bin/zellij attach -c main\"";
+          confirm-close-surface = false;
+          quit-after-last-window-closed = true;
+          macos-option-as-alt = true;
 
-        let
-          makeTheme = colors: {
-
-            background = colors.base00;
-            foreground = colors.base05;
-            cursor-color = colors.base05;
-            selection-background = colors.base02;
-            selection-foreground = colors.base05;
-
-            palette = with colors.withHashtag; [
-              "0=${base00}"
-              "1=${base08}"
-              "2=${base0B}"
-              "3=${base0A}"
-              "4=${base0D}"
-              "5=${base0E}"
-              "6=${base0C}"
-              "7=${base05}"
-              "8=${base03}"
-              "9=${base08}"
-              "10=${base0B}"
-              "11=${base0A}"
-              "12=${base0D}"
-              "13=${base0E}"
-              "14=${base0C}"
-              "15=${base07}"
-            ];
-          };
-        in
-
-        {
-          enable = true;
-          package = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
-
-          themes.my-light = lib.mkIf config.my.defaults.theme.enable (
-            makeTheme config.my.defaults.theme.base16LightColors
-          );
-          themes.my-dark = lib.mkIf config.my.defaults.theme.enable (
-            makeTheme config.my.defaults.theme.base16DarkColors
-          );
-
-          settings = {
-            command = "${pkgs.zsh}/bin/zsh -l -c \"${pkgs.zellij}/bin/zellij attach -c main\"";
-            confirm-close-surface = false;
-            quit-after-last-window-closed = true;
-            macos-option-as-alt = true;
-            font-family = config.my.defaults.theme.fontFamily;
-            theme = lib.mkIf config.my.defaults.theme.enable "light:my-light,dark:my-dark";
-
-            keybind = [
-              "alt+[=unbind"
-              "alt+]=unbind"
-              "alt+left=unbind"
-              "alt+right=unbind"
-            ];
-          };
+          keybind = [
+            "alt+[=unbind"
+            "alt+]=unbind"
+            "alt+left=unbind"
+            "alt+right=unbind"
+          ];
         };
+      };
 
       programs.jujutsu.enable = true;
       programs.jujutsu.settings = {
@@ -289,40 +95,19 @@
         spr.branchPrefix = "rajanmaghera/";
       };
 
-      home.packages =
-        with pkgs;
-        [
-          deploy-rs
-          ispell
-          nerd-fonts.fira-code
-          nerd-fonts.cousine
-          nerd-fonts.iosevka
-          nerd-fonts.jetbrains-mono
-          nerd-fonts.geist-mono
-          nerd-fonts.im-writing
-          fragment-mono
-          lazygit
-          lazyjj
-          nodejs
-          yarn
-          glab
-          nixd
-          gh
-          ripgrep
-          watchman
-          rustup
-          neovim
-          nixfmt
-          typescript
-          typescript-language-server
-          yazi
-          nix-search-cli
-          just
-        ]
-        ++ lib.optionals stdenv.isDarwin [
-          libiconv
-          pkg-config
-          openssl
-        ];
+      programs.yazi.enable = true;
+      # Remove after 26.05
+      programs.yazi.shellWrapperName = "y";
+
+      home.packages = [
+        # VCS tools
+        pkgs.lazygit
+        pkgs.lazyjj
+        pkgs.gh
+        # Terminal tools
+        pkgs.ripgrep
+        pkgs.watchman
+        pkgs.just
+      ];
     };
 }

@@ -6,7 +6,6 @@
       pkgs,
       ...
     }:
-    with lib;
     let
       cfg = config.my.skhd;
 
@@ -53,7 +52,7 @@
       spaceMoveCommands = map (x: {
         key = toString x;
         command = "yabai -m window --space ${toString x}";
-      }) (genList (x: x + 1) spaceCount);
+      }) (builtins.genList (x: x + 1) spaceCount);
 
       commands =
         customCommands
@@ -63,20 +62,20 @@
           command = "open -a \"${x.path}\"";
         }) appCommands);
 
-      commandsString = strings.concatMapStrings (x: ''
+      commandsString = lib.strings.concatMapStrings (x: ''
         fn - ${x.key} : ${x.command}
         ctrl + alt - ${x.key} : ${x.command}
       '') commands;
     in
     {
       options.my.skhd = {
-        enable = mkOption {
-          type = types.bool;
+        enable = lib.mkOption {
+          type = lib.types.bool;
           default = false;
         };
       };
 
-      config = mkIf cfg.enable {
+      config = lib.mkIf cfg.enable {
         services.skhd.enable = true;
         services.skhd.skhdConfig = ''
           ${commandsString}

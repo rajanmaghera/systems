@@ -17,7 +17,7 @@
       my.gc.enable = true;
       my.cli.enable = true;
       my.dev-env.enable = true;
-      my.shell.zsh.enable = true;
+      my.shell.enable = true;
       my.passwords.enable = true;
       my.nix-tools.enable = true;
       my.sync.enable = true;

@@ -6,16 +6,15 @@
       pkgs,
       ...
     }:
-    with lib;
     let
       cfg = config.my.defaults;
     in
     {
-      options.my.home = mkOption {
-        type = types.anything;
+      options.my.home = lib.mkOption {
+        type = lib.types.anything;
       };
 
-      config = mkIf cfg.enable {
+      config = lib.mkIf cfg.enable {
 
         # Nix configuration
         users.users."${cfg.username}" = {
@@ -36,7 +35,7 @@
         home-manager.backupFileExtension = "bkup";
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.users."${cfg.username}" = recursiveUpdate config.my.home {
+        home-manager.users."${cfg.username}" = lib.recursiveUpdate config.my.home {
           my.defaults = cfg;
         };
       };

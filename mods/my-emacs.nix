@@ -46,9 +46,9 @@
   mods.home.my.emacs =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        emacsPackages.mu4e
-        my-emacs
+      home.packages = [
+        pkgs.emacsPackages.mu4e
+        pkgs.my-emacs
       ];
     };
 }

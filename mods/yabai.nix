@@ -3,10 +3,8 @@
     {
       lib,
       config,
-      pkgs,
       ...
     }:
-    with lib;
     let
       cfg = config.my.yabai;
       spaceMappings = [
@@ -64,32 +62,32 @@
         "System Settings"
       ];
 
-      spaceCount = length spaceMappings;
-      appMappingsString = strings.concatImapStrings (
+      spaceCount = builtins.length spaceMappings;
+      appMappingsString = lib.strings.concatImapStrings (
         i: s:
-        strings.concatMapStrings (x: ''
+        lib.strings.concatMapStrings (x: ''
           yabai -m rule --add label="space-${x}" app="^${x}$" space=^${toString i}
           yabai -m rule --apply space-${x}
         '') s.apps
       ) spaceMappings;
 
-      spaceCreationString = strings.concatImapStrings (i: s: ''
+      spaceCreationString = lib.strings.concatImapStrings (i: s: ''
         setup_space ${toString i} "${s.name}"
       '') spaceMappings;
 
-      unmanagedAppsString = strings.concatMapStrings (x: ''
+      unmanagedAppsString = lib.strings.concatMapStrings (x: ''
         yabai -m rule --add app="^${x}$" manage=off
       '') unmanagedApps;
     in
     {
       options.my.yabai = {
-        enable = mkOption {
-          type = types.bool;
+        enable = lib.mkOption {
+          type = lib.types.bool;
           default = false;
         };
       };
 
-      config = mkIf cfg.enable {
+      config = lib.mkIf cfg.enable {
         services.yabai.enable = true;
         services.yabai.enableScriptingAddition = true;
 

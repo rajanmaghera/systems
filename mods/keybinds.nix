@@ -5,20 +5,18 @@ let
       config,
       ...
     }:
-    with lib;
-
     let
       workspaceKeyMap = builtins.listToAttrs (
         lib.concatLists (
           lib.imap1 (i: v: [
             {
               # Switching to workspace
-              name = builtins.toString i;
+              name = toString i;
               value = "workspace ${v}";
             }
             {
               # Movement modifications
-              name = "shift-${builtins.toString i}";
+              name = "shift-${toString i}";
               value = "move-node-to-workspace ${v}";
             }
           ]) config.my.defaults.allWorkspacesList
@@ -80,7 +78,7 @@ let
       prependWith =
         prefix: set:
         builtins.listToAttrs (
-          builtins.map (key: {
+          map (key: {
             name = "${prefix}${key}";
             value = set.${key};
           }) (builtins.attrNames set)
@@ -100,8 +98,8 @@ let
 
     {
       # Setup workspaces
-      options.my.defaults.definedWorkspaces = mkOption {
-        type = types.anything;
+      options.my.defaults.definedWorkspaces = lib.mkOption {
+        type = lib.types.anything;
         default = [
           "web"
           "comm"
@@ -111,8 +109,8 @@ let
         ];
       };
 
-      options.my.defaults.definedWorkspacesMap = mkOption {
-        type = types.anything;
+      options.my.defaults.definedWorkspacesMap = lib.mkOption {
+        type = lib.types.anything;
         default = builtins.listToAttrs (
           lib.imap1 (i: v: {
             name = v;
@@ -122,15 +120,15 @@ let
         readOnly = true;
       };
 
-      options.my.defaults.allWorkspacesList = mkOption {
-        type = types.anything;
+      options.my.defaults.allWorkspacesList = lib.mkOption {
+        type = lib.types.anything;
         default = padList 8 (config.my.defaults.definedWorkspaces);
         readOnly = true;
       };
 
       # Set of my shortcut maps
-      options.my.defaults.shortcutMap = mkOption {
-        type = types.anything;
+      options.my.defaults.shortcutMap = lib.mkOption {
+        type = lib.types.anything;
         default = {
           aerospace = {
             main.binding = {

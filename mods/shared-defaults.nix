@@ -5,35 +5,34 @@ let
       pkgs,
       ...
     }:
-    with lib;
     {
       options.my.defaults = {
-        enable = mkOption {
-          type = types.bool;
+        enable = lib.mkOption {
+          type = lib.types.bool;
           default = false;
         };
 
-        fullName = mkOption {
-          type = types.str;
+        fullName = lib.mkOption {
+          type = lib.types.str;
           default = "Rajan Maghera";
           description = "Full name of the main user";
         };
 
-        authorizedKeys = mkOption {
-          type = types.listOf types.str;
+        authorizedKeys = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
           default = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8ZCH5zjDnnRouiFA0QrGuygX8mi4EWGj4nsXwQyKQ+ rajanmaghera@RajansMacBookPro"
           ];
           description = "Safe or authorized SSH keys for accessing machines";
         };
 
-        username = mkOption {
-          type = types.str;
+        username = lib.mkOption {
+          type = lib.types.str;
           description = "User name of the main user";
         };
 
-        avatar = mkOption {
-          type = types.path;
+        avatar = lib.mkOption {
+          type = lib.types.path;
           default = pkgs.fetchurl {
             url = "https://avatars.githubusercontent.com/u/16507599?v=4";
             sha256 = "sha256-WlBioUp+cH5YGS8bPZZZT/boGhZsun5wScK1AkZ6hYM=";
@@ -41,23 +40,23 @@ let
           description = "Profile avatar source.";
         };
 
-        packages = mkOption {
-          type = types.listOf types.package;
+        packages = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
           default = [ ];
           description = "Extra packages to add to user.";
         };
 
-        timeZone = mkOption {
-          type = types.str;
+        timeZone = lib.mkOption {
+          type = lib.types.str;
           default = "America/Toronto";
         };
 
-        hostName = mkOption {
-          type = types.str;
+        hostName = lib.mkOption {
+          type = lib.types.str;
         };
 
-        homeDirectory = mkOption {
-          type = types.str;
+        homeDirectory = lib.mkOption {
+          type = lib.types.str;
         };
       };
     };

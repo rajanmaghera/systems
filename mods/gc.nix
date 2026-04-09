@@ -54,9 +54,6 @@
       pkgs,
       ...
     }:
-
-    with lib;
-
     let
       cfg = config.programs.nh;
       launchdTypes = import "${inputs.darwin}/modules/launchd/types.nix" { inherit config lib; };
@@ -64,7 +61,7 @@
 
     {
       imports = [
-        (mkRemovedOptionModule [
+        (lib.mkRemovedOptionModule [
           "programs"
           "nh"
           "clean"
@@ -103,7 +100,7 @@
           clean = {
             enable = lib.mkEnableOption "periodic garbage collection with nh clean all";
 
-            interval = mkOption {
+            interval = lib.mkOption {
               type = launchdTypes.StartCalendarInterval;
               default = [
                 {

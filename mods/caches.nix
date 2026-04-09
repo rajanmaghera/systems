@@ -4,11 +4,10 @@ let
       lib,
       ...
     }:
-    with lib;
     {
       options.my.defaults = {
-        enableCaches = mkOption {
-          type = types.bool;
+        enableCaches = lib.mkOption {
+          type = lib.types.bool;
           default = true;
           description = "Enable external caches";
         };
@@ -20,12 +19,11 @@ let
       config,
       ...
     }:
-    with lib;
     let
       cfg = config.my.defaults;
     in
     {
-      config = mkIf (cfg.enable && cfg.enableCaches) {
+      config = lib.mkIf (cfg.enable && cfg.enableCaches) {
         nix.settings.substituters = [
           "https://cache.nixos.org/"
           "https://k-framework.cachix.org/"
