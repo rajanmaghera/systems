@@ -1,5 +1,6 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 {
+
   conf.mod.home =
     {
       lib,
@@ -25,4 +26,19 @@
         # To run any package (default or customized), use `nix run s#...`
       };
     };
+
+  # Add home manager modules to nixos and darwin configs
+  conf.mod.nixos = [
+    {
+      home-manager.sharedModules = config.conf.mod.home;
+    }
+  ];
+
+  conf.mod.darwin = [
+
+    {
+      home-manager.sharedModules = config.conf.mod.home;
+    }
+  ];
+
 }

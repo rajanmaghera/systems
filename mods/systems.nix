@@ -32,10 +32,6 @@
           type = listModType;
           default = [ ];
         };
-        only-home = lib.mkOption {
-          type = listModType;
-          default = [ ];
-        };
         nixos = lib.mkOption {
           type = listModType;
           default = [ ];
@@ -80,7 +76,6 @@
           modules = [
             {
               nixpkgs.pkgs = withSystem system ({ pkgs, ... }: pkgs);
-              home-manager.sharedModules = config.conf.mod.home;
             }
           ]
           ++ config.conf.mod.nixos
@@ -97,13 +92,7 @@
           specialArgs = {
             pkgs = withSystem system ({ pkgs, ... }: pkgs);
           };
-          modules = [
-            {
-              home-manager.sharedModules = config.conf.mod.home;
-            }
-          ]
-          ++ config.conf.mod.darwin
-          ++ mod;
+          modules = config.conf.mod.darwin ++ mod;
         };
 
       makeHome =
@@ -115,7 +104,7 @@
         }:
         inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = withSystem system ({ pkgs, ... }: pkgs);
-          modules = config.conf.mod.only-home ++ config.conf.mod.home ++ mod;
+          modules = config.conf.mod.home ++ mod;
         };
 
       nixosAttrs = lib.attrsets.filterAttrs (n: v: v.class == "nixos") config.sys;
