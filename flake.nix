@@ -29,9 +29,9 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     nixarr.url = "github:rasmus-kirk/nixarr/dev";
-    k.url = "github:runtimeverification/k";
-    flake-compat.url = "github:rajanmaghera/flake-compat";
+    nixarr.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs-darwin";
     import-tree.url = "github:vic/import-tree";
