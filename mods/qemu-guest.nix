@@ -1,5 +1,5 @@
 {
-  mods.nixos.my.qemu-guest =
+  mods.nixos.qemu-guest.conf =
     {
       pkgs,
       ...

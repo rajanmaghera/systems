@@ -1,5 +1,5 @@
 {
-  mods.home.my.passwords =
+  mods.home.passwords.conf =
     {
       pkgs,
       ...

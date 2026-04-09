@@ -1,5 +1,5 @@
 {
-  mods.darwin.my.linux-builder =
+  mods.darwin.linux-builder.conf =
     {
       ...
     }:

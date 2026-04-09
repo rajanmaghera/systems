@@ -1,5 +1,5 @@
 {
-  mods.home.my.adw-gtk3 =
+  mods.home.adw-gtk3.conf =
     {
       pkgs,
       ...

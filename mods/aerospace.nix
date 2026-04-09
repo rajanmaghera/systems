@@ -1,5 +1,5 @@
 {
-  mods.darwin.my.aerospace =
+  mods.darwin.aerospace.conf =
     {
       lib,
       pkgs,
@@ -7,7 +7,88 @@
       ...
     }:
     let
-      w = config.my.defaults.definedWorkspacesMap;
+
+      allWorkspacesList = padList 8 (config.my.defaults.definedWorkspaces);
+
+      workspaceKeyMap = builtins.listToAttrs (
+        lib.concatLists (
+          lib.imap1 (i: v: [
+            {
+              # Switching to workspace
+              name = toString i;
+              value = "workspace ${v}";
+            }
+            {
+              # Movement modifications
+              name = "shift-${toString i}";
+              value = "move-node-to-workspace ${v}";
+            }
+          ]) allWorkspacesList
+        )
+      );
+
+      prependWith =
+        prefix: set:
+        builtins.listToAttrs (
+          map (key: {
+            name = "${prefix}${key}";
+            value = set.${key};
+          }) (builtins.attrNames set)
+        );
+
+      prependWithAlt = prependWith "alt-";
+
+      padList =
+        length: inputList:
+        let
+          inputLen = builtins.length inputList;
+          padLen = length - inputLen;
+          padding = builtins.genList (i: toString (i + inputLen + 1)) (if padLen > 0 then padLen else 0);
+        in
+        lib.take length ((lib.imap1 (i: v: "${toString i}-${v}") inputList) ++ padding);
+
+      definedWorkspacesMap = builtins.listToAttrs (
+        lib.imap1 (i: v: {
+          name = v;
+          value = "${toString i}-${v}";
+        }) config.my.defaults.definedWorkspaces
+      );
+
+      aerospaceKeys = {
+        main = config.my.defaults.windowManagerKeymaps // workspaceKeyMap;
+      };
+
+      shortcutMap =
+
+        {
+          aerospace = {
+            main.binding = {
+              alt-space = "mode service";
+              alt-shift-d = "mode disabled";
+            }
+            // (prependWithAlt aerospaceKeys.main);
+
+            service.binding = {
+              esc = [
+                "reload-config"
+                "mode main"
+              ];
+              enter = [
+                "reload-config"
+                "mode main"
+              ];
+              alt-space = "mode main";
+            }
+            // aerospaceKeys.main;
+
+            disabled.binding = {
+              alt-shift-d = "mode main";
+            };
+
+          };
+        };
+
+      w = definedWorkspacesMap;
 
       # To find these, run `aerospace list-apps`
       appMappings = {
@@ -64,7 +145,7 @@
             outer.top = 8;
             outer.right = 8;
           };
-          mode = config.my.defaults.shortcutMap.aerospace;
+          mode = shortcutMap.aerospace;
 
           # App mapping to workspace must be last since it does not check further callbacks and
           # the final callback puts everything into workspace 7

@@ -1,5 +1,5 @@
 {
-  mods.home.my.latex =
+  mods.home.latex.conf =
     {
       pkgs,
       ...

@@ -1,7 +1,7 @@
 {
 
   # Enable remote deployment user
-  mods.nixos.my.deployment-user =
+  mods.nixos.deployment-user.conf =
     { config, ... }:
     {
       users.users.deploy = {

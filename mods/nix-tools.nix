@@ -1,5 +1,5 @@
 {
-  mods.home.my.nix-tools =
+  mods.home.nix-tools.conf =
     {
       pkgs,
       ...
@@ -11,6 +11,7 @@
         pkgs.deploy-rs
         pkgs.nix-search-cli
         pkgs.hydra-check
+        pkgs.nix-fast-build
       ];
 
       programs.nh.enable = true;

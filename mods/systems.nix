@@ -23,17 +23,17 @@
       };
     in
     {
-      conf.mod = {
+      baseMods = {
         darwin = lib.mkOption {
-          type = listModType;
+          type = lib.types.listOf lib.types.deferredModule;
           default = [ ];
         };
         home = lib.mkOption {
-          type = listModType;
+          type = lib.types.listOf lib.types.deferredModule;
           default = [ ];
         };
         nixos = lib.mkOption {
-          type = listModType;
+          type = lib.types.listOf lib.types.deferredModule;
           default = [ ];
         };
       };
@@ -78,7 +78,7 @@
               nixpkgs.pkgs = withSystem system ({ pkgs, ... }: pkgs);
             }
           ]
-          ++ config.conf.mod.nixos
+          ++ config.baseMods.nixos
           ++ mod;
         };
       makeDarwin =
@@ -92,7 +92,7 @@
           specialArgs = {
             pkgs = withSystem system ({ pkgs, ... }: pkgs);
           };
-          modules = config.conf.mod.darwin ++ mod;
+          modules = config.baseMods.darwin ++ mod;
         };
 
       makeHome =
@@ -104,7 +104,7 @@
         }:
         inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = withSystem system ({ pkgs, ... }: pkgs);
-          modules = config.conf.mod.home ++ mod;
+          modules = config.baseMods.home ++ mod;
         };
 
       nixosAttrs = lib.attrsets.filterAttrs (n: v: v.class == "nixos") config.sys;

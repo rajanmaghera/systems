@@ -1,10 +1,14 @@
-{ lb, ... }:
 {
-
-  ops.home.my.dev-env.defaultIdentity =
-    lb.opt.bool true "Enable default username and password for git";
-
-  mods.home.my.dev-env =
+  mods.home.dev-env.opts =
+    { lib, ... }:
+    {
+      defaultIdentity = lib.mkOption {
+        default = true;
+        type = lib.types.bool;
+        description = "Enable default username and password for git";
+      };
+    };
+  mods.home.dev-env.conf =
     {
       cfg,
       pkgs,
@@ -106,6 +110,8 @@
         pkgs.gh
         # Terminal tools
         pkgs.ripgrep
+        pkgs.repgrep
+        pkgs.bat
         pkgs.watchman
         pkgs.just
       ];

@@ -43,7 +43,7 @@
     else
       emacs30-pgtk;
 
-  mods.home.my.emacs =
+  mods.home.emacs.conf =
     { pkgs, ... }:
     {
       home.packages = [

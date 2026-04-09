@@ -1,13 +1,11 @@
 {
-  conf.mod.darwin =
+  mods.darwin.skhd.conf =
     {
       lib,
-      config,
       pkgs,
       ...
     }:
     let
-      cfg = config.my.skhd;
 
       appCommands = [
         {
@@ -68,18 +66,9 @@
       '') commands;
     in
     {
-      options.my.skhd = {
-        enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
-      };
-
-      config = lib.mkIf cfg.enable {
-        services.skhd.enable = true;
-        services.skhd.skhdConfig = ''
-          ${commandsString}
-        '';
-      };
+      services.skhd.enable = true;
+      services.skhd.skhdConfig = ''
+        ${commandsString}
+      '';
     };
 }

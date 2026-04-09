@@ -1,5 +1,5 @@
 {
-  mods.nixos.my.laptop-defaults =
+  mods.nixos.laptop-defaults.conf =
     { ... }:
     {
       services.libinput.enable = true;

@@ -1,5 +1,5 @@
 {
-  mods.home.my.cli =
+  mods.home.cli.conf =
     {
       pkgs,
       ...

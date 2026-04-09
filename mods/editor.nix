@@ -1,5 +1,5 @@
 {
-  mods.home.my.editor =
+  mods.home.editor.conf =
     {
       pkgs,
       ...

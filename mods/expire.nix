@@ -5,20 +5,6 @@
   ...
 }:
 let
-
-  listModType = lib.mkOptionType {
-    name = "singleOrListModule";
-    description = "a single deferred module or a list of deferred modules";
-    check =
-      val:
-      if builtins.isList val then
-        lib.all lib.types.deferredModule.check val
-      else
-        lib.types.deferredModule.check val;
-    merge =
-      loc: defs: lib.concatMap (def: if builtins.isList def.value then def.value else [ def.value ]) defs;
-  };
-
   timeBombSubmodType = lib.types.attrsOf (
     lib.types.submodule {
       options = {
@@ -36,12 +22,12 @@ let
           description = "Unix timestamp to strictly abort the build. Switches to finalConfig.";
         };
         tempConfig = lib.mkOption {
-          type = listModType;
+          type = lib.types.deferredModule;
           default = [ ];
           description = "The temporary module/configuration to use until the dates are hit.";
         };
         finalConfig = lib.mkOption {
-          type = listModType;
+          type = lib.types.deferredModule;
           default = [ ];
           description = "The correct module/configuration that should be enforced after the date.";
         };
@@ -110,16 +96,12 @@ let
 in
 {
   options = {
-    conf.modTb = {
+    baseMods.timeBomb = {
       darwin = lib.mkOption {
         type = timeBombSubmodType;
         default = { };
       };
       home = lib.mkOption {
-        type = timeBombSubmodType;
-        default = { };
-      };
-      only-home = lib.mkOption {
         type = timeBombSubmodType;
         default = { };
       };
@@ -130,10 +112,7 @@ in
     };
   };
 
-  config = {
-    conf.mod.nixos = lib.flatten (lib.mapAttrsToList mapSubmod config.conf.modTb.nixos);
-    conf.mod.darwin = lib.flatten (lib.mapAttrsToList mapSubmod config.conf.modTb.darwin);
-    conf.mod.home = lib.flatten (lib.mapAttrsToList mapSubmod config.conf.modTb.home);
-  };
-
+  config.baseMods = lib.genAttrs [ "nixos" "darwin" "home" ] (
+    v: lib.flatten (lib.mapAttrsToList mapSubmod config.baseMods.timeBomb.${v})
+  );
 }

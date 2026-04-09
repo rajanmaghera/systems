@@ -1,5 +1,5 @@
 {
-  mods.home.my.llm =
+  mods.home.llm.conf =
     {
       pkgs,
       ...

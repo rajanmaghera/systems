@@ -1,9 +1,14 @@
-{ lb, ... }:
 {
-  ops.nixos.my.tailscale.authenticationKey =
-    lb.opt.nullStr "Authentication key for Tailscale. If supplied, a oneshot service will be called to authenticate the machine. This only needs to be done once.";
-
-  mods.nixos.my.tailscale =
+  mods.nixos.tailscale.opts =
+    { lib, ... }:
+    {
+      authenticationKey = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        description = "Authentication key for Tailscale. If supplied, a oneshot service will be called to authenticate the machine. This only needs to be done once.";
+        default = null;
+      };
+    };
+  mods.nixos.tailscale.conf =
     {
       lib,
       cfg,

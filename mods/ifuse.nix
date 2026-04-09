@@ -1,5 +1,5 @@
 {
-  mods.home.my.ifuse =
+  mods.home.ifuse.conf =
     { pkgs, ... }:
     {
       home.packages = [

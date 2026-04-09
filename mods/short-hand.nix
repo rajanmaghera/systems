@@ -1,230 +1,185 @@
 { lib, config, ... }:
 
 let
-
-  mkRecursiveModTreeType =
-    submoduleOptions:
-    let
-      submodKeys = [
-        "mod"
-        "_path"
-      ]
-      ++ builtins.attrNames submoduleOptions;
-      nodeSubmodule = lib.types.submodule {
-        options = submoduleOptions // {
-          mod = lib.mkOption {
-            type = lib.types.unspecified; # Change to types.functionTo, etc., depending on your needs
-            description = "The module closure/payload";
-          };
-          _path = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            readOnly = true;
-            description = "The internal path of this module in the tree";
-          };
-        };
+  # Define the expected structure of your shorthand
+  shorthandType = lib.types.submodule {
+    options = {
+      conf = lib.mkOption {
+        type = lib.types.unspecified;
+        default = { ... }: { };
+        description = "Configuration function wrapped in lib.mkIf";
       };
-
-    in
-    lib.mkOptionType {
-      name = "recursiveModTree";
-      description = "A recursive tree that flattens into a list of submodules when mod is found";
-
-      # Recursively verify the tree structure consists of attrsets
-      check =
-        let
-          checkNode = x: lib.isAttrs x && lib.all checkNode (lib.attrValues (removeAttrs x submodKeys));
-        in
-        checkNode;
-
-      # `loc` is the path to this option (e.g., ["myTree"])
-      # `defs` is a list of { file, value } for all declarations of this option
-      merge =
-        loc: defs:
-        let
-          walk =
-            path: defsAtNode:
-            let
-              vals = map (d: d.value) defsAtNode;
-              allKeys = lib.unique (lib.concatMap builtins.attrNames vals);
-              isModNode = builtins.elem "mod" allKeys;
-              evaluatedMod =
-                if isModNode then
-                  let
-
-                    # Remove other child defs
-                    filteredDefs = map (def: {
-                      inherit (def) file;
-                      value = lib.getAttrs (lib.intersectLists submodKeys (builtins.attrNames def.value)) def.value;
-                    }) defsAtNode;
-
-                    # inject the read-only `_path` field
-                    pathDef = {
-                      file = "internal-tree-walker";
-                      value = {
-                        _path = path;
-                      };
-                    };
-                  in
-                  # Call the submodule's merge function directly
-                  nodeSubmodule.merge (loc ++ path) (filteredDefs ++ [ pathDef ])
-                else
-                  null;
-
-              currentResult = if isModNode then [ evaluatedMod ] else [ ];
-
-              # Recurse into children
-              childKeys = builtins.filter (k: !(builtins.elem k submodKeys)) allKeys;
-              childrenResults = map (
-                childKey:
-                let
-                  # Gather all definitions that contain this specific child key
-                  childDefs = builtins.concatMap (
-                    def:
-                    if def.value ? ${childKey} then
-                      [
-                        {
-                          inherit (def) file;
-                          value = def.value.${childKey};
-                        }
-                      ]
-                    else
-                      [ ]
-                  ) defsAtNode;
-                in
-                walk (path ++ [ childKey ]) childDefs
-              ) childKeys;
-
-            in
-            currentResult ++ lib.concatLists childrenResults;
-
-        in
-        walk [ ] defs;
-
-      # Ensure an empty definition defaults to an empty list
-      emptyValue = {
-        value = [ ];
+      opts = lib.mkOption {
+        type = lib.types.unspecified;
+        default = { ... }: { };
+        description = "Options function mapped directly to options.my.<name>";
       };
     };
+  };
 
-  # Helper function to recursively find all shorthand functions inside `mods`
-  collectLeaves =
-    prefix: attrs:
-    lib.concatLists (
-      lib.mapAttrsToList (
-        k: v:
-        if builtins.isFunction v || v ? __functor then
-          [
-            {
-              path = prefix ++ [ k ];
-              value = v;
-            }
-          ]
-        else if builtins.isAttrs v then
-          collectLeaves (prefix ++ [ k ]) v
-        else
-          [ ]
-      ) attrs
-    );
+  # modNodeType = lib.types.submodule {
+  #   options = {
+  #     # TODO: find the best "deferred" module type to use for m and opts
+  #     m = lib.mkOption {
+  #       type = lib.types.nullOr lib.types.unspecified; # Adjust unspecified to functionTo if needed
+  #       default = null;
+  #       description = "The module payload. If null, this node is just a structural path.";
+  #     };
+  #     addEnable = lib.mkOption {
+  #       type = lib.types.bool;
+  #       default = true;
+  #       description = "Whether to add the default option to enable or not. By default this should be true, but it should be disabled if being used from many places";
+  #     };
+  #     opts = lib.mkOption {
+  #       type = lib.types.nullOr lib.types.unspecified;
+  #       default = null;
+  #       description = "Extra options to add onto the new module";
+  #     };
+
+  #     # To override the enable option, just override it in opts
+
+  #   };
+  #   freeformType = lib.types.lazyAttrsOf modNodeType;
+  # };
+
+  # flattenMudTree =
+  # tree:
+  # let
+  #   walk =
+  #     path: node:
+  #     let
+  #       isModNode = node.m != null;
+  #       currentNode =
+  #         if isModNode then
+  #           [
+  #             (node // { _path = path; })
+  #           ]
+  #         else
+  #           [ ];
+
+  #       reservedKeys = [
+  #         "m"
+  #         "opts"
+  #         "_"
+  #         "description"
+  #         "_path"
+  #         "addEnable"
+  #         "_module"
+  #       ];
+  #       childKeys = builtins.filter (k: !(builtins.elem k reservedKeys)) (builtins.attrNames node);
+  #       children = builtins.concatMap (
+  #         k:
+  #         walk (path ++ [ k ]) (
+  #           builtins.addErrorContext "on option with path [${toString path} ${k}]" node.${k}
+  #         )
+  #       ) childKeys;
+  #     in
+  #     currentNode ++ children;
+  # in
+  # walk [ ] tree;
+
 in
 {
 
-  # quick funcs for shorthand defining options
-  config._module.args.lb = {
-    opt = {
-      str =
-        desc:
-        lib.mkOption {
-          type = lib.types.str;
-          description = desc;
-        };
-      strDef =
-        default: desc:
-        lib.mkOption {
-          type = lib.types.str;
-          default = default;
-          description = desc;
-        };
-      bool =
-        default: desc:
-        lib.mkOption {
-          type = lib.types.bool;
-          default = default;
-          description = desc;
-        };
-      int =
-        default: desc:
-        lib.mkOption {
-          type = lib.types.int;
-          default = default;
-          description = desc;
-        };
-    };
-  };
-
   options = {
-
-    def = lib.mkOption {
-      type = mkRecursiveModTreeType {
+    mods = {
+      nixos = lib.mkOption {
+        type = lib.types.attrsOf shorthandType;
       };
-      default = [ ];
-    };
-
-    mods = lib.mkOption {
-      type = lib.mkOptionType {
-        name = "recursiveAttrs";
-        check = builtins.isAttrs;
-        merge = loc: defs: lib.foldl lib.recursiveUpdate { } (map (x: x.value) defs);
+      darwin = lib.mkOption {
+        type = lib.types.attrsOf shorthandType;
       };
-      default = { };
-    };
-
-    ops = lib.mkOption {
-      type = lib.mkOptionType {
-        name = "recursiveAttrs";
-        check = builtins.isAttrs;
-        merge = loc: defs: lib.foldl lib.recursiveUpdate { } (map (x: x.value) defs);
+      home = lib.mkOption {
+        type = lib.types.attrsOf shorthandType;
       };
-      default = { };
     };
-
   };
-  config = {
-    conf.mod = lib.mapAttrs (
-      target: targetMods:
-      let
-        targetOps = config.ops.${target} or { };
-        leaves = collectLeaves [ ] targetMods;
-      in
-      map (
-        leaf:
+
+  config =
+
+    let
+      buildBaseMod =
+        name: modDef:
+        {
+          config,
+          pkgs,
+          lib,
+          ...
+        }@args:
+
         let
-          wrapper =
-            {
-              pkgs, # required to pass down
-              lib,
-              config,
-              ...
-            }@args:
-            let
 
-              cfg = lib.attrByPath leaf.path { } config;
-              thisOps = lib.attrByPath leaf.path { } targetOps;
+          cfg = config.my.${name};
+          newArgs = args // {
+            inherit cfg;
+          };
+          modOpts = modDef.opts newArgs;
+          modConf = modDef.conf newArgs;
 
-              baseEnable = {
-                enable = lib.mkOption {
-                  type = lib.types.bool;
-                  default = false;
-                  description = "Enable ${lib.concatStringsSep "." leaf.path}";
-                };
-              };
-            in
-            {
-              options = lib.setAttrByPath leaf.path (baseEnable // thisOps);
-              config = lib.mkIf cfg.enable (leaf.value (args // { inherit cfg; }));
-            };
         in
-        wrapper
-      ) leaves
-    ) config.mods;
-  };
+
+        {
+          options.my.${name} = {
+            enable = lib.mkEnableOption "the ${name} module";
+          }
+          // modOpts;
+          config = lib.mkIf cfg.enable (
+            modConf
+            // {
+              assertions = [
+                {
+                  assertion = cfg.enable && config.my.defaults.enable;
+                  message = "All custom modules require my set of defaults";
+                }
+              ];
+            }
+          );
+        };
+      buildIntoBaseModList = target: modAttrs: lib.attrValues (lib.mapAttrs buildBaseMod modAttrs);
+
+    in
+    {
+      baseMods = lib.mapAttrs buildIntoBaseModList config.mods;
+    };
+
+  #   config = {
+  #     baseMods = lib.mapAttrs (
+  #       configType: allOptions:
+  #       lib.mapAttrs:
+  #         opts
+  #       map (
+  #         mod:
+  #         {
+  #           pkgs, # required to pass down
+  #           lib,
+  #           config,
+  #           ...
+  #         }@args:
+  #         let
+  #           baseEnable =
+  #             if mod.addEnable then
+  #               {
+  #                 enable = lib.mkOption {
+  #                   type = lib.types.bool;
+  #                   default = false;
+  #                   description = "Enable ${lib.concatStringsSep "." mod._path}";
+  #                 };
+  #               }
+  #             else
+  #               { };
+  #
+  #           finalOptions = baseEnable // (mod.opts (args // { inherit cfg; }));
+  #           cfg = lib.attrByPath mod._path { } config;
+  #         in
+  #         {
+  #           options = lib.setAttrByPath mod._path finalOptions;
+  #           config = lib.mkIf cfg.enable (
+  #             (builtins.addErrorContext "for module with path ${toString mod._path}" mod.m) (
+  #               args // { inherit cfg; }
+  #             )
+  #           );
+  #         }
+  #       ) (flattenModTree targetTree)
+  #     ) config.mods;
+  #   };
 }

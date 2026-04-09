@@ -1,12 +1,10 @@
 {
-  conf.mod.darwin =
+  mods.darwin.yabai.conf =
     {
       lib,
-      config,
       ...
     }:
     let
-      cfg = config.my.yabai;
       spaceMappings = [
         {
           name = "file";
@@ -80,55 +78,46 @@
       '') unmanagedApps;
     in
     {
-      options.my.yabai = {
-        enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
+      services.yabai.enable = true;
+      services.yabai.enableScriptingAddition = true;
+
+      services.yabai.config = {
+        top_padding = 10;
+        bottom_padding = 10;
+        left_padding = 10;
+        right_padding = 10;
+        window_gap = 10;
+        layout = "bsp";
+        window_shadow = "off";
+        focus_follows_mouse = "autoraise";
+        external_bar = "all:40:0";
       };
 
-      config = lib.mkIf cfg.enable {
-        services.yabai.enable = true;
-        services.yabai.enableScriptingAddition = true;
+      services.yabai.extraConfig = ''
+        for _ in $(yabai -m query --spaces | jq '.[].index | select(. > ${toString spaceCount})'); do
+          yabai -m space --destroy ${toString (spaceCount + 1)}
+        done
 
-        services.yabai.config = {
-          top_padding = 10;
-          bottom_padding = 10;
-          left_padding = 10;
-          right_padding = 10;
-          window_gap = 10;
-          layout = "bsp";
-          window_shadow = "off";
-          focus_follows_mouse = "autoraise";
-          external_bar = "all:40:0";
-        };
+        function setup_space {
+          local idx="$1"
+          local name="$2"
+          local space=
+          echo "setup space $idx : $name"
 
-        services.yabai.extraConfig = ''
-          for _ in $(yabai -m query --spaces | jq '.[].index | select(. > ${toString spaceCount})'); do
-            yabai -m space --destroy ${toString (spaceCount + 1)}
-          done
+          space=$(yabai -m query --spaces --space "$idx")
+          if [ -z "$space" ]; then
+            yabai -m space --create
+          fi
 
-          function setup_space {
-            local idx="$1"
-            local name="$2"
-            local space=
-            echo "setup space $idx : $name"
+          if [ ! -z "$name" ] ; then
+            yabai -m space "$idx" --label "$name"
+          fi
+        }
 
-            space=$(yabai -m query --spaces --space "$idx")
-            if [ -z "$space" ]; then
-              yabai -m space --create
-            fi
+        ${spaceCreationString}
+        ${unmanagedAppsString}
+        ${appMappingsString}
 
-            if [ ! -z "$name" ] ; then
-              yabai -m space "$idx" --label "$name"
-            fi
-          }
-
-          ${spaceCreationString}
-          ${unmanagedAppsString}
-          ${appMappingsString}
-
-        '';
-      };
+      '';
     };
 }

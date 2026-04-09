@@ -1,6 +1,6 @@
 {
 
-  mods.home.my.shell =
+  mods.home.shell.conf =
     {
       pkgs,
       config,
@@ -32,7 +32,7 @@
 
     };
 
-  mods.nixos.my.shell =
+  mods.nixos.shell.conf =
     {
       pkgs,
       ...

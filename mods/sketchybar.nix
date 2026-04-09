@@ -1,5 +1,5 @@
 {
-  mods.darwin.my.sketchybar =
+  mods.darwin.sketchybar.conf =
     {
       pkgs,
       ...
