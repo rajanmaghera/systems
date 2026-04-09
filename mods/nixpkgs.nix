@@ -48,9 +48,7 @@
     { system, ... }:
     let
       input-nixpkgs = if system == [ "aarch64-darwin" ] then inputs.nixpkgs-darwin else inputs.nixpkgs;
-    in
-    {
-      _module.args.pkgs = import input-nixpkgs {
+      base-pkgs = import input-nixpkgs {
         inherit system;
         overlays = config.pkgs.overlays ++ [
           (final: prev: builtins.mapAttrs (name: fn: final.callPackage fn { }) config.pkgs.call)
@@ -64,5 +62,35 @@
               (pkg: builtins.elem (pkg.pname or "") config.pkgs.unfree);
         };
       };
+
+      deploy-pkgs = import input-nixpkgs {
+        inherit system;
+        overlays = config.pkgs.overlays ++ [
+          (final: prev: builtins.mapAttrs (name: fn: final.callPackage fn { }) config.pkgs.call)
+          (final: prev: builtins.mapAttrs (name: fn: fn final) config.pkgs.def)
+          inputs.deploy-rs.overlays.default
+          (self: super: {
+            deploy-rs = {
+              inherit (base-pkgs) deploy-rs;
+              lib = super.deploy-rs.lib;
+            };
+          })
+        ];
+        config = {
+          allowUnfreePredicate =
+            if config.pkgs.allUnfree then
+              (pkg: true)
+            else
+              (pkg: builtins.elem (pkg.pname or "") config.pkgs.unfree);
+        };
+      };
+
+    in
+    {
+      _module.args.pkgs = base-pkgs;
+
+      # Deploy-rs packages since its really weird
+      _module.args.deployLib = deploy-pkgs.deploy-rs.lib;
+
     };
 }
