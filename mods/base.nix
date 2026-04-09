@@ -20,7 +20,7 @@
         fruit = inputs.self.darwinConfigurations.fruit.system;
       };
     };
-    packages.aarch64-darwin = withSystem "x86_64-linux" (
+    packages.aarch64-darwin = withSystem "aarch64-darwin" (
       { pkgs, ... }:
       {
         inherit (pkgs)
