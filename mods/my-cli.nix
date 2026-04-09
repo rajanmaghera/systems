@@ -1,33 +1,22 @@
-{ inputs, ... }:
 {
-  pkgs.def.my-cli =
-    prev:
-    let
-      inherit (prev) system;
-      inherit (prev) lib;
+  pkgs.call.my-cli =
+    {
+      rustPlatform,
+      installShellFiles,
+      ...
+    }:
+    rustPlatform.buildRustPackage (finalAttrs: {
+      pname = "my";
+      version = "0.1.0";
 
-      craneLib = inputs.crane.mkLib prev;
+      src = ./my;
+      cargoHash = "sha256-kHB5rQHhP4tnuAbBpekiWIwl/6U/UkBIARJQAEa3ifk=";
 
-      commonArgs = {
-        src = craneLib.cleanCargoSource (craneLib.path ./my);
-        strictDeps = true;
-        buildInputs = lib.optionals prev.stdenv.isDarwin [
-          prev.libiconv
-        ];
-      };
-
-      cargoArtifacts = craneLib.buildDepsOnly commonArgs;
-    in
-    craneLib.buildPackage (
-      commonArgs
-      // {
-        inherit cargoArtifacts;
-        nativeBuildInputs = [ prev.installShellFiles ];
-        postInstall = ''
-          installShellCompletion --fish target/release/build/my-*/out/my.fish
-          installShellCompletion --bash target/release/build/my-*/out/my.bash
-          installShellCompletion --zsh target/release/build/my-*/out/_my
-        '';
-      }
-    );
+      nativeBuildInputs = [ installShellFiles ];
+      postInstall = ''
+        installShellCompletion --fish target/release/build/my-*/out/my.fish
+        installShellCompletion --bash target/release/build/my-*/out/my.bash
+        installShellCompletion --zsh target/release/build/my-*/out/_my
+      '';
+    });
 }
