@@ -10,7 +10,7 @@
       version = "0.1.0";
 
       src = ./my;
-      cargoHash = "sha256-kHB5rQHhP4tnuAbBpekiWIwl/6U/UkBIARJQAEa3ifk=";
+      cargoHash = "sha256-CnGMrcF8Hrkhk0qRT8L8C1vix+C50lyBjqhj6nXLRxI=";
 
       nativeBuildInputs = [ installShellFiles ];
       postInstall = ''
