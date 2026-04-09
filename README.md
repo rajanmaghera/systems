@@ -51,6 +51,26 @@ Remove all garbage.
 sudo nh clean all
 ```
 
+## Direnv shells
+
+In any folder, create `.envrc` and point it to your desired shell. For example, `s#my-shell-nix`
+
+```
+nix_direnv_disallow_fallback
+nix_direnv_manual_reload
+use flake s#my-shell-nix  
+```
+
+If it's the first time, enable direnv.
+```shell
+direnv allow
+````
+
+If the flake changes, rebuild the cache.
+```shell
+nix-direnv-allow
+```
+
 ## Development shells
 
 Launch a shell.
