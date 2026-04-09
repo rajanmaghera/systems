@@ -42,7 +42,6 @@
   config.pkgs.overlays = [
     inputs.nix-vscode-extensions.overlays.default
     inputs.darwin.overlays.default
-    inputs.k.overlays.default
   ];
 
   config.perSystem =
