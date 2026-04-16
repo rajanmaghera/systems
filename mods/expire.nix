@@ -23,12 +23,12 @@ let
         };
         tempConfig = lib.mkOption {
           type = lib.types.deferredModule;
-          default = [ ];
+          default = { };
           description = "The temporary module/configuration to use until the dates are hit.";
         };
         finalConfig = lib.mkOption {
           type = lib.types.deferredModule;
-          default = [ ];
+          default = { };
           description = "The correct module/configuration that should be enforced after the date.";
         };
       };
@@ -92,7 +92,10 @@ let
           ) "⏳ TIME BOMB WARNING [${name}]: ${message}. Grace period ending soon!";
         };
     in
-    activeConfig ++ [ tbConfig ];
+    [
+      activeConfig
+      tbConfig
+    ];
 in
 {
   options = {
@@ -110,7 +113,10 @@ in
         default = { };
       };
     };
+
   };
+
+  config._module.args.mkTimebombModule = mapSubmod;
 
   config.baseMods = lib.genAttrs [ "nixos" "darwin" "home" ] (
     v: lib.flatten (lib.mapAttrsToList mapSubmod config.baseMods.timeBomb.${v})
