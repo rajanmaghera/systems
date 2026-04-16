@@ -127,12 +127,6 @@
       }) floatingAppIds;
     in
     {
-      environment.systemPackages = [
-        (pkgs.writeShellScriptBin "reset-layout" ''
-          #!${pkgs.bash}/bin/bash
-          echo "Hi world!"
-        '')
-      ];
       services.aerospace = {
         enable = true;
         settings = {
