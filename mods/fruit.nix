@@ -12,11 +12,12 @@
     my.gc.enable = true;
 
     my.defaults.home = {
+      my.theming.enable = true;
+      my.shell.enable = true;
       my.emacs.enable = true;
       my.gc.enable = true;
       my.cli.enable = true;
       my.dev-env.enable = true;
-      my.shell.enable = true;
       my.passwords.enable = true;
       my.nix-tools.enable = true;
       my.sync.enable = true;
