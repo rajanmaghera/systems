@@ -55,6 +55,44 @@
 
       };
 
+    # PYTHON
+    my-shell-python =
+      {
+        mkShell,
+        python3,
+        pyright,
+        ...
+      }:
+      mkShell {
+        packages = [
+          python3
+          pyright
+        ];
+
+      };
+
+    # HASKELL
+    my-shell-haskell =
+      {
+        mkShell,
+        haskellPackages,
+        cabal-install,
+        haskell-language-server,
+        ...
+      }:
+      mkShell {
+        packages = [
+          (haskellPackages.ghcWithPackages (
+            p: with p; [
+              lens
+              aeson
+            ]
+          ))
+          cabal-install
+          haskell-language-server
+        ];
+      };
+
     # LLVM/C++
     my-shell-llvm =
       {
