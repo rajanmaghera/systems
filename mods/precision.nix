@@ -7,6 +7,7 @@
     my.defaults.hostName = "rajan-precision";
     my.defaults.homeDirectory = "/home/rajan";
     my.theming.enable = true;
+    my.gpu-apps.enable = true;
 
     my.emacs.enable = true;
     my.cli.enable = true;

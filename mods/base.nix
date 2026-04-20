@@ -12,9 +12,10 @@
     systems = {
       x86_64-linux = {
         precision = inputs.self.homeConfigurations.precision.activationPackage;
+        souragent = inputs.self.nixosConfigurations.souragent.config.system.build.toplevel;
       };
       aarch64-linux = {
-
+        titan = inputs.self.nixosConfigurations.titan.config.system.build.toplevel;
       };
       aarch64-darwin = {
         fruit = inputs.self.darwinConfigurations.fruit.system;
