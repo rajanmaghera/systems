@@ -131,4 +131,11 @@
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": false,
     "workbench.tree.enableStickyScroll": false
+    "window.autoDetectColorScheme": true,
+    "workbench.preferredDarkColorTheme": "GitHub Dark Default",
+    "workbench.preferredLightColorTheme": "GitHub Light Default",
+    "workbench.iconTheme": "material-icon-theme",
+    "diffEditor.useInlineViewWhenSpaceIsLimited": false,
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "window.dialogStyle": "custom"
 }
