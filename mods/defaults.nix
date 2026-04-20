@@ -190,8 +190,14 @@ in
         hashedPassword = "$y$j9T$ZExjOzZDUxf2s3YyvlCjV/$kfg.uVxpdA/eJwtxQfOcoflyj0aTVUrhTZyzJhm4gw8";
       };
 
+      # Enable openssh
+      services.openssh.enable = true;
       services.openssh.settings.AllowUsers = [ cfg.username ];
 
+      # Disable sudo lecture
+      security.sudo.extraConfig = ''
+        Defaults lecture="never"
+      '';
     };
 
   mods.darwin.defaults.opts = defaultOptions;
