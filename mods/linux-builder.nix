@@ -6,13 +6,15 @@
     {
       nix.linux-builder = {
         enable = true;
+        ephemeral = true;
+        maxJobs = 6;
         config = {
           virtualisation = {
-            darwin-builder = {
-              diskSize = 200 * 1024;
-              memorySize = 8 * 1024;
-            };
             cores = 6;
+            darwin-builder = {
+              diskSize = 30 * 1024;
+              memorySize = 6 * 1024;
+            };
           };
         };
       };

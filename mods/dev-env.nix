@@ -114,6 +114,10 @@
         pkgs.bat
         pkgs.watchman
         pkgs.just
+        # Cloning
+        pkgs.rsync
+        # Recording terminal
+        pkgs.asciinema
       ];
     };
 }

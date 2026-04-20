@@ -10,6 +10,7 @@
     my.pam.enable = true;
     my.aerospace.enable = true;
     my.gc.enable = true;
+    my.linux-builder.enable = true;
 
     my.defaults.home = {
       my.theming.enable = true;
@@ -21,6 +22,7 @@
       my.passwords.enable = true;
       my.nix-tools.enable = true;
       my.sync.enable = true;
+      my.mail.enable = true;
     };
   };
 }
