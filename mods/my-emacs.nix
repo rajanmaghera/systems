@@ -34,10 +34,6 @@
             sha256 = "sha256-3QLq91AQ6E921/W9nfDjdOUWR8YVsqBAT/W9c1woqAw=";
 
           })
-          (fetchpatch {
-            url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/refs/heads/master/patches/emacs-30/treesit-compatibility.patch";
-            sha256 = "sha256-zJHcQ604D7D3pCF+hNfbf8p1xW5490yzrMt1lUsyJQY=";
-          })
         ];
       }))
     else
