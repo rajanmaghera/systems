@@ -108,10 +108,8 @@ let
 
           slash = "layout horizontal vertical";
 
-          minus = "resize smart -50";
-          equal = "resize smart +50";
-          shift-minus = "resize smart -80";
-          shift-equal = "resize smart +80";
+          shift-minus = "resize smart -50";
+          shift-equal = "resize smart +50";
 
           shift-b = "balance-sizes";
           shift-r = "flatten-workspace-tree";
