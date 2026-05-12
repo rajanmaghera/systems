@@ -48,10 +48,10 @@ let
       substituters = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [
-          "https://cache.nixos.org/"
-          "https://k-framework.cachix.org/"
-          "https://rajan.cachix.org/"
-          "https://nix-community.cachix.org/"
+          "https://cache.nixos.org"
+          "https://k-framework.cachix.org"
+          "https://rajan.cachix.org"
+          "https://nix-community.cachix.org"
         ];
       };
 
@@ -156,7 +156,10 @@ in
       networking.hostName = cfg.hostName;
 
       # Nix settings
-      nix.settings.extra-trusted-users = [ cfg.username ];
+      nix.settings.trusted-users = [
+        "root"
+        cfg.username
+      ];
       nix.settings.experimental-features = [
         "nix-command"
         "flakes"
@@ -215,7 +218,10 @@ in
 
       # Nix
       nixpkgs.hostPlatform = pkgs.stdenv.hostPlatform.system;
-      nix.settings.extra-trusted-users = [ cfg.username ];
+      nix.settings.trusted-users = [
+        "root"
+        cfg.username
+      ];
       nix.settings.experimental-features = [
         "nix-command"
         "flakes"
