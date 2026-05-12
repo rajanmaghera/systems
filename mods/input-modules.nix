@@ -6,6 +6,7 @@
     inputs.nixarr.nixosModules.default
     inputs.base16.nixosModule
     inputs.vscode-server.nixosModules.default
+    inputs.impermanence.nixosModules.impermanence
   ];
   baseMods.darwin = [
     inputs.home-manager.darwinModules.home-manager
