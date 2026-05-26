@@ -30,7 +30,7 @@
 
       fontFamily = lib.mkOption {
         type = lib.types.str;
-        default = "IoskeleyMono Nerd Font";
+        default = "IoskeleyMonoTerm Nerd Font";
       };
     };
 
@@ -51,9 +51,9 @@
         pkgs.nerd-fonts.geist-mono
         pkgs.nerd-fonts.im-writing
         pkgs.fragment-mono
-        pkgs.ioskeley-mono.normal-NF
-        pkgs.ioskeley-mono.semiCondensed-NF
-        pkgs.ioskeley-mono.condensed-NF
+        pkgs.ioskeley-mono.normal-term-NF
+        pkgs.ioskeley-mono.semiCondensed-term-NF
+        pkgs.ioskeley-mono.condensed-term-NF
         pkgs.martian-mono
         pkgs.mona-sans
       ];
