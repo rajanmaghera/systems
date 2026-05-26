@@ -22,6 +22,7 @@
         syntaxHighlighting.enable = true;
         oh-my-zsh = {
           enable = true;
+          plugins = [ "jj" ];
         };
         initContent = lib.mkIf pkgs.stdenv.isDarwin ''
           # Bind standard terminal Alt-Left/Right to word jumping
