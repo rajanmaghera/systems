@@ -30,7 +30,7 @@
 
       fontFamily = lib.mkOption {
         type = lib.types.str;
-        default = "Fragment Mono";
+        default = "IoskeleyMono Nerd Font";
       };
     };
 
@@ -51,6 +51,11 @@
         pkgs.nerd-fonts.geist-mono
         pkgs.nerd-fonts.im-writing
         pkgs.fragment-mono
+        pkgs.ioskeley-mono.normal-NF
+        pkgs.ioskeley-mono.semiCondensed-NF
+        pkgs.ioskeley-mono.condensed-NF
+        pkgs.martian-mono
+        pkgs.mona-sans
       ];
 
       # Zsh home
