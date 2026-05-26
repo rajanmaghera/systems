@@ -7,6 +7,9 @@
 let
   outerConfig = config;
 
+  # TODO add autoupdate/autobuild script that takes self as flake input and runs nix flake update, keeping track of
+  # which inputs decide to build and not
+
   # Defaults are a place where options set to their defaults are likely not to change
   # some of these options might not exist on all OSes.
   defaultOptions =
@@ -167,6 +170,15 @@ in
       nix.settings.substituters = cfg.substituters;
       nix.settings.trusted-public-keys = cfg.substituterPublicKeys;
 
+      # Channel and registry setup
+      nix.channel.enable = false;
+      nix.registry.s.flake = inputs.self;
+      nix.registry.nixpkgs.flake = inputs.nixpkgs;
+      nix.nixPath = [
+        "s=flake:s"
+        "nixpkgs=flake:nixpkgs"
+      ];
+
       # Home manager config
       home-manager.backupFileExtension = "bkup";
       home-manager.useGlobalPkgs = true;
@@ -229,6 +241,15 @@ in
       nix.settings.substituters = cfg.substituters;
       nix.settings.trusted-public-keys = cfg.substituterPublicKeys;
 
+      # Channel and registry setup
+      nix.channel.enable = false;
+      nix.registry.s.flake = inputs.self;
+      nix.registry.nixpkgs.flake = inputs.nixpkgs-darwin;
+      nix.nixPath = [
+        "s=flake:s"
+        "nixpkgs=flake:nixpkgs"
+      ];
+
       # User config
       users.users."${cfg.username}" = {
         home = cfg.homeDirectory;
@@ -252,6 +273,7 @@ in
   mods.home.defaults.conf =
     {
       cfg,
+      pkgs,
       ...
     }:
     {
@@ -261,9 +283,14 @@ in
 
       xdg.enable = true;
 
-      # Add this flake to the local registry as 's'
-      # (so it's never lost)
+      # Channel and registry setup
       nix.registry.s.flake = inputs.self;
-      # To run any package (default or customized), use `nix run s#...`
+      nix.registry.nixpkgs.flake = if pkgs.stdenv.isDarwin then inputs.nixpkgs-darwin else inputs.nixpkgs;
+      nix.nixPath = [
+        "s=flake:s"
+        "nixpkgs=flake:nixpkgs"
+      ];
+      nix.keepOldNixPath = false;
+
     };
 }
