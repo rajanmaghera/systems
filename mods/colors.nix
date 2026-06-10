@@ -10,12 +10,12 @@
     {
       base16LightScheme = lib.mkOption {
         type = lib.types.str;
-        default = "${pkgs.base16-schemes}/share/themes/cupertino.yaml";
+        default = "${pkgs.base16-schemes}/share/themes/papercolor-light.yaml";
       };
 
       base16DarkScheme = lib.mkOption {
         type = lib.types.str;
-        default = "${pkgs.base16-schemes}/share/themes/atelier-dune.yaml";
+        default = "${pkgs.base16-schemes}/share/themes/papercolor-dark.yaml";
       };
 
       base16LightColors = lib.mkOption {
@@ -30,7 +30,7 @@
 
       fontFamily = lib.mkOption {
         type = lib.types.str;
-        default = "IoskeleyMonoTerm Nerd Font";
+        default = "Mona Sans Mono";
       };
     };
 
