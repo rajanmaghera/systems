@@ -19,7 +19,6 @@
       my.gc.enable = true;
       my.cli.enable = true;
       my.dev-env.enable = true;
-      my.passwords.enable = true;
       my.nix-tools.enable = true;
       my.sync.enable = true;
       my.mail.enable = true;

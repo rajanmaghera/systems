@@ -32,7 +32,6 @@
         my.cli.enable = true;
         my.dev-env.enable = true;
         my.shell.enable = true;
-        my.passwords.enable = true;
         my.theming.enable = true;
         my.agent-cli.enable = true;
       };
