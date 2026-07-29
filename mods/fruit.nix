@@ -3,7 +3,7 @@
   sys.fruit.class = "darwin";
   sys.fruit.mod = {
     my.defaults.enable = true;
-    my.defaults.homeDirectory = "/Users/rajan";
+    my.defaults.username = "rajan";
     my.defaults.hostName = "fruit";
 
     # Enable custom window management
@@ -15,7 +15,6 @@
     my.defaults.home = {
       my.theming.enable = true;
       my.shell.enable = true;
-      my.emacs.enable = true;
       my.gc.enable = true;
       my.cli.enable = true;
       my.dev-env.enable = true;

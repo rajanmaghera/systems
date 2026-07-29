@@ -32,7 +32,6 @@ let
       username = lib.mkOption {
         type = lib.types.str;
         description = "User name of the main user";
-        default = "rajan";
       };
 
       timeZone = lib.mkOption {
@@ -41,10 +40,6 @@ let
       };
 
       hostName = lib.mkOption {
-        type = lib.types.str;
-      };
-
-      homeDirectory = lib.mkOption {
         type = lib.types.str;
       };
 
@@ -151,7 +146,7 @@ in
 
       # System config
       i18n.defaultLocale = "en_CA.UTF-8";
-      system.stateVersion = "25.11";
+      system.stateVersion = "26.05";
       boot.loader.systemd-boot.enable = cfg.enableEfiBootloader;
       boot.loader.efi.canTouchEfiVariables = cfg.enableEfiBootloader;
       networking.networkmanager.enable = cfg.enableNetwork;
@@ -252,7 +247,7 @@ in
 
       # User config
       users.users."${cfg.username}" = {
-        home = cfg.homeDirectory;
+        home = "/Users/${cfg.username}";
         shell = pkgs.zsh;
       };
 
@@ -277,9 +272,10 @@ in
       ...
     }:
     {
-      home.stateVersion = "25.11";
+      home.stateVersion = "26.05";
       home.username = cfg.username;
-      home.homeDirectory = cfg.homeDirectory;
+      home.homeDirectory =
+        if pkgs.stdenv.isDarwin then "/Users/${cfg.username}" else "/home/${cfg.username}";
 
       xdg.enable = true;
 

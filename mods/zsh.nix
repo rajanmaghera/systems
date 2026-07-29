@@ -14,8 +14,6 @@
       };
 
       programs.zsh = {
-        # Remove below line once updated to 26.05
-        dotDir = "${config.xdg.configHome}/zsh";
         enable = true;
         enableCompletion = true;
         autosuggestion.enable = true;

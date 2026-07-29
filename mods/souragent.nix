@@ -12,7 +12,7 @@
     }:
     {
       my.defaults.enable = true;
-      my.defaults.homeDirectory = "/home/rajan";
+      my.defaults.username = "rajan";
       my.defaults.hostName = "souragent";
 
       my.gc.enable = true;
