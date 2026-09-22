@@ -35,18 +35,4 @@
       # TODO: add switch to not enable sshAgentAuth for all users
     };
 
-  # aarch64 fix for pam not working
-  # https://github.com/NixOS/nixpkgs/issues/386392#issuecomment-4077258961
-  pkgs.overlays = [
-    (final: prev: {
-      pam_ssh_agent_auth = prev.pam_ssh_agent_auth.overrideAttrs (old: {
-        postFixup = (old.postFixup or "") + ''
-          ${prev.patchelf}/bin/patchelf \
-            --add-needed libgcc_s.so.1 \
-            --add-rpath ${prev.stdenv.cc.cc.lib}/lib \
-            $out/libexec/pam_ssh_agent_auth.so
-        '';
-      });
-    })
-  ];
 }
