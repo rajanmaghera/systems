@@ -22,7 +22,11 @@
     darwin.url = "github:LnL7/nix-darwin/nix-darwin-26.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-darwin";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-darwin"; # TODO: separate home manager for darwin
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    nixflix.url = "github:kiriwalawren/nixflix";
+    nixflix.inputs.nixpkgs.follows = "nixpkgs";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs-darwin";
     base16.url = "github:SenchoPens/base16.nix";

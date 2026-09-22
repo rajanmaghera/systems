@@ -87,29 +87,70 @@ Boot minimal (non-graphical) Nix machine.
 
 Have SSH ability into the machine from this machine. Alternatively, install Tailscale.
 
-Set password for nixos user.
-```
+Set password for nixos user and determine machine info as necessary.
+```shell
 passwd
-```
-
-Touch hardware configuration, add it to git, and import it.
-```
-touch ./machines/<machine-name>/hardware-configuration.nix
-git add ./machines/<machine-name>/hardware-configuration.nix
-```
-
-Get block devices from machine and use it to construct local `disk-config.nix`
-```
 lsblk
 ```
 
+Generate new host key.
+
+```shell
+mkdir -p ./tmp_extra/etc/ssh
+ssh-keygen -t ed25519 -f ./tmp_extra/etc/ssh/ssh_host_ed25519_key -N "" -C "root@<machine-name>"
+chmod 600 ./tmp_extra/etc/ssh/ssh_host_ed25519_key
+chmod 644 ./tmp_extra/etc/ssh/ssh_host_ed25519_key.pub
+```
+
+Get age key for sops.
+
+```shell
+nix run nixpkgs#ssh-to-age -- -i ./tmp_extra/etc/ssh/ssh_host_ed25519_key.pub
+```
+
+Update keys in `.sops.yaml` to point to new key.
+
+Create/edit sops file.
+```shell
+nix run nixpkgs#sops -- ./secrets/<machine-name>.yml
+```
+
+Ensure that the host keys are explicitly defined in your config and that sops points to it.
+Ensure that hardware config is being imported.
+```nix
+imports = [
+  ./_<machine-name>-hardware-config.nix
+];
+
+services.openssh.enable = true;
+services.openssh.hostKeys = [
+  {
+    path = "/etc/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }
+];
+
+sops.defaultSopsFile = ../secrets/<machine-name>.yaml;
+sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];  
+
+```
+
+Touch hardware configuration, add it to git, and import it.
+```shell
+touch ./mods/_<machine-name>-hardware-config.nix
+git add ./mods/_<machine-name>-hardware-config.nix
+```
 Run nixos-anywhere on machine.
 ```
 nix run github:nix-community/nixos-anywhere -- \
   --flake '.#<machine-name>' \
   --target-host nixos@<IP-ADDR> \
-  --generate-hardware-config nixos-generate-config ./machines/<machine-name>/hardware-configuration.nix
+  --extra-files ./tmp_extra \
+  --generate-hardware-config nixos-generate-config ./mods/_<machine-name>-hardware-config.nix \
+  --build-on remote # optional
 ```
 
-(WIP)
-
+Remove temp files.
+```
+rm -rf ./tmp_extra
+```
