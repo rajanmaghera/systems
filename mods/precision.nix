@@ -9,7 +9,6 @@
     my.theming.enable = true;
     my.gpu-apps.enable = true;
 
-    my.cli.enable = true;
     my.dev-env.enable = true;
     my.shell.enable = true;
   };

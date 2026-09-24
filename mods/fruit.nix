@@ -16,11 +16,13 @@
       my.theming.enable = true;
       my.shell.enable = true;
       my.gc.enable = true;
-      my.cli.enable = true;
       my.dev-env.enable = true;
       my.nix-tools.enable = true;
-      my.sync.enable = true;
       my.mail.enable = true;
+
+      services.syncthing = {
+        enable = true;
+      };
     };
   };
 }

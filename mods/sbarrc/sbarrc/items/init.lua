@@ -1,6 +1,0 @@
-require("sbarrc.items.apple")
-require("sbarrc.items.spaces")
-require("sbarrc.items.front_app")
-require("sbarrc.items.calendar")
-require("sbarrc.items.widgets")
-require("sbarrc.items.media")
